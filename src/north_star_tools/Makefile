@@ -14,7 +14,7 @@ NN              := $(shell date +%y%m%d)
 JUNK            = *.o  *.bak [12][0-9][0-9][0-9][0-9][0-9] *~ temp1 xlog screenlog
 
 # CC must be an ANSI-C compiler
-CC		= gcc
+CC		= cc
 INSTALL		= install
 
 OPTIONS		=	-D_POSIX_SOURCE

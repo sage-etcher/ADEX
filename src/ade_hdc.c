@@ -680,7 +680,7 @@ hdmount (const char *filename)
   strcat (hdfilename, filename);
   xlog (HDC, "hdfilename is %s\n", hdfilename);
   stat (hdfilename, &st);
-  if ((st.st_mode & __S_IFMT) != __S_IFREG)
+  if (!S_ISREG(st.st_mode))
     {
       printf ("   No File '%s'\n", hdfilename);
       xlog (HDC, "  No File '%s'\n", hdfilename);

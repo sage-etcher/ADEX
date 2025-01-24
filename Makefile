@@ -9,7 +9,7 @@ JUNK            = *.o  *.bak [12][0-9][0-9][0-9][0-9][0-9] *~ temp1 xlog screenl
 TARGET=ade
 
 # compiler
-CC=gcc
+CC=cc
 
 #generate_resources
 GLIB_COMPILE_RESOURCES  =       glib-compile-resources --sourcedir=gresources
@@ -35,7 +35,7 @@ WARN += -Wcast-qual
 WARN += -Wdeclaration-after-statement
 WARN += -Wfloat-equal
 WARN += -Wformat=2
-WARN += -Wlogical-op
+#WARN += -Wlogical-op
 WARN += -Wmissing-declarations
 WARN += -Wmissing-include-dirs
 WARN += -Wmissing-prototypes
@@ -53,7 +53,7 @@ WARN += -Wunreachable-code
 WARN += -Wunused-but-set-parameter
 WARN += -Wwrite-strings
 # Turns warnings into errors
-WARN += -Werror
+#WARN += -Werror
 # Allows deprecated stuff like GTK+ 2
 WARN += -Wno-deprecated-declarations
 WARN += -Wno-overlength-strings
@@ -111,11 +111,12 @@ INFODIR		=	$(INSTALLDIR)/info
 
 CCFLAGS=$(DEBUG) $(OPT) $(WARN) -pipe
 
-GTKLIB=`pkg-config --cflags --libs gtk+-3.0`
+GTKCFLAGS=`pkg-config --cflags gtk+-3.0`
+GTKLIB=`pkg-config --libs gtk+-3.0`
 
 # linker
-LD=gcc
-LDFLAGS=$(GTKLIB) -export-dynamic -rdynamic  $(LCOV) -lX11
+LD=cc
+LDFLAGS=$(GTKLIB) -rdynamic $(LCOV) -lX11
 
 
 OBJS=	ade_base.o ade_breaktrap.o ade_config.o  ade_ddt.o ade_debug.o ade_disks.o \
@@ -133,7 +134,7 @@ all:	clean  $(TARGET)_resources.c $(OBJS) $(RESOURCES) tools
 	$(LD) -o $(TARGET) $(OBJS) $(LDFLAGS)
 
 clean:
-	rm -f $(JUNK) $(PROGS)
+	rm -f $(JUNK) $(TARGET)
 	touch $(NN)
 	rm -f *.o
 	rm -f  *~
@@ -141,6 +142,7 @@ clean:
 	rm -f ../*.gc??
 	@ if [ -e $(HOME)/wrk/today.h ]; then cp $(HOME)/wrk/today.h src/makedate.h; fi
 	@ if [ -e $(HOME)/.local/bin/g2extvars ]; then cd src; g2extvars ade_gvars.h; fi
+	@ $(MAKE) -C src/north_star_tools clean
 
 
 indent:
@@ -196,70 +198,70 @@ tools:
 	@ $(MAKE) -C src/north_star_tools clean all
 
 ade_base.o: src/ade_base.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_base.c $(GTKLIB) -o ade_base.o
+	$(CC) -c $(CCFLAGS) src/ade_base.c $(GTKCFLAGS) -o ade_base.o
 
 ade_breaktrap.o: src/ade_breaktrap.c
-	$(CC) -c $(CCFLAGS) src/ade_breaktrap.c $(GTKLIB) -o ade_breaktrap.o
+	$(CC) -c $(CCFLAGS) src/ade_breaktrap.c $(GTKCFLAGS) -o ade_breaktrap.o
 
 ade_config.o: src/ade_config.c
-	$(CC) -c $(CCFLAGS) src/ade_config.c $(GTKLIB) -o ade_config.o
+	$(CC) -c $(CCFLAGS) src/ade_config.c $(GTKCFLAGS) -o ade_config.o
 
 ade_ddt.o: src/ade_ddt.c
-	$(CC) -c $(CCFLAGS) src/ade_ddt.c $(GTKLIB) -o ade_ddt.o
+	$(CC) -c $(CCFLAGS) src/ade_ddt.c $(GTKCFLAGS) -o ade_ddt.o
 
 ade_debug.o: src/ade_debug.c
-	$(CC) -c $(CCFLAGS) src/ade_debug.c $(GTKLIB) -o ade_debug.o
+	$(CC) -c $(CCFLAGS) src/ade_debug.c $(GTKCFLAGS) -o ade_debug.o
 
 ade_disks.o: src/ade_disks.c
-	$(CC) -c $(CCFLAGS) src/ade_disks.c $(GTKLIB) -o ade_disks.o
+	$(CC) -c $(CCFLAGS) src/ade_disks.c $(GTKCFLAGS) -o ade_disks.o
 
 ade_dz80.o: src/ade_dz80.c src/ade.h
-	$(CC) -c $(CCFLAGS) src/ade_dz80.c $(GTKLIB) -o ade_dz80.o
+	$(CC) -c $(CCFLAGS) src/ade_dz80.c $(GTKCFLAGS) -o ade_dz80.o
 
 ade_fdc.o:  src/ade_fdc.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_fdc.c $(GTKLIB) -o ade_fdc.o
+	$(CC) -c $(CCFLAGS) src/ade_fdc.c $(GTKCFLAGS) -o ade_fdc.o
 
 ade_file_choose.o: src/ade_file_choose.c
-	$(CC) -c $(CCFLAGS) src/ade_file_choose.c $(GTKLIB) -o ade_file_choose.o
+	$(CC) -c $(CCFLAGS) src/ade_file_choose.c $(GTKCFLAGS) -o ade_file_choose.o
 
 ade_hdc.o:  src/ade_hdc.c  src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_hdc.c $(GTKLIB) -o ade_hdc.o
+	$(CC) -c $(CCFLAGS) src/ade_hdc.c $(GTKCFLAGS) -o ade_hdc.o
 
 ade_io.o:   src/ade_io.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_io.c $(GTKLIB)  -o ade_io.o
+	$(CC) -c $(CCFLAGS) src/ade_io.c $(GTKCFLAGS)  -o ade_io.o
 
 ade_inputs.o:   src/ade_inputs.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_inputs.c $(GTKLIB) -o ade_inputs.o
+	$(CC) -c $(CCFLAGS) src/ade_inputs.c $(GTKCFLAGS) -o ade_inputs.o
 
 ade_ioports.o:   src/ade_ioports.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_ioports.c $(GTKLIB) -o ade_ioports.o
+	$(CC) -c $(CCFLAGS) src/ade_ioports.c $(GTKCFLAGS) -o ade_ioports.o
 
 ade_launch_ade.o: src/ade_launch_ade.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_launch_ade.c $(GTKLIB) -o ade_launch_ade.o
+	$(CC) -c $(CCFLAGS) src/ade_launch_ade.c $(GTKCFLAGS) -o ade_launch_ade.o
 
 ade_launch_gui.o: src/ade_launch_gui.c
-	$(CC) -c $(CCFLAGS) src/ade_launch_gui.c $(GTKLIB) -o ade_launch_gui.o
+	$(CC) -c $(CCFLAGS) src/ade_launch_gui.c $(GTKCFLAGS) -o ade_launch_gui.o
 
 ade_main.o: src/ade_main.c
-	$(CC) -c $(CCFLAGS) src/ade_main.c $(GTKLIB) -o ade_main.o
+	$(CC) -c $(CCFLAGS) src/ade_main.c $(GTKCFLAGS) -o ade_main.o
 
 ade_mem.o: src/ade_mem.c
-	$(CC) -c $(CCFLAGS) src/ade_mem.c $(GTKLIB) -o ade_mem.o
+	$(CC) -c $(CCFLAGS) src/ade_mem.c $(GTKCFLAGS) -o ade_mem.o
 
 ade_slot_card.o: src/ade_slot_card.c
-	$(CC) -c $(CCFLAGS) src/ade_slot_card.c $(GTKLIB) -o ade_slot_card.o
+	$(CC) -c $(CCFLAGS) src/ade_slot_card.c $(GTKCFLAGS) -o ade_slot_card.o
 
 ade_trap.o: src/ade_trap.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_trap.c $(GTKLIB) -o ade_trap.o
+	$(CC) -c $(CCFLAGS) src/ade_trap.c $(GTKCFLAGS) -o ade_trap.o
 
 ade_display.o:  src/ade_display.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_display.c $(GTKLIB) -o ade_display.o
+	$(CC) -c $(CCFLAGS) src/ade_display.c $(GTKCFLAGS) -o ade_display.o
 
 ade_z80.o:  src/ade_z80.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/ade_z80.c $(GTKLIB) -o ade_z80.o
+	$(CC) -c $(CCFLAGS) src/ade_z80.c $(GTKCFLAGS) -o ade_z80.o
 
 jfuncs.o:  src/jfuncs.c src/ade.h src/ade_extvars.h
-	$(CC) -c $(CCFLAGS) src/jfuncs.c $(GTKLIB) -o jfuncs.o
+	$(CC) -c $(CCFLAGS) src/jfuncs.c $(GTKCFLAGS) -o jfuncs.o
 
 ####################### Put list of GTK resource files in  $(TARGET)_gresource.xml,    ###########
 #######################     convert to .c  source-file                                 ###########
@@ -269,4 +271,6 @@ $(TARGET)_resources.c:
 	--generate-source $(TARGET)_gresource.xml
 
 $(TARGET)_resources.o: $(TARGET)_resources.c
-	$(CC) -c $(PERIPHERALS) $(CCFLAGS) src/$(TARGET)_resources.c $(GTKLIB) -o $(TARGET)_resources.o
+	$(CC) -c $(PERIPHERALS) $(CCFLAGS) src/$(TARGET)_resources.c $(GTKCFLAGS) -o $(TARGET)_resources.o
+
+# vim: ts=8 sts=8 sw=8 noet

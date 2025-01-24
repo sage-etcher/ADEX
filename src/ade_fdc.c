@@ -36,7 +36,7 @@ floppy_mount (int disk, const char *filename, int readonly)
 
   stat (fdfilename, &st);
 
-  if ((st.st_mode & __S_IFMT) != __S_IFREG)
+  if (!S_ISREG(st.st_mode))
     {
       printf ("   No File '%s' \n", fdfilename);
       return 0;
