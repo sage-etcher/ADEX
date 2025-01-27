@@ -188,7 +188,7 @@ umount (int disk)
 
 
 void
-initialise_floppies ()
+initialise_floppies (void)
 {
 
   int i;
@@ -430,7 +430,7 @@ load_drive_control_register (int dsk_ctl)
 
 
 void
-floppy_step ()
+floppy_step (void)
 {
 
 /*********************************************************************************/
@@ -472,7 +472,7 @@ floppy_step ()
 }
 
 void
-start_sector_read ()
+start_sector_read (void)
 {
   increment_sector_num ();
   xlog (FDC, "start_sector_read: Starting to read Sector %d\n",
@@ -482,7 +482,7 @@ start_sector_read ()
 }
 
 void
-write_sector_to_disk ()
+write_sector_to_disk (void)
 {
 
   int store_sect_num;
@@ -519,7 +519,7 @@ write_sector_to_disk ()
 
 
 void
-store_sector_buffer ()
+store_sector_buffer (void)
 {
   int store_sect_num;
   BYTE second_sync;
@@ -571,7 +571,7 @@ calc_crc (int k)                /* calculate CRC as we read each byte */
 }
 
 void
-clear_disk_write_flag ()
+clear_disk_write_flag (void)
 {
   xlog (FDC, "CLEAR DISK WRITE FLAG\n");
   g_floppy->fd_disk_write_flag = FALSE;
@@ -580,7 +580,7 @@ clear_disk_write_flag ()
 
 
 void
-check_sector_mark_transition ()
+check_sector_mark_transition (void)
 {
   if (g_floppy->fd_sector_mark != g_floppy->fd_sector_mark_prev)
     {
@@ -600,7 +600,7 @@ check_sector_mark_transition ()
 }
 
 void
-increment_sector_num ()
+increment_sector_num (void)
 {
   g_floppy->fd_sector_num++;
   g_floppy->fd_sector_num %= 10;
@@ -615,7 +615,7 @@ increment_sector_num ()
 
 
 void
-floppy_state ()
+floppy_state (void)
 {
 
   if (g_display_flag_counter)

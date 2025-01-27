@@ -112,7 +112,7 @@ launch_advantage (void)
 
   g_coldboot_flag = 0;
 
-  g_machine_prom_code = adv_prom_0000_0800;
+  g_machine_prom_code = g_adv_prom_0000_0800;
   strcpy (g_machine_prom_name_string, MACHINE_PROM_NAME_STR);
   g_machine_prom_address = MACHINE_PROM_ADDRESS;
   g_machine_prom_length = MACHINE_PROM_LENGTH;
@@ -584,7 +584,7 @@ set_boot_prom_active (int reg)
   g_memory_mapping_register[reg] = 0x0e * 0x4000;
 }
 
-int prefix_toggle = 0;
+int s_prefix_toggle = 0;
 void
 set_io_control_register (int io_ctl)
 {
@@ -621,7 +621,7 @@ set_io_control_register (int io_ctl)
       break;
     case 7:
       xlog (CMD, "set_io_control_register: CMD 7: ");
-      if (prefix_toggle)
+      if (s_prefix_toggle)
         {
           xlog (CMD, "Complement KB MI 4-key-Reset Enable  Flag\n");
           g_four_key_reset_enable_flag ^= 1;
@@ -630,11 +630,11 @@ set_io_control_register (int io_ctl)
         {
           xlog (CMD, "Caps Lock\n");
         }
-      prefix_toggle = 0;
+      s_prefix_toggle = 0;
       break;
     case 6:
       xlog (CMD, "set_io_control_register: CMD 6: CMD PREFIX\n");
-      prefix_toggle = 1;
+      s_prefix_toggle = 1;
       /***/
       break;
     }
@@ -910,7 +910,7 @@ get_status_reg_2 (void)
       xlog (CMD, "get_status_reg_2: Show Cursor Lock %X\n", status & 0x01);
       break;
     case 6:
-      if (prefix_toggle)
+      if (s_prefix_toggle)
         {
           /*status |= 1; */
           xlog (CMD, "get_status_reg_2: Prefix Toggle ON\n");
@@ -921,7 +921,7 @@ get_status_reg_2 (void)
         }
       break;
     case 7:
-      if (prefix_toggle)
+      if (s_prefix_toggle)
         {
           if (g_four_key_reset_enable_flag)
             {
@@ -934,7 +934,7 @@ get_status_reg_2 (void)
               xlog (CMD,
                     "get_status_reg_2: Keyboard NMI 4_key_reset_enable Flag is FALSE\n");
             }
-          prefix_toggle = 0;
+          s_prefix_toggle = 0;
         }
       else
         {

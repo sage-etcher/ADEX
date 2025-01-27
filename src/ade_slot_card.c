@@ -2,7 +2,7 @@
 #include "ade.h"
 #include "ade_extvars.h"
 
-gint slots_initialised = 0;
+gint s_slots_initialised = 0;
 
 
 void
@@ -141,10 +141,10 @@ set_slots_config (void)
   int slot_number;
 
 
-  if (!slots_initialised)
+  if (!s_slots_initialised)
     {
       initialise_slots_array ();
-      slots_initialised = 0;
+      s_slots_initialised = 0;
     }
 
   slot_number = (atoi (g_cfg_arg[SLOTS]));

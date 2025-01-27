@@ -2,8 +2,8 @@
 #include "ade.h"
 #include "ade_extvars.h"
 
-gint mdisks_initialised = 0;
-const gchar *new_floppy_name;
+gint s_mdisks_initialised = 0;
+const gchar *s_new_floppy_name;
 
 void
 build_disks_widgets_from_gresources (void)
@@ -64,7 +64,7 @@ build_disks_widgets_from_gresources (void)
 void
 disks_unhide (void)
 {
-  if (!mdisks_initialised)
+  if (!s_mdisks_initialised)
     {
       mdisks_setup ();
     }
@@ -93,7 +93,7 @@ mdisks_setup (void)
     {
       show_hdd_current ();
     }
-  mdisks_initialised = 1;
+  s_mdisks_initialised = 1;
   gtk_widget_show (g_Wdisks_top);
 }
 
@@ -304,7 +304,7 @@ umount_hdd (void)
 }
 
 
-char absolute_floppy_name[70];
+char s_absolute_floppy_name[70];
 
 
 void
@@ -312,15 +312,15 @@ get_new_floppy_name (void)
 {
   gboolean name_ok;
 
-  new_floppy_name = gtk_entry_get_text (g_new_floppy_text);
-  if (*new_floppy_name != '/')
+  s_new_floppy_name = gtk_entry_get_text (g_new_floppy_text);
+  if (*s_new_floppy_name != '/')
     {                           //NOT ABSOLUTE Filename, = RELATIVE, ADD PWD
-      strcpy (absolute_floppy_name, g_cfg_arg[DISKD]);
-      strcat (absolute_floppy_name, new_floppy_name);
+      strcpy (s_absolute_floppy_name, g_cfg_arg[DISKD]);
+      strcat (s_absolute_floppy_name, s_new_floppy_name);
     }
   else
     {
-      strcpy (absolute_floppy_name, new_floppy_name);
+      strcpy (s_absolute_floppy_name, s_new_floppy_name);
     }
   name_ok = check_new_floppy_name ();
   if (!name_ok)
@@ -330,7 +330,7 @@ get_new_floppy_name (void)
     }
 }
 
-gboolean name_ok = 0;
+gboolean s_name_ok = 0;
 
 gboolean
 check_new_floppy_name (void)
@@ -351,10 +351,10 @@ create_new_floppy (void)
   BYTE nfbuff[512];
 
   get_new_floppy_name ();
-  if ((nfile = fopen (absolute_floppy_name, "wb")) == NULL)
+  if ((nfile = fopen (s_absolute_floppy_name, "wb")) == NULL)
     {
       sprintf (g_vstring, "\nSorry. Can't open <%s>. Aborting\n",
-               absolute_floppy_name);
+               s_absolute_floppy_name);
       status_print (g_vstring, TRUE);
     }
   else
@@ -367,7 +367,7 @@ create_new_floppy (void)
         }
 
       // get 'basename' of new floppy file
-      strcpy (xbasename, basename (absolute_floppy_name));
+      strcpy (xbasename, basename (s_absolute_floppy_name));
 //      make first NSDOS entry name for the disk UPPERCASE
       i = 0;
       while ((*(xbasename + i) != '.') && (i < 8))
@@ -415,13 +415,13 @@ create_new_floppy (void)
   if (!bad)
     {
       sprintf (g_vstring, "\nNew Floppy \"%s\" Created",
-               (char *) absolute_floppy_name);
+               (char *) s_absolute_floppy_name);
       status_print (g_vstring, 0);
     }
   else
     {
       sprintf (g_vstring, "\nNew Floppy \"%s\" NOT Created!!!",
-               absolute_floppy_name);
+               s_absolute_floppy_name);
       status_print (g_vstring, 1);
     }
   gtk_entry_set_text (g_new_floppy_text, "");

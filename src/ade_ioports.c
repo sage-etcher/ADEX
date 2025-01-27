@@ -2,12 +2,12 @@
 #include "ade_extvars.h"
 #include <termios.h>
 
-gint ioports_initialised = 0;
+gint s_ioports_initialised = 0;
 
-int ttyflags;
+int s_ttyflags;
 
 void
-build_ioports_widgets_from_gresources ()
+build_ioports_widgets_from_gresources (void)
 {
 
 /* debug checkbutton menu stuff */
@@ -103,7 +103,7 @@ build_ioports_widgets_from_gresources ()
 // gtk button handlers - wrappers
 
 void
-detach_sio_in ()
+detach_sio_in (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "sio_in");
@@ -116,7 +116,7 @@ detach_sio_in ()
 }
 
 void
-detach_sio_out ()
+detach_sio_out (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "sio_out");
@@ -145,7 +145,7 @@ detach_sio_device (void)
 
 
 void
-detach_pio_in ()
+detach_pio_in (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "pio_in");
@@ -158,7 +158,7 @@ detach_pio_in ()
 }
 
 void
-detach_pio_out ()
+detach_pio_out (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "pio_out");
@@ -173,7 +173,7 @@ detach_pio_out ()
 
 
 void
-detach_pio_device ()
+detach_pio_device (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "pio_dev");
@@ -187,9 +187,9 @@ detach_pio_device ()
 
 
 void
-ioports_unhide ()
+ioports_unhide (void)
 {
-  if (!ioports_initialised)
+  if (!s_ioports_initialised)
     {
       ioports_setup ();
     }
@@ -200,7 +200,7 @@ ioports_unhide ()
 
 
 void
-ioports_setup ()
+ioports_setup (void)
 {
   /* initialise ioports to what's attached */
   {
@@ -227,25 +227,25 @@ ioports_setup ()
     show_pio_device_current ();
   }
 
-  ioports_initialised = 1;
+  s_ioports_initialised = 1;
   gtk_widget_show (g_Wioports_top);
 }
 
 
 void
-ioports_hide ()
+ioports_hide (void)
 {
   gtk_widget_hide (g_Wioports_top);
 }
 
 
 void
-show_sio_in_current ()
+show_sio_in_current (void)
 {
   xlog (INFO, "show_sio_in_current NI\n");
-  if (siotab[2].filename != NULL)
+  if (g_siotab[2].filename != NULL)
     {
-      gtk_label_set_text (g_sio_in_fn, (const gchar *) (siotab[2].filename));
+      gtk_label_set_text (g_sio_in_fn, (const gchar *) (g_siotab[2].filename));
     }
   else
     {
@@ -256,12 +256,12 @@ show_sio_in_current ()
 
 
 void
-show_sio_device_current ()
+show_sio_device_current (void)
 {
-  xlog (INFO, "show_sio_device_current: %s\n", siotab[6].filename);
-  if (siotab[6].filename != NULL)
+  xlog (INFO, "show_sio_device_current: %s\n", g_siotab[6].filename);
+  if (g_siotab[6].filename != NULL)
     {
-      gtk_label_set_text (g_sio_dev_fn, (const gchar *) (siotab[6].filename));
+      gtk_label_set_text (g_sio_dev_fn, (const gchar *) (g_siotab[6].filename));
     }
   else
     {
@@ -272,12 +272,12 @@ show_sio_device_current ()
 }
 
 void
-show_sio_out_current ()
+show_sio_out_current (void)
 {
   xlog (INFO, "show_sio_out_current NI\n");
-  if (siotab[3].filename != NULL)
+  if (g_siotab[3].filename != NULL)
     {
-      gtk_label_set_text (g_sio_out_fn, (const gchar *) (siotab[3].filename));
+      gtk_label_set_text (g_sio_out_fn, (const gchar *) (g_siotab[3].filename));
     }
   else
     {
@@ -288,12 +288,12 @@ show_sio_out_current ()
 }
 
 void
-show_pio_in_current ()
+show_pio_in_current (void)
 {
   xlog (INFO, "show_pio_in_current NI\n");
-  if (siotab[4].filename != NULL)
+  if (g_siotab[4].filename != NULL)
     {
-      gtk_label_set_text (g_pio_in_fn, (const gchar *) (siotab[4].filename));
+      gtk_label_set_text (g_pio_in_fn, (const gchar *) (g_siotab[4].filename));
     }
   else
     {
@@ -304,12 +304,12 @@ show_pio_in_current ()
 
 
 void
-show_pio_out_current ()
+show_pio_out_current (void)
 {
   xlog (INFO, "show_pio_out_current NI\n");
-  if (siotab[5].filename != NULL)
+  if (g_siotab[5].filename != NULL)
     {
-      gtk_label_set_text (g_pio_out_fn, (const gchar *) (siotab[5].filename));
+      gtk_label_set_text (g_pio_out_fn, (const gchar *) (g_siotab[5].filename));
     }
   else
     {
@@ -321,12 +321,12 @@ show_pio_out_current ()
 
 
 void
-show_pio_device_current ()
+show_pio_device_current (void)
 {
   xlog (INFO, "show_pio_device_current NI\n");
-  if (siotab[7].filename != NULL)
+  if (g_siotab[7].filename != NULL)
     {
-      gtk_label_set_text (g_pio_dev_fn, (const gchar *) (siotab[7].filename));
+      gtk_label_set_text (g_pio_dev_fn, (const gchar *) (g_siotab[7].filename));
     }
   else
     {
@@ -371,7 +371,7 @@ attach_new_sio_device (void)
 }
 
 void
-attach_new_sio_in ()
+attach_new_sio_in (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "sio_in");
@@ -400,7 +400,7 @@ attach_new_sio_in ()
 }
 
 void
-attach_new_sio_out ()
+attach_new_sio_out (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "sio_out");
@@ -463,7 +463,7 @@ attach_new_pio_device (void)
 }
 
 void
-attach_new_pio_in ()
+attach_new_pio_in (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "pio_in");
@@ -493,7 +493,7 @@ attach_new_pio_in ()
 
 
 void
-attach_new_pio_out ()
+attach_new_pio_out (void)
 {
   char streamnbuff[12];
   strcpy (streamnbuff, "pio_out");
@@ -546,7 +546,7 @@ attach (char *stream, char *iofilename)
         }
       for (i = 0; i < MAXPSTR; i++)
         {
-          s = siotab + i;
+          s = g_siotab + i;
           if (strcmp (stream, s->streamname) == 0)
             break;
         }
@@ -656,7 +656,7 @@ attach (char *stream, char *iofilename)
           s->tty = isatty (fileno (s->fp));
           if (s->tty)
             {
-              ttyflags = ISATTY;
+              s_ttyflags = ISATTY;
             }
           // if we're looking at ST_IN streams
           if (!s->strtype)
@@ -714,7 +714,7 @@ attach (char *stream, char *iofilename)
     {                           // show attach table if no args to 'attach'
       for (i = 0; i < MAXPSTR; i++)
         {
-          s = siotab + i;
+          s = g_siotab + i;
           if (s->fp)
             printf ("   %6s:\t%s\n", s->streamname, s->filename);
         }
@@ -727,10 +727,10 @@ void
 sio_raw_tty (struct sio *s)
 {
 //  xlog (ALL, "sio_raw_tty:  checking s : s->streamname= %s\n", s->streamname);
-  if ((ttyflags & (ISATTY | ISRAW)) == ISATTY)
+  if ((s_ttyflags & (ISATTY | ISRAW)) == ISATTY)
     {
       tcsetattr (fileno (s->fp), TCSAFLUSH, &g_sio_raw);
-      ttyflags |= ISRAW;
+      s_ttyflags |= ISRAW;
     }
 }
 
@@ -738,10 +738,10 @@ void
 pio_raw_tty (struct sio *s)
 {
 //  xlog (ALL, "pio_raw_tty:  checking s : s->streamname= %s\n", s->streamname);
-  if ((ttyflags & (ISATTY | ISRAW)) == ISATTY)
+  if ((s_ttyflags & (ISATTY | ISRAW)) == ISATTY)
     {
       tcsetattr (fileno (s->fp), TCSAFLUSH, &g_pio_raw);
-      ttyflags |= ISRAW;
+      s_ttyflags |= ISRAW;
     }
 }
 
@@ -750,10 +750,10 @@ sio_cooked_tty (struct sio *s)
 {
   if (s->fp != NULL)
     {
-      if (ttyflags & ISRAW)
+      if (s_ttyflags & ISRAW)
         {
           tcsetattr (fileno (s->fp), TCSAFLUSH, &g_sio_cooked);
-          ttyflags &= ~ISRAW;
+          s_ttyflags &= ~ISRAW;
         }
     }
 }
@@ -764,10 +764,10 @@ pio_cooked_tty (struct sio *s)
 {
   if (s->fp != NULL)
     {
-      if (ttyflags & ISRAW)
+      if (s_ttyflags & ISRAW)
         {
           tcsetattr (fileno (s->fp), TCSAFLUSH, &g_pio_cooked);
-          ttyflags &= ~ISRAW;
+          s_ttyflags &= ~ISRAW;
         }
     }
 }
@@ -790,7 +790,7 @@ detach (char *stream)
         }
       for (i = 0; i < MAXPSTR; i++)
         {
-          s = siotab + i;
+          s = g_siotab + i;
           if (strcmp (stream, s->streamname) == 0)
             break;
         }

@@ -36,11 +36,11 @@ most of their customers were using 8080 machines.
 #define HL      g_cpux->regs[g_cpux->regs_sel].hl
 #define SP      g_cpux->sp
 
-extern int current_cpu;
+extern int s_current_cpu;
 
 /***  Arrays of Z80 assembly language instruction code *****/
 
-static const char *Instructions[256] = {
+static const char *s_Instructions[256] = {
   "NOP", "LD BC, # H", "LD (BC), A", "INC BC",
   "INC B", "DEC B", "LD B, *h", "RLCA",
   "EX AF, AF'", "ADD HL, BC", "LD A, (BC)", "DEC BC",
@@ -99,7 +99,7 @@ static const char *Instructions[256] = {
   "RST 38h"
 };
 
-static const char *CB_instructions[256] = {
+static const char *s_CB_instructions[256] = {
   "RLC B", "RLC C", "RLC D", "RLC E", "RLC H", "RLC L", "RLC (HL)", "RLC A",
   "RRC B", "RRC C", "RRC D", "RRC E", "RRC H", "RRC L", "RRC (HL)", "RRC A",
   "RL B", "RL C", "RL D", "RL E", "RL H", "RL L", "RL (HL)", "RL A",
@@ -158,7 +158,7 @@ static const char *CB_instructions[256] = {
   "SET 7,(HL)", "SET 7,A"
 };
 
-static const char *ED_instructions[256] = {
+static const char *s_ED_instructions[256] = {
   "DB EDh,00h", "DB EDh,01h", "DB EDh,02h", "DB EDh,03h",
   "DB EDh,04h", "DB EDh,05h", "DB EDh,06h", "DB EDh,07h",
   "DB EDh,08h", "DB EDh,09h", "DB EDh,0Ah", "DB EDh,0Bh",
@@ -225,7 +225,7 @@ static const char *ED_instructions[256] = {
   "DB EDh,FCh", "DB EDh,FDh", "DB EDh,FEh", "DB EDh,FFh"
 };
 
-static const char *plus_instructions[256] = {
+static const char *s_plus_instructions[256] = {
   "NOP", "LD BC, # H", "LD (BC),A", "INC BC", "INC B", "DEC B", "LD B,*h",
   "RLCA",
   "EX AF,AF'", "ADD I%,BC", "LD A,(BC)", "DEC BC", "INC C", "DEC C",
@@ -290,7 +290,7 @@ static const char *plus_instructions[256] = {
   "RST 38h"
 };
 
-static const char *CB_plus_instructions[256] =
+static const char *s_CB_plus_instructions[256] =
   { "RLC B", "RLC C", "RLC D", "RLC  E",
   "RLC H", "RLC L", "RLC (I%@h)", "RLC A", "RRC B", "RRC C", "RRC D",
   "RRC E", "RRC H", "RRC L", "RRC (I%@h)", "RRC A", "RL B", "RL C", "RL D",
@@ -376,40 +376,40 @@ DAsm (WORD start, char *linebuff, BYTE * opcode1)
     {
     case 0xCB:
       codeptr++;
-      T = CB_instructions[*codeptr++];
+      T = s_CB_instructions[*codeptr++];
       break;
     case 0xED:
       codeptr++;
-      T = ED_instructions[*codeptr++];
+      T = s_ED_instructions[*codeptr++];
       break;
     case 0xDD:
       codeptr++;
       index_reg = 'X';
       if (*codeptr != 0xCB)
-        T = plus_instructions[*codeptr++];
+        T = s_plus_instructions[*codeptr++];
       else
         {
           codeptr++;
           offset = *codeptr++;
           instruction_length = 1;
-          T = CB_plus_instructions[*codeptr++];
+          T = s_CB_plus_instructions[*codeptr++];
         }
       break;
     case 0xFD:
       codeptr++;
       index_reg = 'Y';
       if (*codeptr != 0xCB)
-        T = plus_instructions[*codeptr++];
+        T = s_plus_instructions[*codeptr++];
       else
         {
           codeptr++;
           offset = *codeptr++;
           instruction_length = 1;
-          T = CB_plus_instructions[*codeptr++];
+          T = s_CB_plus_instructions[*codeptr++];
         }
       break;
     default:
-      T = Instructions[*codeptr++];
+      T = s_Instructions[*codeptr++];
       break;
     }
 

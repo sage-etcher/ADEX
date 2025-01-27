@@ -35,7 +35,7 @@
 
 /*Checks whether keyboard buffer has any chars ready*/
 BYTE
-kbd_buff_stat ()
+kbd_buff_stat (void)
 {
   int i;
 
@@ -71,7 +71,7 @@ kbd_buff_stat ()
 
 
 BYTE
-kbd_buff_in ()
+kbd_buff_in (void)
 {
   BYTE c;
 
@@ -88,24 +88,24 @@ kbd_buff_in ()
   return c;
 }
 
-char aread_buffer[512];
+char s_aread_buffer[512];
 
 
 void
-load_aread_line ()
+load_aread_line (void)
 {
   unsigned int i;
 
 
-  if ((fgets (aread_buffer, 511, g_ascii_in)) == NULL)
+  if ((fgets (s_aread_buffer, 511, g_ascii_in)) == NULL)
     {
       g_ascii = FALSE;
     }
   else
     {
-      for (i = 0; i < strlen (aread_buffer); i++)
+      for (i = 0; i < strlen (s_aread_buffer); i++)
         {
-          jqin (0, (WORD) aread_buffer[i], g_advq);
+          jqin (0, (WORD) s_aread_buffer[i], g_advq);
         }
     }
 }
@@ -115,7 +115,7 @@ lststat (void)
 {
   struct timeval t = g_immediate;
   fd_set rdy;
-  struct sio *s = &siotab[PIO_CARD_OUT];
+  struct sio *s = &g_siotab[PIO_CARD_OUT];
   int fd;
 
   if (s->fp == NULL)            /* no file */
@@ -219,11 +219,11 @@ PIO_in (BYTE port_lo)
 
 
 BYTE
-parallel_in ()
+parallel_in (void)
 {
   BYTE c;
   BYTE ch;
-  struct sio *s = &siotab[PIO_CARD_IN];
+  struct sio *s = &g_siotab[PIO_CARD_IN];
   if (s->fp == NULL)
     return 0;
   if (s->tty)
@@ -244,7 +244,7 @@ parallel_in ()
 
 
 BYTE
-get_pio_status ()
+get_pio_status (void)
 {
   BYTE status;
 
@@ -341,7 +341,7 @@ PIO_out (BYTE port_lo, BYTE data)
 void
 parallel_out (BYTE c)
 {
-  struct sio *s = &siotab[PIO_CARD_OUT];
+  struct sio *s = &g_siotab[PIO_CARD_OUT];
 
   xlog (DEV, "parallel_out: OUTPUT to parallel port char %02X (%c)\n", c,
         prn (c));
@@ -419,7 +419,7 @@ SIO_in (BYTE port_lo)
 
 
 BYTE
-get_sio_status ()
+get_sio_status (void)
 {
 
   BYTE status = 0;
@@ -484,7 +484,7 @@ sio_card_stat (void)
 {
   struct timeval t = g_immediate;
   fd_set rdy;
-  struct sio *s = &siotab[SIO_CARD_IN];
+  struct sio *s = &g_siotab[SIO_CARD_IN];
   int fd;
 
   if (s->fp == NULL)
@@ -511,10 +511,10 @@ sio_card_stat (void)
 
 
 BYTE
-sio_card_in ()
+sio_card_in (void)
 {
   int c = 0;
-  struct sio *s = &siotab[SIO_CARD_IN];
+  struct sio *s = &g_siotab[SIO_CARD_IN];
 
   xlog (ALL, "SIO CARD IN: START.   c=%02X\n", c);
 
@@ -559,7 +559,7 @@ sio_card_in ()
 void
 sio_card_out (BYTE c)
 {
-  struct sio *s = &siotab[SIO_CARD_OUT];
+  struct sio *s = &g_siotab[SIO_CARD_OUT];
 
   sio_out_delay();
 
@@ -581,7 +581,7 @@ int i;
 int j;
 for (i=0;i< SIO_DELAY_CONST;i++){
 for (j=0;j< 1000;j++){
-j=j;
+int j=j;
 }
 }
 }
@@ -694,7 +694,7 @@ get_io_board_id (BYTE pi_lo)
 
 
 void
-set_up_aread_input ()
+set_up_aread_input (void)
 {
 
   if ((g_ascii_in = fopen (g_aread_name, "r")) != NULL)

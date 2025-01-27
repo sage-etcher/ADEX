@@ -99,8 +99,8 @@ exit_action (void)
   topwindow_destroy ();
   set_k_locks_end ();
   gtk_main_quit ();
-  sio_cooked_tty (&siotab[SIO_CARD_IN]);
-  pio_cooked_tty (&siotab[PIO_CARD_IN]);
+  sio_cooked_tty (&g_siotab[SIO_CARD_IN]);
+  pio_cooked_tty (&g_siotab[PIO_CARD_IN]);
   exit (0);
 }
 

@@ -157,54 +157,54 @@ xlog (unsigned int type, const char *msg, ...)
     {
       switch (type & log_debug)
         {
-        case 1:         /* not for disassembler */
+        case DISASS:         /* not for disassembler */
           break;
-        case 2:
+        case MOTHERBOARD:
           strcat (mplusptr, "MBD: ");
           break;
-        case 4:
+        case DEV:
           strcat (mplusptr, "DEV: ");
           break;
-        case 8:
+        case MEM:
           strcat (mplusptr, "MEM: ");
           break;
-        case 0x10:
+        case FDC:
           strcat (mplusptr, "FDC: ");
           break;
-        case 0x20:
+        case HDC:
           strcat (mplusptr, "HDC: ");
           break;
-        case 0x40:
+        case BIOS_EMULATE:
           strcat (mplusptr, "BIOS: ");
           break;
-        case (BYTE) 0x80:
+        case (BYTE) CMD:
           strcat (mplusptr, "CMD: ");
           break;
-        case 0x100:
+        case TERM:
           strcat (mplusptr, "TERM: ");
           break;
-        case 0x200:
+        case CLI:
           strcat (mplusptr, "CLI: ");
           break;
-        case 0x400:
+        case QUEUE:
           strcat (mplusptr, "QUE: ");
           break;
-        case 0x0800:
+        case X11:
           strcat (mplusptr, "X11: ");
           break;
-        case 0x1000:
+        case XEVENT:
           strcat (mplusptr, "XEV: ");
           break;
-        case 0x2000:
+        case KEYB:
           strcat (mplusptr, "KBD: ");
           break;
-        case 0x4000:
+        case INFO:
           strcat (mplusptr, "INFO: ");
           break;
-        case 0x08000:
+        case TRAP:
           strcat (mplusptr, "TRAP: ");
           break;
-        case 0x10000:
+        case ALL:
           strcat (mplusptr, "ALL: ");
           break;
         default:

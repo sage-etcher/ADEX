@@ -136,7 +136,7 @@ pio_buff_in (void)
 void
 pio_input_thread (void)
 {
-  struct sio *s = &siotab[PIO_CARD_IN];
+  struct sio *s = &g_siotab[PIO_CARD_IN];
   BYTE cc = 0;
   int diff;
   int count;
@@ -196,7 +196,7 @@ pio_input_thread (void)
 void
 sio_input_thread (void)
 {
-  struct sio *s = &siotab[SIO_CARD_IN];
+  struct sio *s = &g_siotab[SIO_CARD_IN];
   BYTE cc = 0;
   int diff;
   int count;

@@ -62,7 +62,7 @@
 
 
 void
-get_environment ()
+get_environment (void)
 {
   strcpy (g_env_home, getenv ("HOME"));
   strcpy (g_env_logname, getenv ("LOGNAME"));
@@ -98,7 +98,7 @@ prepare_emulator (void)
 }
 
 void
-initialise_cpu_structure ()
+initialise_cpu_structure (void)
 {
   int j;
   g_cpux = (&g_cpu);
@@ -121,7 +121,7 @@ initialise_cpu_structure ()
   g_cpux->pc = g_cpux->prom_base;
 }
 
-int job;
+int s_job;
 
 
 int
@@ -182,7 +182,7 @@ input_idle (int *alpha)
 
   UNUSED (alpha);
 
-  if (siotab[SIO_CARD_IN].fp != NULL)
+  if (g_siotab[SIO_CARD_IN].fp != NULL)
     {
       for (j = 0; j < 32; j++)
         {
@@ -190,7 +190,7 @@ input_idle (int *alpha)
         }
     }
 
-  if (siotab[PIO_CARD_IN].fp != NULL)
+  if (g_siotab[PIO_CARD_IN].fp != NULL)
     {
       for (j = 0; j < 32; j++)
         {
@@ -338,7 +338,7 @@ z80_os_interface (WORD * xaf, WORD * xbc, WORD * xde, WORD * xhl,
   int file_no;
   int file_op;
   unsigned int status;
-  int error;
+  int error = 0;
 
   UNUSED (xiy);
   UNUSED (xsp);
@@ -397,7 +397,7 @@ z80_os_interface (WORD * xaf, WORD * xbc, WORD * xde, WORD * xhl,
             }
 
 /* fill last sector with CPM EOF chars */
-          for (status = status; status < (unsigned int) qty; status++)
+          for (; status < (unsigned int) qty; status++)
             {
               *(ramptr + status) = 0x1a;
             }
@@ -640,7 +640,7 @@ set_hardwareint (int *hwint, int vector_num)
 
 
 void
-load_advantage_prom ()
+load_advantage_prom (void)
 {
   int i;
   int j;

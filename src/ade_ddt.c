@@ -850,7 +850,7 @@ compare (void)
 
       if (!fault)
         {
-          for (g_vector = g_vector; g_vector <= vectord; g_vector++)
+          for (; g_vector <= vectord; g_vector++)
             {
               if (GetBYTE (g_vector) != GetBYTE (vectoro))
                 {
@@ -940,7 +940,7 @@ search (void)
         }
       if (!fault)
         {
-          for (g_vector = g_vector; g_vector <= vectord; g_vector++)
+          for (; g_vector <= vectord; g_vector++)
             {
               if (GetBYTE (g_vector) == sbuff[0])
                 {
@@ -1186,8 +1186,7 @@ ahtol (BYTE * str)
 /* htoi()    --    converts ascii string in hex to an integer           */
 /* -------------------------------------------------------------------- */
 int
-htoi (str)
-     char *str;
+htoi (char *str)
 {
   char c;
   int a, b;

@@ -462,7 +462,7 @@ set_work_dir (void)
   xlog (INFO, "PWD= \"%s\"\n", (getenv ("PWD")));
   strcpy (g_confname, (getenv ("HOME")));       // USERNAME /home  directory
   strcat (g_confname, "/");
-  strcat (g_confname, "advantage");     // $HOME/XXXXXXXX
-  strcat (g_confname, "/");     // $HOME/XXXXXXXX/
-  strcpy (g_work_dir, g_confname);      /* save the working directory info */
+  strcat (g_confname, "advantage");             // $HOME/XXXXXXXX
+  strcat (g_confname, "/");                     // $HOME/XXXXXXXX/
+  strcpy (g_work_dir, g_confname);              /* save the working directory info */
 }

@@ -35,10 +35,10 @@
 /*                                                                              */
 /********************************************************************************/
 
-extern struct sio siotab[MAXPSTR];
+extern struct sio g_siotab[MAXPSTR];
 
 
-extern unsigned char adv_prom_0000_0800[0x800];
+extern unsigned char g_adv_prom_0000_0800[0x800];
 
 
 ////    GLOBAL VARIABLES

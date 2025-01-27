@@ -241,7 +241,7 @@ load_hd_drive_control_register (BYTE data)
 /* from HIGH) so we remember what previous step-cmd value was (in last_step_cmd) */
 /*********************************************************************************/
 void
-cylinder_step ()
+cylinder_step (void)
 {
 
   if (g_hd5->hd_step_direction) /* Stepping OUTWARDS */
@@ -274,7 +274,7 @@ cylinder_step ()
 
 
 BYTE
-mk_hd_status ()
+mk_hd_status (void)
 {
 
   BYTE hd_status = 0;           /* clear previous value of hd_status */
@@ -457,7 +457,7 @@ show_status_bin (unsigned char a)
   /* Finally, the sector data is written to the specified disk sector. */
  /*********************************************************************/
 void
-write_cached_sector ()
+write_cached_sector (void)
 {
   int cyl_factor;
   unsigned int psector_address;
@@ -524,7 +524,7 @@ write_cached_sector ()
 
 
 void
-copy_sector_to_ram ()
+copy_sector_to_ram (void)
 {
   int physical_sector_num;
   int shifted_track;
@@ -576,7 +576,7 @@ copy_write_cache (int diskadd)
 
 
 void
-copy_cache_header ()
+copy_cache_header (void)
 {
   unsigned int physical_sector_num;
   unsigned int shifted_track;
@@ -1013,7 +1013,7 @@ calc_cache_crc (int i)
 
 /* display a mount table entry */
 void
-hdshowdisk ()
+hdshowdisk (void)
 {
 #ifdef HD
   if (g_nshd.hdd == NULL)
@@ -1030,7 +1030,7 @@ hdshowdisk ()
 
 
 void
-initialise_hard_disk_structure ()
+initialise_hard_disk_structure (void)
 {
 /* Only ONE Hard Drive, not yet anything mounted on it*/
   g_hd5 = (&g_nshd);
@@ -1060,7 +1060,7 @@ initialise_hard_disk_structure ()
 /* values to give a faster hard drive.                          */
 /****************************************************************/
 void
-hard_disk_state ()
+hard_disk_state (void)
 {
   int logical_sector_num;
   int track_sector;

@@ -1,13 +1,13 @@
 #include "ade.h"
 #include "ade_extvars.h"
 
-const gchar *debug_string;
-gchar dbg_entry_chars[20];
+const gchar *s_debug_string;
+gchar s_dbg_entry_chars[20];
 
 
 
 void
-build_debug_widgets_from_gresources ()
+build_debug_widgets_from_gresources (void)
 {
 
 /* debug checkbutton menu stuff */
@@ -78,7 +78,7 @@ build_debug_widgets_from_gresources ()
 
 
 void
-set_debug ()
+set_debug (void)
 {
   display_dbg_number ();
   gtk_widget_show (g_Wdebugtop);
@@ -88,7 +88,7 @@ set_debug ()
 
 
 void
-display_dbg_number ()
+display_dbg_number (void)
 {
   gchar dbg_text[6];
   gchar *dbg_hex_num;
@@ -101,7 +101,7 @@ display_dbg_number ()
 
 
 void
-set_all_debug ()
+set_all_debug (void)
 {
   g_ade_debug = 0xFFFF;
   display_dbg_number ();
@@ -109,7 +109,7 @@ set_all_debug ()
 }
 
 void
-clear_all_debug ()
+clear_all_debug (void)
 {
   g_ade_debug = 0x0;
   display_dbg_number ();
@@ -117,7 +117,7 @@ clear_all_debug ()
 }
 
 void
-debug_exit ()
+debug_exit (void)
 {
   gtk_widget_hide (GTK_WIDGET (g_Wdebugtop));
   sprintf (g_cfg_arg[DBG], "%04X", (g_ade_debug & 0x0FFFF));
@@ -126,12 +126,12 @@ debug_exit ()
 
 
 void
-get_dbg_new_value ()
+get_dbg_new_value (void)
 {
   char dbgtmp[6];
 
-  debug_string = gtk_entry_get_text (g_debugvalue);
-  strncpy (dbgtmp, debug_string, 4);
+  s_debug_string = gtk_entry_get_text (g_debugvalue);
+  strncpy (dbgtmp, s_debug_string, 4);
   dbgtmp[4] = '\0';             //truncate to first 4 chars if longer
   g_ade_debug = asc2hex ((char *) dbgtmp);
   g_ade_debug = g_ade_debug & 0x0FFFF;
@@ -140,7 +140,7 @@ get_dbg_new_value ()
 
 
 void
-populate_debug_buttons ()
+populate_debug_buttons (void)
 {
   if (g_ade_debug & 0x01)
     {
@@ -289,7 +289,7 @@ populate_debug_buttons ()
 
 
 void
-dbgx0001 ()
+dbgx0001 (void)
 {
 
   gboolean gx;
@@ -309,7 +309,7 @@ dbgx0001 ()
 }
 
 void
-dbgx0002 ()
+dbgx0002 (void)
 {
 
   gboolean gx;
@@ -329,7 +329,7 @@ dbgx0002 ()
 }
 
 void
-dbgx0004 ()
+dbgx0004 (void)
 {
 
   gboolean gx;
@@ -349,7 +349,7 @@ dbgx0004 ()
 }
 
 void
-dbgx0008 ()
+dbgx0008 (void)
 {
 
   gboolean gx;
@@ -369,7 +369,7 @@ dbgx0008 ()
 }
 
 void
-dbgx0010 ()
+dbgx0010 (void)
 {
 
   gboolean gx;
@@ -389,7 +389,7 @@ dbgx0010 ()
 }
 
 void
-dbgx0020 ()
+dbgx0020 (void)
 {
   gboolean gx;
 
@@ -408,7 +408,7 @@ dbgx0020 ()
 }
 
 void
-dbgx0040 ()
+dbgx0040 (void)
 {
 
   gboolean gx;
@@ -428,7 +428,7 @@ dbgx0040 ()
 }
 
 void
-dbgx0080 ()
+dbgx0080 (void)
 {
 
   gboolean gx;
@@ -448,7 +448,7 @@ dbgx0080 ()
 }
 
 void
-dbgx0100 ()
+dbgx0100 (void)
 {
 
   gboolean gx;
@@ -468,7 +468,7 @@ dbgx0100 ()
 }
 
 void
-dbgx0200 ()
+dbgx0200 (void)
 {
 
   gboolean gx;
@@ -488,7 +488,7 @@ dbgx0200 ()
 }
 
 void
-dbgx0400 ()
+dbgx0400 (void)
 {
 
   gboolean gx;
@@ -508,7 +508,7 @@ dbgx0400 ()
 }
 
 void
-dbgx0800 ()
+dbgx0800 (void)
 {
 
   gboolean gx;
@@ -528,7 +528,7 @@ dbgx0800 ()
 }
 
 void
-dbgx1000 ()
+dbgx1000 (void)
 {
 
   gboolean gx;
@@ -548,7 +548,7 @@ dbgx1000 ()
 }
 
 void
-dbgx2000 ()
+dbgx2000 (void)
 {
 
   gboolean gx;
@@ -568,7 +568,7 @@ dbgx2000 ()
 }
 
 void
-dbgx4000 ()
+dbgx4000 (void)
 {
 
   gboolean gx;
@@ -588,7 +588,7 @@ dbgx4000 ()
 }
 
 void
-dbgx8000 ()
+dbgx8000 (void)
 {
 
   gboolean gx;

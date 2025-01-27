@@ -9,7 +9,7 @@
 
 
 void
-make_xlate_table ()
+make_xlate_table (void)
 {
   int ii;
   int xx;
@@ -52,7 +52,7 @@ expand_bits_to_3_bytes (BYTE * disp_pixel_pointer, BYTE k)
 
 
 void
-show_all_display_buffer ()
+show_all_display_buffer (void)
 {
   unsigned int i;
   unsigned int xx;
@@ -96,7 +96,7 @@ get_rgb_pixbuf_data (unsigned int video_scan_line)
 
 
 void
-show_rgb_pixbuf_data ()
+show_rgb_pixbuf_data (void)
 {
   unsigned int i;
   unsigned int xx;
@@ -144,7 +144,7 @@ output_vbytes (unsigned int vid_addr, BYTE char_line_byte)
 
 
 void
-make_24_bit_table ()
+make_24_bit_table (void)
 {
   int i;
 
@@ -252,7 +252,7 @@ make_24_bit_table ()
 
 
 void
-clear_video_ram ()
+clear_video_ram (void)
 {
   int i;
   BYTE *i_ptr;
@@ -268,7 +268,7 @@ clear_video_ram ()
 
 
 void
-clear_display_buffer ()
+clear_display_buffer (void)
 {
   BYTE *i_ptr;
   unsigned int i;
@@ -284,7 +284,7 @@ clear_display_buffer ()
 
 
 void
-make_x2gchar_table ()
+make_x2gchar_table (void)
 {
   int i;
   int j;
@@ -317,7 +317,7 @@ make_x2gchar_table ()
 
 
 void
-prepare_banner ()
+prepare_banner (void)
 {
   int i;
 
@@ -375,7 +375,7 @@ prepare_banner ()
 
 
 void
-scan_banner_line ()
+scan_banner_line (void)
 {
   g_cptr = g_bline;
   while ((*g_cptr) && (*g_cptr != '\n'))
@@ -394,7 +394,7 @@ scan_banner_line ()
 
 
 void
-parse_banner_line ()
+parse_banner_line (void)
 {
   char tbuffer[200];
   int i;
@@ -473,7 +473,7 @@ xstore (char *xstring)
   g_sptr = xstring;
   while (*g_sptr)
     {
-      g_xptr = adv_prom_0000_0800 + 0x0561 + ((*g_sptr - 0x20) * 7);
+      g_xptr = g_adv_prom_0000_0800 + 0x0561 + ((*g_sptr - 0x20) * 7);
       *(g_videoram + g_location) = 0;   // top line of char is zeroes - clear
       a = *(g_xptr);            //  check hi bits of first line of char bitmap
       if (a & 0xc0)
@@ -520,7 +520,7 @@ zstore (char *zstring)
   while (*g_sptr)
     {
 
-      g_xptr = adv_prom_0000_0800 + 0x0561 + ((*g_sptr - 0x20) * 7);
+      g_xptr = g_adv_prom_0000_0800 + 0x0561 + ((*g_sptr - 0x20) * 7);
       dropdown = *(g_xptr);     //  check hi bits of first line of char bitmap
       dropdown &= 0x080;        // bits high signify char with descenders
 

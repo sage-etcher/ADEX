@@ -1,4 +1,4 @@
-unsigned char adv_kbd_scancodes[256][7] = {
+unsigned char g_adv_kbd_scancodes[256][7] = {
 /*
 
  hkc   hardware keycode - PC            = 0x26
