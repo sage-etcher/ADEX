@@ -59,11 +59,11 @@ memmon (void)
     case 'E':
       g_examine_flag = 1;
       if ((strcmp ((char *) g_parm[0], "")) == 0)
-	{
-	  sprintf (g_line_out, "Error. No address given.\n");
-	  mem_print (g_line_out);
-	  break;
-	}
+        {
+          sprintf (g_line_out, "Error. No address given.\n");
+          mem_print (g_line_out);
+          break;
+        }
       examine ();
       g_examine_flag = 0;
       break;
@@ -98,14 +98,14 @@ memmon (void)
     case 'w':
     case 'W':
       if ((strlen (g_filenamebuff) == 0))
-	{
-	  sprintf (g_line_out, "No filename for  writing out.\n");
-	  mem_print (g_line_out);
-	}
+        {
+          sprintf (g_line_out, "No filename for  writing out.\n");
+          mem_print (g_line_out);
+        }
       else
-	{
-	  writeout ();
-	}
+        {
+          writeout ();
+        }
       break;
 
       /* ------------------------------------------------------------ */
@@ -117,24 +117,24 @@ memmon (void)
     case 'n':
     case 'N':
       if ((!strlen ((char *) g_parm[0])) && (!strlen (g_filenamebuff)))
-	{
-	  sprintf (g_line_out, "No filename for  writing out.\n");
-	  mem_print (g_line_out);
-	}
+        {
+          sprintf (g_line_out, "No filename for  writing out.\n");
+          mem_print (g_line_out);
+        }
       else
-	{
-	  if ((strlen (g_filenamebuff)) && (!strlen ((char *) g_parm[0])))
-	    {
-	      sprintf (g_line_out,
-		       "Current filename for  writing out is '%s'.\n",
-		       g_filenamebuff);
-	      mem_print (g_line_out);
-	    }
-	  else
-	    {
-	      strcpy (g_filenamebuff, (char *) g_parm[0]);
-	    }
-	}
+        {
+          if ((strlen (g_filenamebuff)) && (!strlen ((char *) g_parm[0])))
+            {
+              sprintf (g_line_out,
+                       "Current filename for  writing out is '%s'.\n",
+                       g_filenamebuff);
+              mem_print (g_line_out);
+            }
+          else
+            {
+              strcpy (g_filenamebuff, (char *) g_parm[0]);
+            }
+        }
       break;
       /* -------------------------------------------------------- */
       /* Help. Self-explanatory.                                  */
@@ -177,33 +177,33 @@ display (void)
   /* start is at 0000 and then to follow    on block by block */
   dx = strlen ((char *) g_parm[0]);
   if (dx)
-    {				/* if parm1 , use this */
-      tmp = (unsigned int) htoi ((char *) g_parm[0]);	/* value instead of default */
+    {                           /* if parm1 , use this */
+      tmp = (unsigned int) htoi ((char *) g_parm[0]);   /* value instead of default */
       tmp = tmp & 0x3fff;
       dptr = tmp;
     }
   if (dptr >= g_msize)
-    dptr = 0;			/* truncate error values */
+    dptr = 0;                   /* truncate error values */
   /* default end is 0x100 bytes to display */
   dfptr = dptr + 0xffl;
   dx = strlen ((char *) g_parm[1]);
   if (dx)
-    {				/* if specify end, */
-      tmp = (unsigned int) htoi ((char *) g_parm[1]);	/* use that instead */
+    {                           /* if specify end, */
+      tmp = (unsigned int) htoi ((char *) g_parm[1]);   /* use that instead */
       if ((tmp > 0) && (tmp >= dptr))
-	{
-	  tmp = tmp & 0x3fff;
-	  dfptr = tmp;		/* don't use if less than start */
-	}
+        {
+          tmp = tmp & 0x3fff;
+          dfptr = tmp;          /* don't use if less than start */
+        }
       if (dfptr > g_msize)
-	dfptr = dptr + 0xffl;	/* or bigger */
-    }				/* than buffer */
+        dfptr = dptr + 0xffl;   /* or bigger */
+    }                           /* than buffer */
   sprintf (g_line_out,
-	   "16K Display (0-3FFF) based at RAM Page %d  (= Absolute Address %06X)\n\n",
-	   g_ddt_mem_page, (g_ddt_mem_page * 0x4000));
+           "16K Display (0-3FFF) based at RAM Page %d  (= Absolute Address %06X)\n\n",
+           g_ddt_mem_page, (g_ddt_mem_page * 0x4000));
   mem_print (g_line_out);
   hex_display (dptr, dfptr);
-  dptr = dfptr + 1l;		/* be ready to continue from end */
+  dptr = dfptr + 1l;            /* be ready to continue from end */
 }
 
 /* ---------------------------------------------------------------- */
@@ -216,8 +216,8 @@ page_select (void)
   int psx;
   psx = strlen ((char *) g_parm[0]);
   if (psx)
-    {				/* if parm1 , use this */
-      g_ddt_mem_page = (unsigned int) asc2hex ((char *) g_parm[0]);	/* value instead of default */
+    {                           /* if parm1 , use this */
+      g_ddt_mem_page = (unsigned int) asc2hex ((char *) g_parm[0]);     /* value instead of default */
       g_ddt_mem_page = g_ddt_mem_page & 0x0f;
     }
   else
@@ -228,12 +228,12 @@ page_select (void)
 
   g_base = &(g_ram[g_ddt_mem_page * 0x4000]);
   sprintf (g_line_out,
-	   "Memory Page selected in DDT is %1X hex (%d), absolute address is %06X\n",
-	   g_ddt_mem_page, g_ddt_mem_page, (g_ddt_mem_page * 0x4000));
+           "Memory Page selected in DDT is %1X hex (%d), absolute address is %06X\n",
+           g_ddt_mem_page, g_ddt_mem_page, (g_ddt_mem_page * 0x4000));
   mem_print (g_line_out);
   xlog (INFO,
-	"Memory Page selected in DDT is %1X (%d), absolute address is %06X\n",
-	g_ddt_mem_page, g_ddt_mem_page, (g_ddt_mem_page * 0x4000));
+        "Memory Page selected in DDT is %1X (%d), absolute address is %06X\n",
+        g_ddt_mem_page, g_ddt_mem_page, (g_ddt_mem_page * 0x4000));
 }
 
 /* ---------------------------------------------------------------- */
@@ -254,30 +254,30 @@ vdisplay (void)
   /* start is at 0000 and then to follow    on block by block */
   vdx = strlen ((char *) g_parm[0]);
   if (vdx)
-    {				/* if parm1 , use this */
-      tmp = (unsigned int) htoi ((char *) g_parm[0]);	/* value instead of default */
+    {                           /* if parm1 , use this */
+      tmp = (unsigned int) htoi ((char *) g_parm[0]);   /* value instead of default */
       tmp = tmp & 0xffff;
       dptr = tmp;
     }
   if (dptr >= g_msize64)
-    dptr = 0;			/* truncate error values */
+    dptr = 0;                   /* truncate error values */
   /* default end is 0x100 bytes to display */
   dfptr = dptr + 0xffl;
   vdx = strlen ((char *) g_parm[1]);
   if (vdx)
-    {				/* if specify end, */
-      tmp = (unsigned int) htoi ((char *) g_parm[1]);	/* use that instead */
+    {                           /* if specify end, */
+      tmp = (unsigned int) htoi ((char *) g_parm[1]);   /* use that instead */
       if ((tmp > 0) && (tmp >= dptr))
-	{
-	  tmp = tmp & 0xffff;
-	  dfptr = tmp;		/* don't use if less than start */
-	}
+        {
+          tmp = tmp & 0xffff;
+          dfptr = tmp;          /* don't use if less than start */
+        }
       if (dfptr > g_msize64)
-	dfptr = dptr + 0xffl;	/* or bigger */
-    }				/* than buffer */
+        dfptr = dptr + 0xffl;   /* or bigger */
+    }                           /* than buffer */
 
   vhex_display (dptr, dfptr);
-  dptr = dfptr + 1l;		/* be ready to continue from end */
+  dptr = dfptr + 1l;            /* be ready to continue from end */
 }
 
 
@@ -302,7 +302,7 @@ vhex_display (WORD start, WORD end)
   c = GetBYTE (ptrpos);
   map_reg = ptrpos / 0x4000;
   ram_page = g_memory_mapping_register[map_reg] / 0x4000;
-  sprintf (g_line_out, "%X %04X ", ram_page, ptrpos);	//address at start of line
+  sprintf (g_line_out, "%X %04X ", ram_page, ptrpos);   //address at start of line
   while (ptrpos <= end)
     {
 
@@ -310,40 +310,40 @@ vhex_display (WORD start, WORD end)
       map_reg = ptrpos / 0x4000;
       ram_page = g_memory_mapping_register[map_reg] / 0x4000;
       c = c & 0xff;
-      minibuff[0] = '\0';	//clear minibuff
+      minibuff[0] = '\0';       //clear minibuff
       sprintf (minibuff, "%02X ", c);
       strcat (g_line_out, minibuff);
-      c = c & 0x7f;		/* convert to 7-bit ASCII */
+      c = c & 0x7f;             /* convert to 7-bit ASCII */
       if (c < 0x20)
-	c = '.';
+        c = '.';
       if (c == 0x7f)
-	c = '.';
+        c = '.';
       txt[k] = c;
       txt[k + 1] = '\0';
       k++;
       ptrpos++;
       if ((((int) ptrpos % 16) == 0) || (ptrpos > end))
-	{
-	  if (ptrpos > 0)
-	    {
-	      if ((strlen (g_line_out)) < 55)
-		{
-		  for (i = strlen (g_line_out); i < 55; i++)
-		    {
-		      strcat (g_line_out, " ");
-		    }
-		}
-	      sprintf (minibuff, " %s\n", txt);
-	      strcat (g_line_out, minibuff);
-	      mem_print (g_line_out);
-	    }
-	  k = 0;
-	  if (ptrpos <= end)
-	    {
-	      sprintf (g_line_out, "%X %04X ", ram_page, ptrpos);
-	      // more stuff to be appended to line_out, don't print yet??
-	    }
-	}
+        {
+          if (ptrpos > 0)
+            {
+              if ((strlen (g_line_out)) < 55)
+                {
+                  for (i = strlen (g_line_out); i < 55; i++)
+                    {
+                      strcat (g_line_out, " ");
+                    }
+                }
+              sprintf (minibuff, " %s\n", txt);
+              strcat (g_line_out, minibuff);
+              mem_print (g_line_out);
+            }
+          k = 0;
+          if (ptrpos <= end)
+            {
+              sprintf (g_line_out, "%X %04X ", ram_page, ptrpos);
+              // more stuff to be appended to line_out, don't print yet??
+            }
+        }
     }
   sprintf (g_line_out, "\n");
   mem_print (g_line_out);
@@ -370,21 +370,21 @@ writeout (void)
     {
       writeflag = 1;
       if ((g_fp = fopen (g_outbuff, "rb+")) == NULL)
-	{
-	  perror ("");
-	  writeflag = 0;
-	  if ((g_fp = fopen (g_outbuff, "rb")) == NULL)
-	    {
-	      perror ("");
-	      if ((g_fp = fopen (g_outbuff, "wb+")) != NULL)
-		{
-		  perror ("");
-		  sprintf (g_line_out, "\n   Creating %s", g_outbuff);
-		  mem_print (g_line_out);
-		  writeflag = 1;
-		}
-	    }
-	}
+        {
+          perror ("");
+          writeflag = 0;
+          if ((g_fp = fopen (g_outbuff, "rb")) == NULL)
+            {
+              perror ("");
+              if ((g_fp = fopen (g_outbuff, "wb+")) != NULL)
+                {
+                  perror ("");
+                  sprintf (g_line_out, "\n   Creating %s", g_outbuff);
+                  mem_print (g_line_out);
+                  writeflag = 1;
+                }
+            }
+        }
 
     }
 
@@ -414,54 +414,54 @@ writeout (void)
 
       error = fseek (g_fp, 0l, SEEK_END);
       if (!error)
-	{
-	  wmflen = ftell (g_fp);
-	  fseek (g_fp, 0l, SEEK_SET);
-	}
+        {
+          wmflen = ftell (g_fp);
+          fseek (g_fp, 0l, SEEK_SET);
+        }
       else
-	{
-	  wmflen = 0;
-	}
+        {
+          wmflen = 0;
+        }
 
 
 
       if ((strcmp ((char *) g_parm[0], "")) != 0)
-	{
-	  bytes_to_write = (unsigned int) htoi ((char *) g_parm[0]);
-	  if (bytes_to_write > 0)
-	    {
-	      bytes_to_write = bytes_to_write & 0xffff;
-	      wmflen = bytes_to_write;
-	      if (wmflen > g_msize64)
-		{
-		  wmflen = g_msize64;
-		  sprintf (g_line_out,
-			   "   Size greater than buffer. Reduced to %04X\n",
-			   wmflen);
-		  mem_print (g_line_out);
-		}
-	    }
-	}
+        {
+          bytes_to_write = (unsigned int) htoi ((char *) g_parm[0]);
+          if (bytes_to_write > 0)
+            {
+              bytes_to_write = bytes_to_write & 0xffff;
+              wmflen = bytes_to_write;
+              if (wmflen > g_msize64)
+                {
+                  wmflen = g_msize64;
+                  sprintf (g_line_out,
+                           "   Size greater than buffer. Reduced to %04X\n",
+                           wmflen);
+                  mem_print (g_line_out);
+                }
+            }
+        }
 /*transfer the bytes to be written out into our temporary buffer*/
       for (i = 0; i < (bytes_to_write + 1); i++)
-	{
-	  g_tmpbuff[i] = GetBYTE (i);
-	}
+        {
+          g_tmpbuff[i] = GetBYTE (i);
+        }
 
 
-      error = fseek (g_fp, 0l, SEEK_SET);	/* set file ptr to start. */
+      error = fseek (g_fp, 0l, SEEK_SET);       /* set file ptr to start. */
       if (!error)
-	{
-	  wmflen = fwrite (g_tmpbuff, 1, bytes_to_write, g_fp);
-	  fflush (g_fp);
-	  sprintf (g_line_out, " %d Bytes written. [%04X h]", wmflen, wmflen);
-	  mem_print (g_line_out);
-	}
+        {
+          wmflen = fwrite (g_tmpbuff, 1, bytes_to_write, g_fp);
+          fflush (g_fp);
+          sprintf (g_line_out, " %d Bytes written. [%04X h]", wmflen, wmflen);
+          mem_print (g_line_out);
+        }
       else
-	{
-	  sprintf (g_line_out, "\n Error: NO Bytes written.");
-	  mem_print (g_line_out);
-	}
+        {
+          sprintf (g_line_out, "\n Error: NO Bytes written.");
+          mem_print (g_line_out);
+        }
     }
 }
 
@@ -492,34 +492,34 @@ hex_display (WORD start, WORD end)
       sprintf (minibuff, "%02X ", c);
       strcat (g_line_out, minibuff);
       if (k == 7)
-	{
-	  sprintf (minibuff, " ");
-	  strcat (g_line_out, minibuff);
-	}
-      c = c & 0x7f;		/* convert to 7-bit ASCII */
+        {
+          sprintf (minibuff, " ");
+          strcat (g_line_out, minibuff);
+        }
+      c = c & 0x7f;             /* convert to 7-bit ASCII */
       if (c < 0x20)
-	c = '.';
+        c = '.';
       if (c == 0x7f)
-	c = '.';
+        c = '.';
       txt[k] = c;
       txt[k + 1] = '\0';
       k++;
       ptrpos++;
       if ((((int) ptrpos % 16) == 0) || (ptrpos > end))
-	{
-	  if (ptrpos > 0L)
-	    {
-	      sprintf (minibuff, " %s", txt);
-	      strcat (g_line_out, minibuff);
-	      mem_print (g_line_out);
-	    }
-	  k = 0;
-	  if (ptrpos <= end)
-	    {
-	      sprintf (g_line_out, "\n%05X ", bottom + ptrpos);
-	      // more stuff to be added to this beginning of line
-	    }
-	}
+        {
+          if (ptrpos > 0L)
+            {
+              sprintf (minibuff, " %s", txt);
+              strcat (g_line_out, minibuff);
+              mem_print (g_line_out);
+            }
+          k = 0;
+          if (ptrpos <= end)
+            {
+              sprintf (g_line_out, "\n%05X ", bottom + ptrpos);
+              // more stuff to be added to this beginning of line
+            }
+        }
     }
 }
 
@@ -620,18 +620,18 @@ load (void)
   unsigned int file_len;
   char up_p0[128];
   char *lcptr;
-  lrlen = 0x10000;		/* nominal figure of 64K max len */
-  strcpy (up_p0, (char *) g_parm[0]);	//get spare copy of load address
+  lrlen = 0x10000;              /* nominal figure of 64K max len */
+  strcpy (up_p0, (char *) g_parm[0]);   //get spare copy of load address
   lcptr = up_p0;
   while ((*lcptr) && ((lcptr - (char *) (&up_p0)) < 64))
     {
       *lcptr = toupper (*lcptr);
       lcptr++;
     }
-  *lcptr = '\0';		// truncate load address ancd convert to upper-case
+  *lcptr = '\0';                // truncate load address ancd convert to upper-case
   g_ok = 1;
   lcptr = up_p0;
-  while (*lcptr)		// check all chars are true hex chars
+  while (*lcptr)                // check all chars are true hex chars
     {
       verify_hex (*lcptr);
       lcptr++;
@@ -641,76 +641,76 @@ load (void)
   if (!g_ok)
     {
       sprintf (g_line_out, "Invalid Hexadecimal Load Address: '%s'\n",
-	       (char *) g_parm[0]);
+               (char *) g_parm[0]);
       mem_print (g_line_out);
     }
   else
     {
 
       if ((strlen (g_filenamebuff)) == 0)
-	{
-	  sprintf (g_line_out,
-		   "No File Name previously supplied with 'n' command.\n");
-	  mem_print (g_line_out);
-	}
+        {
+          sprintf (g_line_out,
+                   "No File Name previously supplied with 'n' command.\n");
+          mem_print (g_line_out);
+        }
 
       else
-	{
-	  if ((g_fp = fopen (g_filenamebuff, "rb")) == NULL)
-	    {
-	      sprintf (g_line_out, "Can't load '%s'. No such file?\n",
-		       g_filenamebuff);
-	      mem_print (g_line_out);
-	    }
+        {
+          if ((g_fp = fopen (g_filenamebuff, "rb")) == NULL)
+            {
+              sprintf (g_line_out, "Can't load '%s'. No such file?\n",
+                       g_filenamebuff);
+              mem_print (g_line_out);
+            }
 
-	  else
-	    {
+          else
+            {
 
-	      if ((strcmp ((char *) g_parm[0], "")) != 0)
-		{
-		  dest_addr = (unsigned int) htoi ((char *) g_parm[0]);
-		  if (dest_addr > 0)
-		    {
-		      dest_addr = dest_addr & 0xffff;
-		      lrlen = 0x10000 - dest_addr;	/* new longest length allowed */
-		    }
-		}
-	      else
-		{
-		  dest_addr = 0;
-		}
+              if ((strcmp ((char *) g_parm[0], "")) != 0)
+                {
+                  dest_addr = (unsigned int) htoi ((char *) g_parm[0]);
+                  if (dest_addr > 0)
+                    {
+                      dest_addr = dest_addr & 0xffff;
+                      lrlen = 0x10000 - dest_addr;      /* new longest length allowed */
+                    }
+                }
+              else
+                {
+                  dest_addr = 0;
+                }
 
-	      fseek (g_fp, 0L, SEEK_END);	/* find end of file */
-	      file_len = (unsigned int) (ftell (g_fp));	/* how long? */
-	      error = fseek (g_fp, 0l, SEEK_SET);	/* set file ptr to start. */
-	      if (file_len > lrlen)
-		{
-		  file_len = lrlen;	/* truncate allowed load length */
-		}
+              fseek (g_fp, 0L, SEEK_END);       /* find end of file */
+              file_len = (unsigned int) (ftell (g_fp)); /* how long? */
+              error = fseek (g_fp, 0l, SEEK_SET);       /* set file ptr to start. */
+              if (file_len > lrlen)
+                {
+                  file_len = lrlen;     /* truncate allowed load length */
+                }
 
-	      if (!error)
-		{
-		  truelen = fread (g_tmpbuff, 1, file_len, g_fp);
-		  sprintf (g_line_out, "\n %d  Bytes read. [%04X h]", truelen,
-			   truelen);
-		  mem_print (g_line_out);
-		}
-	      if (truelen == lrlen)
-		{
-		  sprintf (g_line_out,
-			   "File read reaches end of buffer, file probably truncated!");
-		  mem_print (g_line_out);
-		}
-	      if (g_fp != NULL)
-		fclose (g_fp);
-	      /* loaded data now sitting in tmpbuff */
-	      for (i = 0; i < (file_len + 1); i++)
-		{
-		  PutBYTE (dest_addr + i, g_tmpbuff[i]);
-		}
+              if (!error)
+                {
+                  truelen = fread (g_tmpbuff, 1, file_len, g_fp);
+                  sprintf (g_line_out, "\n %d  Bytes read. [%04X h]", truelen,
+                           truelen);
+                  mem_print (g_line_out);
+                }
+              if (truelen == lrlen)
+                {
+                  sprintf (g_line_out,
+                           "File read reaches end of buffer, file probably truncated!");
+                  mem_print (g_line_out);
+                }
+              if (g_fp != NULL)
+                fclose (g_fp);
+              /* loaded data now sitting in tmpbuff */
+              for (i = 0; i < (file_len + 1); i++)
+                {
+                  PutBYTE (dest_addr + i, g_tmpbuff[i]);
+                }
 
-	    }
-	}
+            }
+        }
     }
 }
 
@@ -733,42 +733,42 @@ mmmove (void)
       g_vector = (unsigned int) htoi ((char *) g_parm[0]);
       vectord = (unsigned int) htoi ((char *) g_parm[1]);
       vectoro = (unsigned int) htoi ((char *) g_parm[2]);
-      g_vector = g_vector & 0xffff;	/* source addr        */
-      vectord = vectord & 0xffff;	/* end-of-source addr */
-      vectoro = vectoro & 0xffff;	/* destination addr   */
+      g_vector = g_vector & 0xffff;     /* source addr        */
+      vectord = vectord & 0xffff;       /* end-of-source addr */
+      vectoro = vectoro & 0xffff;       /* destination addr   */
       if (!fault)
-	{
-	  if (g_vector > g_msize64)
-	    {
-	      sprintf (g_line_out, "Start  address out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	  if (vectord > g_msize64)
-	    {
-	      sprintf (g_line_out, "End    address out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	  if (g_vector > g_msize64)
-	    {
-	      sprintf (g_line_out, "Target address out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	  if ((vectoro + (vectord - g_vector)) > g_msize64)
-	    {
-	      sprintf (g_line_out, "Target end     out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	}
+        {
+          if (g_vector > g_msize64)
+            {
+              sprintf (g_line_out, "Start  address out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+          if (vectord > g_msize64)
+            {
+              sprintf (g_line_out, "End    address out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+          if (g_vector > g_msize64)
+            {
+              sprintf (g_line_out, "Target address out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+          if ((vectoro + (vectord - g_vector)) > g_msize64)
+            {
+              sprintf (g_line_out, "Target end     out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+        }
 
       if (!fault)
-	{
-	  xfer_via_tmpbuff (g_vector, vectord, vectoro,
-			    (vectord - g_vector + vectoro));
-	}
+        {
+          xfer_via_tmpbuff (g_vector, vectord, vectoro,
+                            (vectord - g_vector + vectoro));
+        }
     }
 }
 
@@ -781,7 +781,7 @@ xfer_via_tmpbuff (WORD s_start, WORD s_end, WORD d_start, WORD d_end)
 
   UNUSED (d_end);
 
-  xferlength = (s_end - s_start + 1);	/* include both start and end BYTES */
+  xferlength = (s_end - s_start + 1);   /* include both start and end BYTES */
 /* put source contents into buffer */
   for (i = 0; i < (xferlength + 1); i++)
     {
@@ -821,47 +821,47 @@ compare (void)
       vectord = vectord & 0xffff;
       vectoro = vectoro & 0xffff;
       if (!fault)
-	{
-	  if (g_vector > g_msize64)
-	    {
-	      sprintf (g_line_out, "\nStart  address out of buffer.");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	  if (vectord > g_msize64)
-	    {
-	      sprintf (g_line_out, "End    address out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	  if (g_vector > g_msize64)
-	    {
-	      sprintf (g_line_out, "Target address out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	  if ((vectoro + (vectord - g_vector)) > g_msize64)
-	    {
-	      sprintf (g_line_out, "Target end     out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	}
+        {
+          if (g_vector > g_msize64)
+            {
+              sprintf (g_line_out, "\nStart  address out of buffer.");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+          if (vectord > g_msize64)
+            {
+              sprintf (g_line_out, "End    address out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+          if (g_vector > g_msize64)
+            {
+              sprintf (g_line_out, "Target address out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+          if ((vectoro + (vectord - g_vector)) > g_msize64)
+            {
+              sprintf (g_line_out, "Target end     out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+        }
 
       if (!fault)
-	{
-	  for (g_vector = g_vector; g_vector <= vectord; g_vector++)
-	    {
-	      if (GetBYTE (g_vector) != GetBYTE (vectoro))
-		{
-		  sprintf (g_line_out, "\n%04X = %02X          %04X = %02X",
-			   g_vector, GetBYTE (g_vector), vectoro,
-			   GetBYTE (vectoro));
-		  mem_print (g_line_out);
-		}
-	      vectoro++;
-	    }
-	}
+        {
+          for (g_vector = g_vector; g_vector <= vectord; g_vector++)
+            {
+              if (GetBYTE (g_vector) != GetBYTE (vectoro))
+                {
+                  sprintf (g_line_out, "\n%04X = %02X          %04X = %02X",
+                           g_vector, GetBYTE (g_vector), vectoro,
+                           GetBYTE (vectoro));
+                  mem_print (g_line_out);
+                }
+              vectoro++;
+            }
+        }
     }
 }
 
@@ -887,10 +887,10 @@ fill (void)
       fx = (unsigned int) htoi ((char *) g_parm[2]);
       fx = fx & 0xff;
       while (g_vector <= vectord)
-	{
-	  PutBYTE (g_vector, fx);
-	  g_vector++;
-	}
+        {
+          PutBYTE (g_vector, fx);
+          g_vector++;
+        }
     }
 }
 
@@ -919,49 +919,49 @@ search (void)
       g_vector = (unsigned int) htoi ((char *) g_parm[0]);
       vectord = (unsigned int) htoi ((char *) g_parm[1]);
       if (fault)
-	sprintf (g_line_out, "Faulty parameters given.\n");
+        sprintf (g_line_out, "Faulty parameters given.\n");
       mem_print (g_line_out);
       g_vector = g_vector & 0xffff;
       vectord = vectord & 0xffff;
       if (!fault)
-	{
-	  if (g_vector > g_msize64)
-	    {
-	      sprintf (g_line_out, "Start  address out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	  if (vectord > g_msize64)
-	    {
-	      sprintf (g_line_out, "End    address out of buffer.\n");
-	      mem_print (g_line_out);
-	      fault = TRUE;
-	    }
-	}
+        {
+          if (g_vector > g_msize64)
+            {
+              sprintf (g_line_out, "Start  address out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+          if (vectord > g_msize64)
+            {
+              sprintf (g_line_out, "End    address out of buffer.\n");
+              mem_print (g_line_out);
+              fault = TRUE;
+            }
+        }
       if (!fault)
-	{
-	  for (g_vector = g_vector; g_vector <= vectord; g_vector++)
-	    {
-	      if (GetBYTE (g_vector) == sbuff[0])
-		{
-		  sx = g_vector;
-		  match = 1;
-		  for (i = 0; i < nbytes; i++)
-		    {
-		      if (GetBYTE (sx + i) != sbuff[i])
-			{
-			  match = FALSE;
-			  i = ENDLOOP;
-			}
-		    }
-		  if (match)
-		    {
-		      sprintf (g_line_out, "%04X\n", g_vector);
-		      mem_print (g_line_out);
-		    }
-		}
-	    }
-	}
+        {
+          for (g_vector = g_vector; g_vector <= vectord; g_vector++)
+            {
+              if (GetBYTE (g_vector) == sbuff[0])
+                {
+                  sx = g_vector;
+                  match = 1;
+                  for (i = 0; i < nbytes; i++)
+                    {
+                      if (GetBYTE (sx + i) != sbuff[i])
+                        {
+                          match = FALSE;
+                          i = ENDLOOP;
+                        }
+                    }
+                  if (match)
+                    {
+                      sprintf (g_line_out, "%04X\n", g_vector);
+                      mem_print (g_line_out);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -985,20 +985,20 @@ subadd (void)
       sprintf (g_line_out, " ADDITION AND SUBTRACTION: SIGNED, 4 Digits \n");
       mem_print (g_line_out);
       sprintf (g_line_out, " %04X      Plus  %04X      Equals    %04X \n",
-	       (WORD) xx, (WORD) y, (WORD) (xx + y));
+               (WORD) xx, (WORD) y, (WORD) (xx + y));
       mem_print (g_line_out);
       sprintf (g_line_out, " %04X      Minus %04X      Equals    %04X \n",
-	       (WORD) xx, (WORD) y, (WORD) (xx - y));
+               (WORD) xx, (WORD) y, (WORD) (xx - y));
       mem_print (g_line_out);
       sprintf (g_line_out, "\n\n");
       mem_print (g_line_out);
       sprintf (g_line_out, " ADDITION AND SUBTRACTION: SIGNED, 2 Digits \n");
       mem_print (g_line_out);
       sprintf (g_line_out, " %02X      Plus  %02X      Equals    %02X \n",
-	       (BYTE) xx, (BYTE) y, (BYTE) (xx + y));
+               (BYTE) xx, (BYTE) y, (BYTE) (xx + y));
       mem_print (g_line_out);
       sprintf (g_line_out, " %02X      Minus %02X      Equals    %02X \n",
-	       (BYTE) xx, (BYTE) y, (BYTE) (xx - y));
+               (BYTE) xx, (BYTE) y, (BYTE) (xx - y));
       mem_print (g_line_out);
     }
 }
@@ -1023,34 +1023,34 @@ getparms (void)
   char *xx, *y;
   int a, end;
   xx = &g_mcmd[1];
-  g_parm[0][0] = '\0';		/* initialise all parms to "" */
+  g_parm[0][0] = '\0';          /* initialise all parms to "" */
   g_parm[1][0] = '\0';
   g_parm[2][0] = '\0';
   end = FALSE;
   for (a = 0; a < MAX_PARAMS; a++)
-    {				/* get start of parm */
+    {                           /* get start of parm */
       if (*xx != '\0')
-	{
-	  while ((*xx == ' ') || (*xx == ','))
-	    {
-	      xx++;
-	      if (xx > &g_mcmd[PARM_LEN - 3])
-		*xx = '\0';	/* kill if gross */
-	    }
+        {
+          while ((*xx == ' ') || (*xx == ','))
+            {
+              xx++;
+              if (xx > &g_mcmd[PARM_LEN - 3])
+                *xx = '\0';     /* kill if gross */
+            }
 
-	  /* get end of parm */
-	  y = xx;
-	  while ((*y != ' ') && (*y != ',') && (*y != '\n') && (*y != '\0')
-		 && (y < &g_mcmd[PARM_LEN - 3]))
-	    y++;
-	  if (*y == '\0')
-	    end = TRUE;		/* if end of parms, abort 'for' loop */
-	  *y = '\0';
-	  strcpy ((char *) g_parm[a], xx);
-	  xx = y + 1;		/* set start pointer in readiness for next parm */
-	  if (end)
-	    a = MAX_PARAMS;	/* abort by maximising the loop index */
-	}
+          /* get end of parm */
+          y = xx;
+          while ((*y != ' ') && (*y != ',') && (*y != '\n') && (*y != '\0')
+                 && (y < &g_mcmd[PARM_LEN - 3]))
+            y++;
+          if (*y == '\0')
+            end = TRUE;         /* if end of parms, abort 'for' loop */
+          *y = '\0';
+          strcpy ((char *) g_parm[a], xx);
+          xx = y + 1;           /* set start pointer in readiness for next parm */
+          if (end)
+            a = MAX_PARAMS;     /* abort by maximising the loop index */
+        }
     }
 }
 
@@ -1068,73 +1068,73 @@ str_parse (BYTE * buff)
   int a, xx, end, nbytes;
   char sbyte[MAXBYTES][3];
   BYTE *qq, *r;
-  nbytes = -1;			/* init number of bytes to error value */
+  nbytes = -1;                  /* init number of bytes to error value */
   fault = TRUE;
   if (g_parm[2][0] == '"')
-    {				/* Starts with " therefore ascii string */
+    {                           /* Starts with " therefore ascii string */
       xx = 1;
       while (xx < (int) strlen ((char *) g_parm[2]))
-	{
-	  if (g_parm[2][xx] == '"')
-	    {			/* No end with " , faulty string */
-	      g_parm[2][xx] = '\0';
-	      fault = FALSE;
-	    }
-	  xx++;
-	}
+        {
+          if (g_parm[2][xx] == '"')
+            {                   /* No end with " , faulty string */
+              g_parm[2][xx] = '\0';
+              fault = FALSE;
+            }
+          xx++;
+        }
 
       if (!fault)
-	{
-	  strcpy ((char *) buff, (char *) &g_parm[2][1]);
-	  nbytes = strlen ((char *) buff);
-	}
+        {
+          strcpy ((char *) buff, (char *) &g_parm[2][1]);
+          nbytes = strlen ((char *) buff);
+        }
     }
 
   else
     {
       if (strlen ((char *) g_parm[2]) != 0)
-	fault = FALSE;
+        fault = FALSE;
       for (xx = 0; xx < MAXBYTES; xx++)
-	{
-	  sbyte[xx][0] = '\0';	/* initialise all parms to "" */
-	}
+        {
+          sbyte[xx][0] = '\0';  /* initialise all parms to "" */
+        }
 
       end = FALSE;
       qq = &g_parm[2][0];
       for (a = 0; a < MAXBYTES; a++)
-	{			/* get start of byte parm */
-	  if (*qq != '\0')
-	    {
-	      while ((*qq == ' ') || (*qq == ','))
-		{
-		  qq++;
-		  if (qq > &g_parm[2][PARM_LEN - 2])
-		    *qq = '\0';
-		  /* kill if gross */
-		}
+        {                       /* get start of byte parm */
+          if (*qq != '\0')
+            {
+              while ((*qq == ' ') || (*qq == ','))
+                {
+                  qq++;
+                  if (qq > &g_parm[2][PARM_LEN - 2])
+                    *qq = '\0';
+                  /* kill if gross */
+                }
 
-	      /* get end of parm */
-	      r = qq;
-	      while ((*r != '.') && (*r != '\n') && (*r != '\0')
-		     && (r < &g_parm[2][PARM_LEN - 3]))
-		r++;
-	      if (*r == '\0')
-		end = TRUE;	/* if end of parms, abort 'for'loop */
-	      *r = '\0';
-	      strcpy (sbyte[a], (char *) qq);
-	      qq = r + 1;	/* set start pointer in readiness for next parm */
-	      if ((end) && (!fault))
-		nbytes = a + 1;
-	      /* return number of search bytes */
-	      if (end)
-		a = MAXBYTES;	/* abort by maximising the loop index */
-	    }
-	  for (xx = 0; xx < nbytes; xx++)
-	    buff[xx] = (char) (htoi (sbyte[xx]));
-	}
+              /* get end of parm */
+              r = qq;
+              while ((*r != '.') && (*r != '\n') && (*r != '\0')
+                     && (r < &g_parm[2][PARM_LEN - 3]))
+                r++;
+              if (*r == '\0')
+                end = TRUE;     /* if end of parms, abort 'for'loop */
+              *r = '\0';
+              strcpy (sbyte[a], (char *) qq);
+              qq = r + 1;       /* set start pointer in readiness for next parm */
+              if ((end) && (!fault))
+                nbytes = a + 1;
+              /* return number of search bytes */
+              if (end)
+                a = MAXBYTES;   /* abort by maximising the loop index */
+            }
+          for (xx = 0; xx < nbytes; xx++)
+            buff[xx] = (char) (htoi (sbyte[xx]));
+        }
 
     }
-  return (nbytes);		/* number of bytes to search for */
+  return (nbytes);              /* number of bytes to search for */
 }
 
 
@@ -1152,14 +1152,14 @@ ahtol (BYTE * str)
   fault = FALSE;
   /* First, do a check for non-hex chars. Just in case. */
   if ((strlen ((char *) str)) > 6)
-    fault = TRUE;		/* hex string too big */
+    fault = TRUE;               /* hex string too big */
   for (a = 0; a < (int) strlen ((char *) str); a++)
     {
       c = toupper (*(str + a));
       if ((c < '0') || (c > 'F'))
-	fault = TRUE;
+        fault = TRUE;
       else if ((c > '9') && (c < 'A'))
-	fault = TRUE;
+        fault = TRUE;
     }
 
 
@@ -1168,16 +1168,16 @@ ahtol (BYTE * str)
   else
     {
       for (a = 0; a < (int) strlen ((char *) str); a++)
-	{
-	  xx = xx * 16l;
-	  b = toupper (*(str + a)) - '0';
-	  if (b > 10)
-	    {
-	      b = b - 7;
-	    }
-	  xx = xx + (long) b;
-	  /*            xx=xx & 0x3fffff; */
-	}
+        {
+          xx = xx * 16l;
+          b = toupper (*(str + a)) - '0';
+          if (b > 10)
+            {
+              b = b - 7;
+            }
+          xx = xx + (long) b;
+          /*            xx=xx & 0x3fffff; */
+        }
     }
   return (xx);
 }
@@ -1202,14 +1202,14 @@ htoi (str)
   fault = FALSE;
   /* First, do a check for non-hex chars. Just in case. */
   if (strlen (str) > 4)
-    fault = TRUE;		/* hex string too big */
+    fault = TRUE;               /* hex string too big */
   for (a = 0; a < (int) strlen (str); a++)
     {
       c = toupper (*(str + a));
       if ((c < '0') || (c > 'F'))
-	fault = TRUE;
+        fault = TRUE;
       else if ((c > '9') && (c < 'A'))
-	fault = TRUE;
+        fault = TRUE;
     }
 
   if (fault)
@@ -1217,16 +1217,16 @@ htoi (str)
   else
     {
       for (a = 0; a < (int) strlen (str); a++)
-	{
-	  xx = xx * 16;
-	  b = toupper (*(str + a)) - '0';
-	  if (b > 10)
-	    {
-	      b = b - 7;
-	    }
-	  xx = xx + (int) b;
-	  xx = xx & 0xffff;
-	}
+        {
+          xx = xx * 16;
+          b = toupper (*(str + a)) - '0';
+          if (b > 10)
+            {
+              b = b - 7;
+            }
+          xx = xx + (int) b;
+          xx = xx & 0xffff;
+        }
     }
   return (xx);
 }
@@ -1240,45 +1240,45 @@ help (void)
   sprintf (g_line_out, " Help : Command and Parameter List\n\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   " '?' Displays this 'help' page. Upper or lower case commands are accepted\n");
+           " '?' Displays this 'help' page. Upper or lower case commands are accepted\n");
   mem_print (g_line_out);
   sprintf (g_line_out, " <xxx> is a required parameter\n");
   mem_print (g_line_out);
   sprintf (g_line_out, " [xxx] is an optional parameter\n\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "C <start address>  <finish address> <start of compared block>        :Compare\n");
+           "C <start address>  <finish address> <start of compared block>        :Compare\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "D [start address] [finish address]        :Display Memory-Mapped RAM Contents\n");
+           "D [start address] [finish address]        :Display Memory-Mapped RAM Contents\n");
   mem_print (g_line_out);
 //  sprintf (line_out, "E <start address>                                      :Examine/change memory\n");
 //  mem_print (line_out);
   sprintf (g_line_out,
-	   "F <start address>  <finish address> <fill byte>        :Fill memory with byte\n");
+           "F <start address>  <finish address> <fill byte>        :Fill memory with byte\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "H <value> <value>                                             :Hex arithmetic\n");
+           "H <value> <value>                                             :Hex arithmetic\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "L [load address]                                       :Load file into memory\n");
+           "L [load address]                                       :Load file into memory\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "M <source start address> <source end> <destination>              :Move memory\n");
+           "M <source start address> <source end> <destination>              :Move memory\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "N <file name>                                        :Change active file name\n");
+           "N <file name>                                        :Change active file name\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "P [RAM Page 0-F hex]      :Select 16K ram-page (0000-3FFF) for display by 'X'\n");
+           "P [RAM Page 0-F hex]      :Select 16K ram-page (0000-3FFF) for display by 'X'\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "S <start address> <end address> <search byte.byte.. | \"string\">       :Search\n");
+           "S <start address> <end address> <search byte.byte.. | \"string\">       :Search\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "W [number of bytes]                                            :Write to disk\n");
+           "W [number of bytes]                                            :Write to disk\n");
   mem_print (g_line_out);
   sprintf (g_line_out,
-	   "X [start address] [finish address]    :Display Selected 16K ram-page Contents\n\n");
+           "X [start address] [finish address]    :Display Selected 16K ram-page Contents\n\n");
   mem_print (g_line_out);
 }

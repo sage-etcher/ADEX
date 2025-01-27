@@ -24,12 +24,12 @@
 // ADE development defines
 #define UNUSED(x)    (void) (x)
 
-#define MAJOR	"0.67"
+#define MAJOR   "0.67"
 // Started 210308
 
-#define NOBEEP FALSE		// mutes annoying beeps during development
+#define NOBEEP FALSE            // mutes annoying beeps during development
 
-#define APP_NAME	"ade"
+#define APP_NAME        "ade"
 
 #define parity(x)       partab[(x)&0xff]
 
@@ -37,14 +37,14 @@
 
 
 #define ADE_CONF_NAME   "ade.conf"
-#define ADE_CONF_DIR	"advantage"
+#define ADE_CONF_DIR    "advantage"
 
-#define LOGFILENAME		"xlog"
-#define SCREENLOGFILENAME 	"screenlog"
+#define LOGFILENAME             "xlog"
+#define SCREENLOGFILENAME       "screenlog"
 
-#define HD	TRUE
-#define PIO	TRUE
-#define SIO	TRUE
+#define HD      TRUE
+#define PIO     TRUE
+#define SIO     TRUE
 
 /* v. 0.6x  Version Information */
 
@@ -71,10 +71,10 @@
 #define SS ""
 #endif
 
-#define VERSION_TXT	"Version " MAJOR " "
+#define VERSION_TXT     "Version " MAJOR " "
 #define THIS_YEAR         ",    2020"
-#define EMU_VERSION	VERSION_TXT HH SS PP THIS_YEAR
-#define NS_EMU_NAME	"North Star Advantage Emulator  "
+#define EMU_VERSION     VERSION_TXT HH SS PP THIS_YEAR
+#define NS_EMU_NAME     "North Star Advantage Emulator  "
 
 #define MACHINE_NAME  NS_EMU_NAME
 
@@ -85,17 +85,17 @@
 //
 //  PC Keyboard Physical Scan Codes
 
-#define PC_SHIFT_L	0x32	//PC SHIFT Key Left
-#define PC_SHIFT_R	0x3E	//PC SHIFT Key Right
-#define PC_CTRL_L	0x25	//PC CTRL Key Left
-#define PC_CTRL_R	0x69	//PC CTRL Key Right
-#define PC_ALT_L	0x40	//PC ALT Key left
-#define PC_ALT_R	0x6C	//PC ALT Key Right
-#define PC_WIN_L	0x85	//PC Windows Key Left
-#define PC_WIN_R	0x86	//PC Windows Key Right
-#define PC_NO_KEY	0xFF	//PC Dummy No-Key Value
-#define PC_CAPS_LOCK	0x42	//PC CAPS LOCK Key
-#define PC_NUM_LOCK	0x4D	//PC NUM LOCK Key
+#define PC_SHIFT_L      0x32    //PC SHIFT Key Left
+#define PC_SHIFT_R      0x3E    //PC SHIFT Key Right
+#define PC_CTRL_L       0x25    //PC CTRL Key Left
+#define PC_CTRL_R       0x69    //PC CTRL Key Right
+#define PC_ALT_L        0x40    //PC ALT Key left
+#define PC_ALT_R        0x6C    //PC ALT Key Right
+#define PC_WIN_L        0x85    //PC Windows Key Left
+#define PC_WIN_R        0x86    //PC Windows Key Right
+#define PC_NO_KEY       0xFF    //PC Dummy No-Key Value
+#define PC_CAPS_LOCK    0x42    //PC CAPS LOCK Key
+#define PC_NUM_LOCK     0x4D    //PC NUM LOCK Key
 
 // CURRENT ASSIGNATION OF PC to ADVANTAGE KEYS
 // Note: provision made using twwo SHIFT keys, etc
@@ -106,50 +106,50 @@
 // CMD      =  left  ALT key
 // ADE_META =  right ALT key
 
-#define ADVANTAGE_SHIFT1		PC_SHIFT_L
-#define ADVANTAGE_SHIFT2		PC_SHIFT_R
+#define ADVANTAGE_SHIFT1                PC_SHIFT_L
+#define ADVANTAGE_SHIFT2                PC_SHIFT_R
 
-#define ADVANTAGE_CTRL1			PC_CTRL_L
-#define ADVANTAGE_CTRL2			PC_CTRL_R
+#define ADVANTAGE_CTRL1                 PC_CTRL_L
+#define ADVANTAGE_CTRL2                 PC_CTRL_R
 
-#define ADVANTAGE_CMD1			PC_ALT_L
-#define ADVANTAGE_CMD2			PC_NO_KEY
+#define ADVANTAGE_CMD1                  PC_ALT_L
+#define ADVANTAGE_CMD2                  PC_NO_KEY
 
-#define ADE_META1			PC_NO_KEY
-#define ADE_META2			PC_ALT_R
+#define ADE_META1                       PC_NO_KEY
+#define ADE_META2                       PC_ALT_R
 
-#define ADVANTAGE_CAPS_LOCK	PC_CAPS_LOCK
-#define ADVANTAGE_CURSOR_LOCK	PC_NUM_LOCK
+#define ADVANTAGE_CAPS_LOCK     PC_CAPS_LOCK
+#define ADVANTAGE_CURSOR_LOCK   PC_NUM_LOCK
 
 // event-state bitmask
 
-#define GS_SHIFT		1
-#define GS_CAPSLOCK		2
-#define GS_CTRL			4
-#define GS_ALT			8
-#define GS_NUMLOCK		0x10
+#define GS_SHIFT                1
+#define GS_CAPSLOCK             2
+#define GS_CTRL                 4
+#define GS_ALT                  8
+#define GS_NUMLOCK              0x10
 
 // XKb keys
 
-#define CAPSLOCK	2
-#define NUMLOCK		16
-#define SCROLL_LOCK	32
+#define CAPSLOCK        2
+#define NUMLOCK         16
+#define SCROLL_LOCK     32
 
 // ADVANTAGE SCREEN GEOMETRY DEFINES
 
 #define ADV_SCREEN_ROWS 240
 #define ADV_SCREEN_COLS 640
-#define ADVANTAGE_VID_RAM_LEN 0x5000	//usable area is 0x5000, total area is 0x8000
+#define ADVANTAGE_VID_RAM_LEN 0x5000    //usable area is 0x5000, total area is 0x8000
 #define RGB_BYTES_PER_PIXEL     3
 
-#define RED_LEVEL	0x3f    	//     define amount of RGB colour used in 'white' areas
-#define GREEN_LEVEL	0xff		//   0:0xff:0 is green only so display is  green on black;
-#define BLUE_LEVEL	0x3f		//   0xff:0xff:0xff is white on black; 0xff:0x00:0xff is magenta on black
+#define RED_LEVEL       0x3f            //     define amount of RGB colour used in 'white' areas
+#define GREEN_LEVEL     0xff            //   0:0xff:0 is green only so display is  green on black;
+#define BLUE_LEVEL      0x3f            //   0xff:0xff:0xff is white on black; 0xff:0x00:0xff is magenta on black
 
 
 #define RGB_PB_SIZE     ((ADV_SCREEN_COLS*g_x_dots_per_pixel) *(ADV_SCREEN_ROWS*g_y_dots_per_pixel)*RGB_BYTES_PER_PIXEL)
 
-#define BANNER_TEXT_1	"`x36`y06`ZA D E`x24`y09`ZN`XORTH `ZS`XTAR `ZA`XDVANTAGE `ZE`Xmulator"\
+#define BANNER_TEXT_1   "`x36`y06`ZA D E`x24`y09`ZN`XORTH `ZS`XTAR `ZA`XDVANTAGE `ZE`Xmulator"\
                         "`x26`y12`XVersion"
 
 #define BANNER_TEXT_2   ",  HF2SP"\
@@ -164,11 +164,11 @@ typedef unsigned int U_INT;
 typedef unsigned int bool;
 
 
-#define ON	1
-#define OFF	0
-#define HIGH	1
-#define LOW	0
-#define OK	0
+#define ON      1
+#define OFF     0
+#define HIGH    1
+#define LOW     0
+#define OK      0
 #define NIL (0)                 // A name for the void pointer
 
 
@@ -189,7 +189,7 @@ typedef unsigned int bool;
 #define DBUFF_HEIGHT    (256 * 2) /*pixels*/
 #define BITS_PER_BYTE   8
 #define ADV_VIDRAM_ROWS 256
-#define DISPLAY_PAGES	2
+#define DISPLAY_PAGES   2
 
 /**************************************************************************************/
 
@@ -206,11 +206,11 @@ typedef unsigned int bool;
 #define BIOS_EMULATE     0x40
 #define CMD             0x080 /*or STATUS*/
 #define TERM            0x100
-#define CLI		0x200
-#define QUEUE		0x400
+#define CLI             0x200
+#define QUEUE           0x400
 #define X11            0x0800
 #define XEVENT         0x1000
-#define	KEYB           0x2000
+#define KEYB           0x2000
 #define INFO           0x4000
 #define TRAP          0x08000
 #define ALL           0x10000
@@ -235,14 +235,14 @@ typedef unsigned int bool;
 #define ST_IN2  2
 #define ST_OUT2 3
 
-#define SIO_DELAY_CONST		700
+#define SIO_DELAY_CONST         700
 
 #define RTCLOCK_TICK_TRUE       0x04    /* Clock Tick on User 2  */
 
     /************* General Defines **************/
 
-#define PORT_IN_BUFF_SIZE	0x10000
-#define PORT_IN_BUFF_MASK	PORT_IN_BUFF_SIZE-1
+#define PORT_IN_BUFF_SIZE       0x10000
+#define PORT_IN_BUFF_MASK       PORT_IN_BUFF_SIZE-1
 
 
 #define DSECTOR 512
@@ -250,32 +250,32 @@ typedef unsigned int bool;
 
 /**************config keyword defines (+ keywords )  **********/
 
-#define HDD	0	/* hdd */
-#define	FD1	HDD+1	/* fd1 */
-#define FD2	FD1+1	/* fd2 */
-#define DISKD	FD2+1	/* floppy-disk-image directory */
-#define DLY	DISKD+1	/* hd_delay */
-#define CAPS	DLY+1	/* capslock */
-#define CURS	CAPS+1	/* cursor lock */
-#define SLOTH	CURS+1	/* slot hdc */
-#define SLOTS	SLOTH+1	/* slot sio */
-#define SLOTP	SLOTS+1	/* slot pio */
-#define SIOI	SLOTP+1	/* sio_in */
-#define SIOO	SIOI+1	/* sio_out */
-#define SIODEV	SIOO+1  /* sio DEVICE */
-#define PIOI	SIODEV+1 /* pio_in */
-#define PIOO	PIOI+1	/* pio_out */
-#define PIODEV	PIOO+1  /* pio DEVICE */
-#define SEP	PIODEV+1 /* separator */
-#define LOG	SEP+1	/* log */
-#define SLOG	LOG+1	/* screenlog */
-#define DBG	SLOG+1	/* debug */
-#define BRKA	DBG+1	/* break addr */
-#define BRKE	BRKA+1	/* break enable */
-#define TRAPA	BRKE+1	/* trap addr */
-#define TRAPE	TRAPA+1	/* trap enable */
+#define HDD     0       /* hdd */
+#define FD1     HDD+1   /* fd1 */
+#define FD2     FD1+1   /* fd2 */
+#define DISKD   FD2+1   /* floppy-disk-image directory */
+#define DLY     DISKD+1 /* hd_delay */
+#define CAPS    DLY+1   /* capslock */
+#define CURS    CAPS+1  /* cursor lock */
+#define SLOTH   CURS+1  /* slot hdc */
+#define SLOTS   SLOTH+1 /* slot sio */
+#define SLOTP   SLOTS+1 /* slot pio */
+#define SIOI    SLOTP+1 /* sio_in */
+#define SIOO    SIOI+1  /* sio_out */
+#define SIODEV  SIOO+1  /* sio DEVICE */
+#define PIOI    SIODEV+1 /* pio_in */
+#define PIOO    PIOI+1  /* pio_out */
+#define PIODEV  PIOO+1  /* pio DEVICE */
+#define SEP     PIODEV+1 /* separator */
+#define LOG     SEP+1   /* log */
+#define SLOG    LOG+1   /* screenlog */
+#define DBG     SLOG+1  /* debug */
+#define BRKA    DBG+1   /* break addr */
+#define BRKE    BRKA+1  /* break enable */
+#define TRAPA   BRKE+1  /* trap addr */
+#define TRAPE   TRAPA+1 /* trap enable */
 
-#define CKEND	TRAPE+1	/* end */
+#define CKEND   TRAPE+1 /* end */
 
 
   /****** Hard Disk Equates *************/
@@ -294,23 +294,23 @@ typedef unsigned int bool;
 #define HD_HDR_CRC_CHECK 9
 
   /* HD Label - variables address offsets */
-#define DLILL           00	/*0xFF00 marker in 1st 2 bytes */
-#define DLALX		02	/* Auto-Execute Filename */
-#define DLMAJOR         37	/* Disk Major Rev. Number            K0 */
-#define DLMINOR         38	/* Disk Minor Rev. Number            K1 */
-#define DLDSZE          39	/* first byte of disk-sectors-number */
-#define DLNSRT          41	/* Number Sectors reserved for TEST  */
-#define DLNHSZ          43	/* DIB Size as Power of 2 */
-#define DLDRSZ          44	/* Directory Size in Sectors */
-#define DLDIR           46	/* Directory DiskAddress */
-#define DLSST           48	/* Stepping Speed */
-#define DLMXH           49	/* Max heads */
-#define DLMXC           50	/* first byte of max cylinders */
-#define DLPRC           52	/* Lowest Precompensation Cylinder Number */
-#define DLLCC           54	/* Lowest Low Current Cylinder */
-#define DLOFC           56	/* Safe Cylinder Number */
+#define DLILL           00      /*0xFF00 marker in 1st 2 bytes */
+#define DLALX           02      /* Auto-Execute Filename */
+#define DLMAJOR         37      /* Disk Major Rev. Number            K0 */
+#define DLMINOR         38      /* Disk Minor Rev. Number            K1 */
+#define DLDSZE          39      /* first byte of disk-sectors-number */
+#define DLNSRT          41      /* Number Sectors reserved for TEST  */
+#define DLNHSZ          43      /* DIB Size as Power of 2 */
+#define DLDRSZ          44      /* Directory Size in Sectors */
+#define DLDIR           46      /* Directory DiskAddress */
+#define DLSST           48      /* Stepping Speed */
+#define DLMXH           49      /* Max heads */
+#define DLMXC           50      /* first byte of max cylinders */
+#define DLPRC           52      /* Lowest Precompensation Cylinder Number */
+#define DLLCC           54      /* Lowest Low Current Cylinder */
+#define DLOFC           56      /* Safe Cylinder Number */
 
-#define ALXNAME		"TRANSIENT,SYSTEM,101"
+#define ALXNAME         "TRANSIENT,SYSTEM,101"
 
 #define CACHE_SIZE      526
   /* = 10 bytes sector header +512 bytes HD sector data +4 bytes CRC check */
@@ -340,7 +340,7 @@ typedef unsigned int bool;
 #define SECTOR_0        60
 #define SECTOR_1        70
 #define SECTOR_2        80
-#define SECTOR_3	85
+#define SECTOR_3        85
 #define SECTOR_4        90
 
 #define READ_0         110
@@ -354,10 +354,10 @@ typedef unsigned int bool;
  /* Motherboard Status Flags */
 
 
-#define P_OUT_FLAG 0x80		/* Parallel Out Ready Flag   */
-#define P_IN_FLAG  0x40		/* Parallel Data Avail Flag  */
+#define P_OUT_FLAG 0x80         /* Parallel Out Ready Flag   */
+#define P_IN_FLAG  0x40         /* Parallel Data Avail Flag  */
 #define RTCLOCK_INT_FLAG_TRUE 0x20
-#define P_OUT_ACK  0x10		/* Parallel Out Acknowledge  */
+#define P_OUT_ACK  0x10         /* Parallel Out Acknowledge  */
 
 
 /* disk handler*/
@@ -368,8 +368,8 @@ typedef unsigned int bool;
 #define MLIST 0
 #define BOOT 5
 
-#define DEBUG_TERM     FALSE	/* only true for debugging ADM3A & TVI925 terminal emulation */
-#define TERM_WIDTH_STD	80
+#define DEBUG_TERM     FALSE    /* only true for debugging ADM3A & TVI925 terminal emulation */
+#define TERM_WIDTH_STD  80
 #define CMD_LEN       TERM_WIDTH_STD
 
 #define MAX_PARAMS    3
@@ -377,19 +377,19 @@ typedef unsigned int bool;
 
 
 /* Table of logical streams */
-#define MAXPSTR 10		/* total of i/o streams */
+#define MAXPSTR 10              /* total of i/o streams */
 
-#define ADV_CONSOLE_IN	0
-#define ADV_CONSOLE_OUT	1
+#define ADV_CONSOLE_IN  0
+#define ADV_CONSOLE_OUT 1
 
-#define SIO_CARD_IN	2
-#define SIO_CARD_OUT	3
+#define SIO_CARD_IN     2
+#define SIO_CARD_OUT    3
 
-#define PIO_CARD_IN	4
-#define PIO_CARD_OUT	5
+#define PIO_CARD_IN     4
+#define PIO_CARD_OUT    5
 
-#define SIO_DEV		6
-#define PIO_DEV		7
+#define SIO_DEV         6
+#define PIO_DEV         7
 
 /* Table of physical streams */
 #define SIOno   -1
@@ -398,7 +398,7 @@ typedef unsigned int bool;
 #define ISATTY   1
 #define ISRAW    2
 
-#define ENDLOOP 99		/* dummy large number */
+#define ENDLOOP 99              /* dummy large number */
 #define MAXBYTES      PARM_LEN * 2
 
 
@@ -406,7 +406,7 @@ typedef unsigned int bool;
 #define OP_BAD 0x0001
 
 ///* Table of slot information */
-#define HDC_ID	0xBF
+#define HDC_ID  0xBF
 #define SIO_ID  0xF7
 #define PIO_ID  0xDB
 
@@ -419,7 +419,7 @@ typedef unsigned int bool;
 
 
 /* timeslice constants */
-#define RUN_CYCLES	12000		/*z80 instructions*/
+#define RUN_CYCLES      12000           /*z80 instructions*/
 
 
 /******************************/
@@ -433,20 +433,20 @@ typedef unsigned int bool;
 #define FLAG_S  128
 
 
-#define SETFLAG(f,c)	AF = (c) ? AF | FLAG_ ## f : AF & ~FLAG_ ## f
-#define TSTFLAG(f)	(( AF &  FLAG_ ## f) != 0)
+#define SETFLAG(f,c)    AF = (c) ? AF | FLAG_ ## f : AF & ~FLAG_ ## f
+#define TSTFLAG(f)      (( AF &  FLAG_ ## f) != 0)
 
-#define ldig(x)		((x) & 0xf)
-#define hdig(x)		(((x)>>4)&0xf)
-#define lreg(x)		((x)&0xff)
-#define hreg(x)		(((x)>>8)&0xff)
+#define ldig(x)         ((x) & 0xf)
+#define hdig(x)         (((x)>>4)&0xf)
+#define lreg(x)         ((x)&0xff)
+#define hreg(x)         (((x)>>8)&0xff)
 
-#define Setlreg(x, v)	x = (((x)&0xff00) | ((v)&0xff))
-#define Sethreg(x, v)	x = (((x)&0xff) | (((v)&0xff) << 8))
+#define Setlreg(x, v)   x = (((x)&0xff00) | ((v)&0xff))
+#define Sethreg(x, v)   x = (((x)&0xff) | (((v)&0xff) << 8))
 
 
 /* Define these as macros or functions if you really want to simulate I/O */
-#define Input(port)	0xFF
+#define Input(port)     0xFF
 #define Output(port, value)
 
 
@@ -461,14 +461,14 @@ struct fixed_disk
   BYTE hd_sector_num;
   BYTE hd_surface;
   unsigned int cylinder;
-  BYTE hd_sector_flag;		/* bit 7 */
-  BYTE hd_index_flag;		/* bit 6 */
-  BYTE hd_read_write_active;	/* bit 5 */
-  BYTE hd_drive_ready;		/* bit 4 */
-  BYTE hd_drive_selected;		/* bit 3 *//* controller present=1 */
-  BYTE hd_track_zero;		/* bit 2 */
-  BYTE hd_seek_complete;		/* bit 1 */
-  BYTE hd_write_fault;		/* bit 0 */
+  BYTE hd_sector_flag;          /* bit 7 */
+  BYTE hd_index_flag;           /* bit 6 */
+  BYTE hd_read_write_active;    /* bit 5 */
+  BYTE hd_drive_ready;          /* bit 4 */
+  BYTE hd_drive_selected;               /* bit 3 *//* controller present=1 */
+  BYTE hd_track_zero;           /* bit 2 */
+  BYTE hd_seek_complete;                /* bit 1 */
+  BYTE hd_write_fault;          /* bit 0 */
   int hd_state;
   int hd_step_direction;
   int hd_step_pulse_prev;
@@ -568,9 +568,9 @@ struct CPU{
 };
 
 struct peripheral {
-WORD	slotval;
-char	slotname[10];
-BYTE	slot_id;
+WORD    slotval;
+char    slotname[10];
+BYTE    slot_id;
 };
 
 

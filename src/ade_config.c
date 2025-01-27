@@ -28,7 +28,7 @@ open_conf_file (void)
 /* generate default config file name */
       strcpy (conf_fn, "ade");
       strcat (conf_fn, ".conf");
-      strcat (g_confname, conf_fn);	// now got $HOME/XXXXXXXX/ade.conf
+      strcat (g_confname, conf_fn);     // now got $HOME/XXXXXXXX/ade.conf
     }
   else
     {
@@ -41,9 +41,9 @@ open_conf_file (void)
     {
       error = new_config_file ();
       if ((g_conf = fopen (g_confname, "r+")) == NULL)
-	{
-	  bad_open = 1;
-	}
+        {
+          bad_open = 1;
+        }
     }
 
 
@@ -96,42 +96,42 @@ load_configuration (void)
   while ((fgets (cfgbuff, 127, g_conf)) != NULL)
     {
       if ((cfgbuff[0] != '#') && (strlen (cfgbuff) > 3))
-	{
-	  cfgbuff[strlen (cfgbuff) - 1] = '\0';	/*scrub \n from end of second token */
-	  tkey = strtok (cfgbuff, g_white);
-	  targ = strtok (NULL, g_white);
-	  /*convert key to lower-case */
-	  for (i = 0; (unsigned int) i < strlen (tkey); i++)
-	    {
-	      *(tkey + i) = tolower (*(tkey + i));
-	    }
-	  i = 0;
-	  tkeynum = (-1);	/* error value default if not found */
-	  while (i < (g_max_cfg_key + 1))
-	    {
-	      if ((strcmp (g_cfg_key[i], tkey)) == 0)
-		{
-		  tkeynum = i;
-		  i = 1000;	/* exit */
-		}
-	      else
-		{
-		  i++;
-		}
-	    }
-	  if (tkeynum > -1)
-	    {			/*found a keyword */
-	      if (targ != NULL)
-		{
-		  strcpy (g_cfg_arg[tkeynum], targ);
-		}
-	      else
-		{
-		  strcpy (g_cfg_arg[tkeynum], "");
-		}
-	    }
+        {
+          cfgbuff[strlen (cfgbuff) - 1] = '\0'; /*scrub \n from end of second token */
+          tkey = strtok (cfgbuff, g_white);
+          targ = strtok (NULL, g_white);
+          /*convert key to lower-case */
+          for (i = 0; (unsigned int) i < strlen (tkey); i++)
+            {
+              *(tkey + i) = tolower (*(tkey + i));
+            }
+          i = 0;
+          tkeynum = (-1);       /* error value default if not found */
+          while (i < (g_max_cfg_key + 1))
+            {
+              if ((strcmp (g_cfg_key[i], tkey)) == 0)
+                {
+                  tkeynum = i;
+                  i = 1000;     /* exit */
+                }
+              else
+                {
+                  i++;
+                }
+            }
+          if (tkeynum > -1)
+            {                   /*found a keyword */
+              if (targ != NULL)
+                {
+                  strcpy (g_cfg_arg[tkeynum], targ);
+                }
+              else
+                {
+                  strcpy (g_cfg_arg[tkeynum], "");
+                }
+            }
 
-	}
+        }
     }
 }
 
@@ -182,7 +182,7 @@ new_config_file (void)
   if ((dir_ok = is_dir (g_confname)) < 1)
     {
       mkdir_p (g_confname);
-      error = 1;		// nor directory, therefor no conf file
+      error = 1;                // nor directory, therefor no conf file
     }
   strcpy (newbuff, g_confname);
   strcat (newbuff, "ade.conf");
@@ -234,35 +234,35 @@ save_configuration (void)
     {
       /*write  config file header */
       sprintf (conf_line,
-	       "##### Configuration File for North Star ADE Emulator (c) %s\n",
-	       TODAY);
+               "##### Configuration File for North Star ADE Emulator (c) %s\n",
+               TODAY);
       fputs (conf_line, g_conf);
       strcpy (conf_line, "#####\n");
       fputs (conf_line, g_conf);
       strcpy (conf_line,
-	      "##### Avoid Editing This File Manually. Any Changes You Make Can\n");
+              "##### Avoid Editing This File Manually. Any Changes You Make Can\n");
       fputs (conf_line, g_conf);
       strcpy (conf_line,
-	      "##### Be Automatically Overwritten at Any Time.\n\n");
+              "##### Be Automatically Overwritten at Any Time.\n\n");
       fputs (conf_line, g_conf);
       // store log file names from header file
       for (i = 0; i < (g_max_cfg_key); i++)
-	{
-	  k = (14 - strlen (g_cfg_key[i]));
-	  strcpy (conf_line, g_cfg_key[i]);	/*start with key string */
-	  if (strlen (g_cfg_arg[i]))
-	    {			/* no more unless cfg_arg present */
+        {
+          k = (14 - strlen (g_cfg_key[i]));
+          strcpy (conf_line, g_cfg_key[i]);     /*start with key string */
+          if (strlen (g_cfg_arg[i]))
+            {                   /* no more unless cfg_arg present */
 
-	      for (j = 0; j < k; j++)
-		{
-		  strcat (conf_line, " ");
-		}
-	      strcat (conf_line, g_cfg_arg[i]);
-	    }
-	  strcat (conf_line, "\n");
-	  xlog (INFO, "conf_line:\t\t\t%s", conf_line);
-	  fputs (conf_line, g_conf);
-	}
+              for (j = 0; j < k; j++)
+                {
+                  strcat (conf_line, " ");
+                }
+              strcat (conf_line, g_cfg_arg[i]);
+            }
+          strcat (conf_line, "\n");
+          xlog (INFO, "conf_line:\t\t\t%s", conf_line);
+          fputs (conf_line, g_conf);
+        }
       fflush (g_conf);
       fclose (g_conf);
     }
@@ -280,14 +280,14 @@ list_configuration (void)
       k = (14 - strlen (g_cfg_key[i]));
       xlog (INFO, "%s", g_cfg_key[i]);
       if (strlen (g_cfg_arg[i]))
-	{			/* no more unless cfg_arg present */
+        {                       /* no more unless cfg_arg present */
 
-	  for (j = 0; j < k; j++)
-	    {
-	      xlog (INFO, " ");
-	    }
-	  xlog (INFO, "%s", g_cfg_arg[i]);
-	}
+          for (j = 0; j < k; j++)
+            {
+              xlog (INFO, " ");
+            }
+          xlog (INFO, "%s", g_cfg_arg[i]);
+        }
       xlog (INFO, "\n");
     }
 }
@@ -301,11 +301,11 @@ load_config_parameters (void)
   /* PARAMETERS LOADED FROM CONFIG FILE                    */
 
 
-  strcpy (g_work_dir, (getenv ("HOME")));	// /home directory
-  strcat (g_work_dir, "/");	// $HOME/
-  strcat (g_work_dir, ADE_CONF_DIR);	// $HOME/advantage
+  strcpy (g_work_dir, (getenv ("HOME")));       // /home directory
+  strcat (g_work_dir, "/");     // $HOME/
+  strcat (g_work_dir, ADE_CONF_DIR);    // $HOME/advantage
   /* hardware slots */
-  set_slots_config ();		//need HDC to be installed before loading disks
+  set_slots_config ();          //need HDC to be installed before loading disks
 /* disk storage */
   if ((strlen (g_cfg_arg[FD1])) > 4)
     {
@@ -460,9 +460,9 @@ set_work_dir (void)
 
   g_confname = g_confnamebuff;
   xlog (INFO, "PWD= \"%s\"\n", (getenv ("PWD")));
-  strcpy (g_confname, (getenv ("HOME")));	// USERNAME /home  directory
+  strcpy (g_confname, (getenv ("HOME")));       // USERNAME /home  directory
   strcat (g_confname, "/");
-  strcat (g_confname, "advantage");	// $HOME/XXXXXXXX
-  strcat (g_confname, "/");	// $HOME/XXXXXXXX/
-  strcpy (g_work_dir, g_confname);	/* save the working directory info */
+  strcat (g_confname, "advantage");     // $HOME/XXXXXXXX
+  strcat (g_confname, "/");     // $HOME/XXXXXXXX/
+  strcpy (g_work_dir, g_confname);      /* save the working directory info */
 }

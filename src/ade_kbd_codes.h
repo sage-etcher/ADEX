@@ -94,11 +94,11 @@ typedef struct
 {
   int bit_action;
   int shift_action;
-} KeyTable;
+} KeyTable_t;
 
 /* Keysyms in the extended ASCII range 0x0000 - 0x00ff */
 
-KeyTable ascii_key_table[] = {
+KeyTable_t ascii_key_table[] = {
   /* 0x0 */ {TK_NULL, TK_Neutral},
   /* undefined keysyms... */
 /* 0x1 */ {TK_NULL, TK_Neutral},
@@ -368,7 +368,7 @@ KeyTable ascii_key_table[] = {
 
 /* Keysyms in the function key range 0xff00 - 0xffff */
 
-KeyTable function_key_table[] = {
+KeyTable_t function_key_table[] = {
 /* 0xff00                  */ {TK_NULL, TK_Neutral},
 /* 0xff01                  */ {TK_NULL, TK_Neutral},
 /* 0xff02                  */ {TK_NULL, TK_Neutral},

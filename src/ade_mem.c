@@ -10,7 +10,7 @@ build_mem_widgets_from_gresources (void)
   char mpstring[128];
   g_memq = (&g_kqueue[1]);
 
-  g_cline_ptr = g_cline;		//initialise char pointer to start of cline buffer
+  g_cline_ptr = g_cline;                //initialise char pointer to start of cline buffer
 
   g_builder =
     gtk_builder_new_from_resource ("/au/com/itelsoft/ade/mem_top.glade");
@@ -66,14 +66,14 @@ mem_key (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
   if (extkey & 0xff00)
     {
       switch (extkey)
-	{
-	case 0xff0d:
-	  extkey = 0x0d;
-	  break;
-	default:
-	  extkey = 0;
-	  break;
-	}
+        {
+        case 0xff0d:
+          extkey = 0x0d;
+          break;
+        default:
+          extkey = 0;
+          break;
+        }
     }
 
 
@@ -99,15 +99,15 @@ mem_key (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
       gtk_text_buffer_place_cursor (g_mem_buffer, &g_mem_end_iter);
       mem_print (cbuff);
       if (c == 0x0d)
-	{
-	  activate_cli ();
-	}
+        {
+          activate_cli ();
+        }
       else
-	{
-	  *g_cline_ptr = c;
-	  g_cline_ptr++;
-	  *g_cline_ptr = '\0';
-	}
+        {
+          *g_cline_ptr = c;
+          g_cline_ptr++;
+          *g_cline_ptr = '\0';
+        }
     }
   return TRUE;
 }

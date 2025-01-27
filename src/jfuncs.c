@@ -41,7 +41,7 @@ int byte2int (BYTE * pointer);
 #define FDC              0x10
 #define HDC              0x20
 #define BIOS_EMULATE     0x40
-#define CMD             0x080	/*or STATUS */
+#define CMD             0x080   /*or STATUS */
 #define TERM            0x100
 #define CLI             0x200
 #define QUEUE           0x400
@@ -110,11 +110,11 @@ screen_log (BYTE c)
     {
       g_slog = fopen (g_slogfilename, "w");
       if (g_slog == NULL)
-	{
+        {
 
-	  sprintf (sfname, "%s/%s", g_work_dir, SCREENLOGFILENAME);
-	  g_slog = fopen (sfname, "w");
-	}
+          sprintf (sfname, "%s/%s", g_work_dir, SCREENLOGFILENAME);
+          g_slog = fopen (sfname, "w");
+        }
     }
   fprintf (g_slog, "%c", c);
 }
@@ -133,7 +133,7 @@ xlog (unsigned int type, const char *msg, ...)
 
   log_debug = g_ade_debug;
 
-  log_debug |= ALL;		/* so debug will always match ALL */
+  log_debug |= ALL;             /* so debug will always match ALL */
 
   msgplus[0] = '\0';
   mplusptr = (&msgplus[0]);
@@ -156,61 +156,61 @@ xlog (unsigned int type, const char *msg, ...)
   else
     {
       switch (type & log_debug)
-	{
-	case 1:		/* not for disassembler */
-	  break;
-	case 2:
-	  strcat (mplusptr, "MBD: ");
-	  break;
-	case 4:
-	  strcat (mplusptr, "DEV: ");
-	  break;
-	case 8:
-	  strcat (mplusptr, "MEM: ");
-	  break;
-	case 0x10:
-	  strcat (mplusptr, "FDC: ");
-	  break;
-	case 0x20:
-	  strcat (mplusptr, "HDC: ");
-	  break;
-	case 0x40:
-	  strcat (mplusptr, "BIOS: ");
-	  break;
-	case (BYTE) 0x80:
-	  strcat (mplusptr, "CMD: ");
-	  break;
-	case 0x100:
-	  strcat (mplusptr, "TERM: ");
-	  break;
-	case 0x200:
-	  strcat (mplusptr, "CLI: ");
-	  break;
-	case 0x400:
-	  strcat (mplusptr, "QUE: ");
-	  break;
-	case 0x0800:
-	  strcat (mplusptr, "X11: ");
-	  break;
-	case 0x1000:
-	  strcat (mplusptr, "XEV: ");
-	  break;
-	case 0x2000:
-	  strcat (mplusptr, "KBD: ");
-	  break;
-	case 0x4000:
-	  strcat (mplusptr, "INFO: ");
-	  break;
-	case 0x08000:
-	  strcat (mplusptr, "TRAP: ");
-	  break;
-	case 0x10000:
-	  strcat (mplusptr, "ALL: ");
-	  break;
-	default:
-	  strcat (mplusptr, "XXX: ");
-	  break;
-	}
+        {
+        case 1:         /* not for disassembler */
+          break;
+        case 2:
+          strcat (mplusptr, "MBD: ");
+          break;
+        case 4:
+          strcat (mplusptr, "DEV: ");
+          break;
+        case 8:
+          strcat (mplusptr, "MEM: ");
+          break;
+        case 0x10:
+          strcat (mplusptr, "FDC: ");
+          break;
+        case 0x20:
+          strcat (mplusptr, "HDC: ");
+          break;
+        case 0x40:
+          strcat (mplusptr, "BIOS: ");
+          break;
+        case (BYTE) 0x80:
+          strcat (mplusptr, "CMD: ");
+          break;
+        case 0x100:
+          strcat (mplusptr, "TERM: ");
+          break;
+        case 0x200:
+          strcat (mplusptr, "CLI: ");
+          break;
+        case 0x400:
+          strcat (mplusptr, "QUE: ");
+          break;
+        case 0x0800:
+          strcat (mplusptr, "X11: ");
+          break;
+        case 0x1000:
+          strcat (mplusptr, "XEV: ");
+          break;
+        case 0x2000:
+          strcat (mplusptr, "KBD: ");
+          break;
+        case 0x4000:
+          strcat (mplusptr, "INFO: ");
+          break;
+        case 0x08000:
+          strcat (mplusptr, "TRAP: ");
+          break;
+        case 0x10000:
+          strcat (mplusptr, "ALL: ");
+          break;
+        default:
+          strcat (mplusptr, "XXX: ");
+          break;
+        }
     }
 
 /* prefix or not from last call to xlog ends here */
@@ -237,16 +237,16 @@ xlog (unsigned int type, const char *msg, ...)
 /* oops. is there a logfile open??? */
       /* first try for logfile in current directory */
       if (g_logfile == NULL)
-	{
-	  sprintf (g_logfilename, "%s/%s", g_work_dir, LOGFILENAME);
-	  g_logfile = fopen (g_logfilename, "w");
-	}
+        {
+          sprintf (g_logfilename, "%s/%s", g_work_dir, LOGFILENAME);
+          g_logfile = fopen (g_logfilename, "w");
+        }
       /* can't do that, so try for /tmp directory */
       if (g_logfile == NULL)
-	{
-	  sprintf (g_logfilename, "%s/%s", g_work_dir, LOGFILENAME);
-	  g_logfile = fopen (g_logfilename, "w");
-	}
+        {
+          sprintf (g_logfilename, "%s/%s", g_work_dir, LOGFILENAME);
+          g_logfile = fopen (g_logfilename, "w");
+        }
 
 
 /* OK, we're sure of a logfile now */
@@ -279,23 +279,23 @@ mkdir_p (const char *path)
   for (p = _path + 1; *p; p++)
     {
       if (*p == '/')
-	{
-	  /* Temporarily truncate */
-	  *p = '\0';
-	  if (mkdir (_path, S_IRWXU) != 0)
-	    {
-	      if (errno != EEXIST)
-		return -1;
-	    }
+        {
+          /* Temporarily truncate */
+          *p = '\0';
+          if (mkdir (_path, S_IRWXU) != 0)
+            {
+              if (errno != EEXIST)
+                return -1;
+            }
 
-	  *p = '/';
-	}
+          *p = '/';
+        }
     }
 
   if (mkdir (_path, S_IRWXU) != 0)
     {
       if (errno != EEXIST)
-	return -1;
+        return -1;
     }
 
   return 0;
@@ -315,10 +315,10 @@ asc2hex (gchar * bptr)
   while (*nptr)
     {
       if (!isxdigit (*nptr))
-	{
-	  printf ("Invalid Hex Number char=%c \n", *nptr);
-	  return (hexnum);
-	}
+        {
+          printf ("Invalid Hex Number char=%c \n", *nptr);
+          return (hexnum);
+        }
       nptr++;
     }
 
@@ -326,13 +326,13 @@ asc2hex (gchar * bptr)
     {
       c = toupper (*bptr);
       if ((c > ('0' - 1)) && (c < ('9' + 1)))
-	{
-	  digit = (c - '0');
-	}
+        {
+          digit = (c - '0');
+        }
       else if ((c > ('A' - 1)) && (c < ('F' + 1)))
-	{
-	  digit = ((c - 'A') + 10);
-	}
+        {
+          digit = ((c - 'A') + 10);
+        }
 
       hexnum = (hexnum * 0x10) + digit;
       bptr++;
@@ -365,9 +365,9 @@ time_now (void)
   struct tm tm = *localtime (&t);
 
   printf ("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1,
-	  tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+          tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
   sprintf (g_datestring, "%02d%02d%02d", tm.tm_year - 100, tm.tm_mon + 1,
-	   tm.tm_mday);
+           tm.tm_mday);
   // printf ("date: %s\n", datestring);
 
 
@@ -397,9 +397,9 @@ basename (char *filename)
 // point fcptr to end of xname
       fcptr = (xname + strlen (xname));
       while ((*(fcptr - 1) != '/') && (fcptr >= xname))
-	{
-	  fcptr--;
-	}
+        {
+          fcptr--;
+        }
 //fcptr should now point to first char of basename
 
     }
@@ -435,15 +435,15 @@ dirname (char *filename)
 /*find that '/'*/
 
       while ((*(fcptr) != '/') && (fcptr >= xname))
-	{
-	  fcptr--;
-	}
+        {
+          fcptr--;
+        }
 //fcptr should now point to '/' before basename
       if (*fcptr == '/')
-	{
-	  // chop off basename part, leaving dirname part WITH ending '/'
-	  *(fcptr + 1) = '\0';
-	}
+        {
+          // chop off basename part, leaving dirname part WITH ending '/'
+          *(fcptr + 1) = '\0';
+        }
       // now  reset fcptr to start of original filename
       fcptr = xname;
 
@@ -462,17 +462,17 @@ is_dir (const char *dir_string)
     {
       // file exists
       if ((dirptr = opendir (dir_string)) != NULL)
-	{
-	  closedir (dirptr);
-	}
+        {
+          closedir (dirptr);
+        }
       else
-	{
-	  return -2;		/* dir_string exists, but not dir */
-	}
+        {
+          return -2;            /* dir_string exists, but not dir */
+        }
     }
   else
     {
-      return -1;		/* dir_string does not exist */
+      return -1;                /* dir_string does not exist */
     }
 
   return 1;

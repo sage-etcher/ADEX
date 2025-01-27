@@ -157,10 +157,10 @@ mount_new_fd1 (void)
       strcpy (cfoldername, g_cfg_arg[DISKD]);
     }
 
-  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
-		 cfoldername,	// current folder to look in at start
-		 "Looking for a disk image for FD1",	// title for the file-chooser dialog
-		 g_window		// chooser dialog parent window
+  select_a_file (g_choose_mode, // allow creation of new file  or not? set 'save' or 'open'
+                 cfoldername,   // current folder to look in at start
+                 "Looking for a disk image for FD1",    // title for the file-chooser dialog
+                 g_window               // chooser dialog parent window
     );
 
   if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
@@ -193,10 +193,10 @@ mount_new_fd2 (void)
 
   g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
 
-  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
-		 cfoldername,	// current folder to look in at start
-		 "Looking for a disk image for FD2",	// title for the file-chooser dialog
-		 g_window		// chooser dialog parent window
+  select_a_file (g_choose_mode, // allow creation of new file  or not? set 'save' or 'open'
+                 cfoldername,   // current folder to look in at start
+                 "Looking for a disk image for FD2",    // title for the file-chooser dialog
+                 g_window               // chooser dialog parent window
     );
 
   if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
@@ -229,10 +229,10 @@ mount_new_hdd (void)
 
   g_choose_mode = GTK_FILE_CHOOSER_ACTION_SAVE;
 
-  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
-		 cfoldername,	// current folder to look in at start
-		 "Looking for a disk image for Hard Disk",	// title for the file-chooser dialog
-		 g_window		// chooser dialog parent window
+  select_a_file (g_choose_mode, // allow creation of new file  or not? set 'save' or 'open'
+                 cfoldername,   // current folder to look in at start
+                 "Looking for a disk image for Hard Disk",      // title for the file-chooser dialog
+                 g_window               // chooser dialog parent window
     );
 
   if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
@@ -314,7 +314,7 @@ get_new_floppy_name (void)
 
   new_floppy_name = gtk_entry_get_text (g_new_floppy_text);
   if (*new_floppy_name != '/')
-    {				//NOT ABSOLUTE Filename, = RELATIVE, ADD PWD
+    {                           //NOT ABSOLUTE Filename, = RELATIVE, ADD PWD
       strcpy (absolute_floppy_name, g_cfg_arg[DISKD]);
       strcat (absolute_floppy_name, new_floppy_name);
     }
@@ -354,7 +354,7 @@ create_new_floppy (void)
   if ((nfile = fopen (absolute_floppy_name, "wb")) == NULL)
     {
       sprintf (g_vstring, "\nSorry. Can't open <%s>. Aborting\n",
-	       absolute_floppy_name);
+               absolute_floppy_name);
       status_print (g_vstring, TRUE);
     }
   else
@@ -362,66 +362,66 @@ create_new_floppy (void)
       sectors = 700;
       sectsize = 512;
       for (i = 0; i < 8; i++)
-	{
-	  volname[i] = ' ';
-	}
+        {
+          volname[i] = ' ';
+        }
 
       // get 'basename' of new floppy file
       strcpy (xbasename, basename (absolute_floppy_name));
 //      make first NSDOS entry name for the disk UPPERCASE
       i = 0;
       while ((*(xbasename + i) != '.') && (i < 8))
-	{
-	  volname[i] = toupper (*(xbasename + i));
-	  i++;
-	}
+        {
+          volname[i] = toupper (*(xbasename + i));
+          i++;
+        }
 
 //      move name to floppy - first entry in directory
       for (i = 0; i < 8; i++)
-	{
-	  nfbuff[i] = volname[i];
-	}
+        {
+          nfbuff[i] = volname[i];
+        }
 
-      for (j = 8; j < 15; j++)	/* zero out rest of 1st directory entry */
-	{
-	  nfbuff[j] = 0;
-	}
+      for (j = 8; j < 15; j++)  /* zero out rest of 1st directory entry */
+        {
+          nfbuff[j] = 0;
+        }
 
-      nfbuff[10] = 0x04;	/* set length of directory to 4 sectors */
-      nfbuff[12] = 0x80;	/*set disk density to DD */
+      nfbuff[10] = 0x04;        /* set length of directory to 4 sectors */
+      nfbuff[12] = 0x80;        /*set disk density to DD */
 //      'space/blank' out rest of first sector data
       for (j = 15; j < sectsize; j++)
-	{
-	  nfbuff[j] = 0x20;
-	}
-      fwrite (nfbuff, sectsize, 1, nfile);	/* write first sector; directory sector */
+        {
+          nfbuff[j] = 0x20;
+        }
+      fwrite (nfbuff, sectsize, 1, nfile);      /* write first sector; directory sector */
 // prepare one sector's worth of blank-space data for rest of disk
-      for (j = 0; j < sectsize; j++)	/* rest of sectors are 'clean' */
-	{
-	  nfbuff[j] = 0x20;
-	}
+      for (j = 0; j < sectsize; j++)    /* rest of sectors are 'clean' */
+        {
+          nfbuff[j] = 0x20;
+        }
       bad = 0;
 // write out the remaining 699 of the 700 disk sectors
       for (j = 1; j < sectors; j++)
-	{			/* write out rest of sectors */
-	  good = fwrite (nfbuff, sectsize, 1, nfile);
-	  if (!good)
-	    {
-	      bad = TRUE;
-	    }
-	}
+        {                       /* write out rest of sectors */
+          good = fwrite (nfbuff, sectsize, 1, nfile);
+          if (!good)
+            {
+              bad = TRUE;
+            }
+        }
       fclose (nfile);
     }
   if (!bad)
     {
       sprintf (g_vstring, "\nNew Floppy \"%s\" Created",
-	       (char *) absolute_floppy_name);
+               (char *) absolute_floppy_name);
       status_print (g_vstring, 0);
     }
   else
     {
       sprintf (g_vstring, "\nNew Floppy \"%s\" NOT Created!!!",
-	       absolute_floppy_name);
+               absolute_floppy_name);
       status_print (g_vstring, 1);
     }
   gtk_entry_set_text (g_new_floppy_text, "");

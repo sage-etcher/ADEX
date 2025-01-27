@@ -25,11 +25,11 @@
 
 
 /* Z80 registers */
-#define AF	cpux->af[cpux->af_sel]
-#define BC	cpux->regs[cpux->regs_sel].bc
-#define DE	cpux->regs[cpux->regs_sel].de
-#define HL	cpux->regs[cpux->regs_sel].hl
-#define SP      cpux->sp
+#define AF      g_cpux->af[g_cpux->af_sel]
+#define BC      g_cpux->regs[g_cpux->regs_sel].bc
+#define DE      g_cpux->regs[g_cpux->regs_sel].de
+#define HL      g_cpux->regs[g_cpux->regs_sel].hl
+#define SP      g_cpux->sp
 
 
 int
@@ -42,7 +42,7 @@ launch_advantage (void)
 
   g_stopsim = 1;
 
-  g_bootdisk[0] = '\0';		/* empty string as default */
+  g_bootdisk[0] = '\0';         /* empty string as default */
   initialise_cpu_structure ();
 
 /* if debugging the terminal, set the terminal protocol delay */
@@ -56,7 +56,7 @@ launch_advantage (void)
 /* tell the shared library black_box what sort of machine we'll be using and where our user routines are */
 
   /* some black-box housekeeping */
-  g_base = &(g_ram[0]);		//initial value
+  g_base = &(g_ram[0]);         //initial value
   g_cpux = (&g_cpu);
   g_coldboot_flag = TRUE;
   g_term_slow = 0;
@@ -80,7 +80,7 @@ launch_advantage (void)
   /*tell how many  hard disks we can use */
   g_machine_hd_max = MACHINE_HD_MAX;
   xlog (INFO, "max floppy =  %d      max HD = %d\n", g_machine_floppy_max,
-	g_machine_hd_max);
+        g_machine_hd_max);
 
 /*  if (rtc_int)
     {
@@ -123,7 +123,7 @@ launch_advantage (void)
   g_memory_mapping_register[0] = 8 * 0x4000;
   g_memory_mapping_register[1] = 9 * 0x4000;
   g_memory_mapping_register[2] = 0x0e * 0x4000;
-  g_memory_mapping_register[3] = 0 * 0x4000;	/* 1st 16K in last 16K of RAM ? */
+  g_memory_mapping_register[3] = 0 * 0x4000;    /* 1st 16K in last 16K of RAM ? */
 
   g_non_mask_interrupt = TRUE;
 
@@ -140,7 +140,7 @@ mobo_in (BYTE port)
 {
 //  BYTE p_lo;
 //  BYTE p_hi;
-  BYTE data = 0xff;		/* default value for empty hardware port */
+  BYTE data = 0xff;             /* default value for empty hardware port */
   g_p_lo = port & 0x0f;
   g_p_hi = port / 0x10;
 /******************************************************************/
@@ -148,37 +148,37 @@ mobo_in (BYTE port)
     {
     case 0:
       xlog (MOTHERBOARD, "mb_in(%02X): [I/O] Access I/O BOARD in slot 6\n",
-	    g_p_hi);
+            g_p_hi);
       data = in_port_slotcard (6, g_p_lo);
       break;
     case 1:
       xlog (MOTHERBOARD, "mb_in(%02X): [I/O] Access I/O BOARD in slot 5\n",
-	    g_p_hi);
+            g_p_hi);
       data = in_port_slotcard (5, g_p_lo);
       break;
     case 2:
       xlog (MOTHERBOARD, "mb_in(%02X): [I/O] Access I/O BOARD in slot 4\n",
-	    g_p_hi);
+            g_p_hi);
       data = in_port_slotcard (4, g_p_lo);
       break;
     case 3:
       xlog (MOTHERBOARD, "mb_in(%02X): [I/O] Access I/O BOARD in slot 3\n",
-	    g_p_hi);
+            g_p_hi);
       data = in_port_slotcard (3, g_p_lo);
       break;
     case 4:
       xlog (MOTHERBOARD, "mb_in(%02X): [I/O] Access I/O BOARD in slot 2\n",
-	    g_p_hi);
+            g_p_hi);
       data = in_port_slotcard (2, g_p_lo);
       break;
     case 5:
       xlog (MOTHERBOARD, "mb_in(%02X): [I/O] Access I/O BOARD in slot 1\n",
-	    g_p_hi);
+            g_p_hi);
       data = in_port_slotcard (1, g_p_lo);
       break;
     case 6:
       xlog (MOTHERBOARD, "mb_in(%02X): [IN] RAM Parity Status Byte \n", g_p_hi);
-      data = 0x01;		/* Never any RAM Parity Error */
+      data = 0x01;              /* Never any RAM Parity Error */
       break;
     case 7:
       xlog (MOTHERBOARD, "mb_in(%02X): [IN] GET IO BOARD ID \n", g_p_hi);
@@ -190,27 +190,27 @@ mobo_in (BYTE port)
       break;
     case 9:
       xlog (MOTHERBOARD,
-	    "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Start Scan register OPs\n",
-	    g_p_hi);
+            "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Start Scan register OPs\n",
+            g_p_hi);
       data = 0xaa;
       break;
     case 0x0A:
       xlog (MOTHERBOARD,
-	    "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Memory Mapping Register OPs\n",
-	    g_p_hi);
+            "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Memory Mapping Register OPs\n",
+            g_p_hi);
       data = 0xaa;
       break;
     case 0x0B:
       xlog (MOTHERBOARD,
-	    "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Clear Display Flag\n",
-	    g_p_hi);
+            "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Clear Display Flag\n",
+            g_p_hi);
       g_display_flag = FALSE;
       data = 0xaa;
       break;
     case 0x0C:
       xlog (MOTHERBOARD,
-	    "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Clear z80 NMI Flag\n",
-	    g_p_hi);
+            "mb_in(%02X): ERROR. OUTPUT ONLY PORT: Clear z80 NMI Flag\n",
+            g_p_hi);
       data = 0xaa;
       break;
     case 0x0D:
@@ -223,14 +223,14 @@ mobo_in (BYTE port)
       break;
     case 0x0F:
       xlog (MOTHERBOARD,
-	    "mb_in(%02X): ERROR-OUTPUT ONLY: Output I/O control reg\n", g_p_hi);
+            "mb_in(%02X): ERROR-OUTPUT ONLY: Output I/O control reg\n", g_p_hi);
       data = 0xaa;
       break;
     default:
       data = 0xff;
       xlog (MOTHERBOARD,
-	    "adv_main: ERROR. Input from NON-STANDARD HORIZON Port[%02X]:  Data:%02X \n",
-	    port, data);
+            "adv_main: ERROR. Input from NON-STANDARD HORIZON Port[%02X]:  Data:%02X \n",
+            port, data);
       break;
     }
   return (data);
@@ -253,32 +253,32 @@ mobo_out (BYTE port, BYTE data)
     {
     case 0:
       xlog (MOTHERBOARD, "mb_out(%02X): Access I/O BOARD in slot 6[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       out_port_slotcard (6, po_lo, data);
       break;
     case 1:
       xlog (MOTHERBOARD, "mb_out(%02X): Access I/O BOARD in slot 5[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       out_port_slotcard (5, po_lo, data);
       break;
     case 2:
       xlog (MOTHERBOARD, "mb_out(%02X): Access I/O BOARD in slot 4[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       out_port_slotcard (4, po_lo, data);
       break;
     case 3:
       xlog (MOTHERBOARD, "mb_out(%02X): Access I/O BOARD in slot 3[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       out_port_slotcard (3, po_lo, data);
       break;
     case 4:
       xlog (MOTHERBOARD, "mb_out(%02X): Access I/O BOARD in slot 2[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       out_port_slotcard (2, po_lo, data);
       break;
     case 5:
       xlog (MOTHERBOARD, "mb_out(%02X): Access I/O BOARD in slot 1[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       out_port_slotcard (1, po_lo, data);
       break;
     case 6:
@@ -288,133 +288,133 @@ mobo_out (BYTE port, BYTE data)
       break;
     case 7:
       xlog (MOTHERBOARD,
-	    "mb_out(%02X): [INPUT-ONLY = NOP] Get Board ID Code[%02X]\n",
-	    po_hi, data);
+            "mb_out(%02X): [INPUT-ONLY = NOP] Get Board ID Code[%02X]\n",
+            po_hi, data);
       break;
     case 8:
       fdc_out (po_lo, data);
       break;
     case 9:
       xlog (MOTHERBOARD, "mb_out(%02X): Start Scan register OPs[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       g_scanline = data;
       break;
     case 0x0A:
       po_lo = po_lo & 0x03;
       switch (po_lo)
-	{
+        {
 
-	case 00:
-	  strcpy (extra_info, " 0000-3FFF ");
-	  break;
-	case 01:
-	  strcpy (extra_info, " 4000-7FFF ");
-	  break;
-	case 02:
-	  strcpy (extra_info, " 8000-BFFF ");
-	  break;
-	case 03:
-	  strcpy (extra_info, " C000-FFFF ");
-	  break;
-	}
+        case 00:
+          strcpy (extra_info, " 0000-3FFF ");
+          break;
+        case 01:
+          strcpy (extra_info, " 4000-7FFF ");
+          break;
+        case 02:
+          strcpy (extra_info, " 8000-BFFF ");
+          break;
+        case 03:
+          strcpy (extra_info, " C000-FFFF ");
+          break;
+        }
 
       xlog (MOTHERBOARD,
-	    "mb_out(%02X): [OUT] Memory Mapping Register OPs[%02X]\n", po_hi,
-	    data);
+            "mb_out(%02X): [OUT] Memory Mapping Register OPs[%02X]\n", po_hi,
+            data);
       if (!(data & 0x080))
-	{			/* hi-bit zero = set ram page */
-	  xlog (MOTHERBOARD,
-		"       po_lo=%2d   MAP REGISTER %02d: RAM %s: Data=%02X page=%d\n",
-		po_lo, po_lo, extra_info, data, data & 0x07);
-	  map_ram_page (po_lo, data & 0x07);
-	  switch (po_lo)
-	    {
-	    case 0:
-	      g_blanking_flag = g_blanking_flag & (~1);
-	      break;
-	    case 1:
-	      g_blanking_flag = g_blanking_flag & (~2);
-	      break;
-	    case 2:
-	      g_blanking_flag = g_blanking_flag & (~4);
-	      break;
-	    case 3:
-	      g_blanking_flag = g_blanking_flag & (~8);
-	      break;
-	    }
-	}
+        {                       /* hi-bit zero = set ram page */
+          xlog (MOTHERBOARD,
+                "       po_lo=%2d   MAP REGISTER %02d: RAM %s: Data=%02X page=%d\n",
+                po_lo, po_lo, extra_info, data, data & 0x07);
+          map_ram_page (po_lo, data & 0x07);
+          switch (po_lo)
+            {
+            case 0:
+              g_blanking_flag = g_blanking_flag & (~1);
+              break;
+            case 1:
+              g_blanking_flag = g_blanking_flag & (~2);
+              break;
+            case 2:
+              g_blanking_flag = g_blanking_flag & (~4);
+              break;
+            case 3:
+              g_blanking_flag = g_blanking_flag & (~8);
+              break;
+            }
+        }
       else
-	{
-	  if ((data & 0x84) == 0x84)
-	    {
-	      xlog (MOTHERBOARD,
-		    "       po_lo=%d   MAP REGISTER %d %s: BOOT PROM: Data=%02X \n",
-		    po_lo, po_lo, extra_info, data);
-	      set_boot_prom_active (po_lo);
-	    }
-	  if ((data & 0x06) == 0)
-	    {
-	      xlog (MOTHERBOARD,
-		    "       po_lo=%d   MAP REGISTER %d: DISPLAY RAM %s: Data=%02X page=%d\n",
-		    po_lo, po_lo, extra_info, data, 8 + (data & 0x01));
-	      set_display_ram_page (po_lo, 8 + (data & 0x01));
-	      switch (po_lo)
-		{		/*'active' page */
-		case 0:
-		  g_blanking_flag = g_blanking_flag | 1;
-		  break;
-		case 1:
-		  g_blanking_flag = g_blanking_flag | 2;
-		  break;
-		case 2:
-		  g_blanking_flag = g_blanking_flag | 4;
-		  break;
-		case 3:
-		  g_blanking_flag = g_blanking_flag | 8;
-		  break;
-		}
-	    }
-	}
+        {
+          if ((data & 0x84) == 0x84)
+            {
+              xlog (MOTHERBOARD,
+                    "       po_lo=%d   MAP REGISTER %d %s: BOOT PROM: Data=%02X \n",
+                    po_lo, po_lo, extra_info, data);
+              set_boot_prom_active (po_lo);
+            }
+          if ((data & 0x06) == 0)
+            {
+              xlog (MOTHERBOARD,
+                    "       po_lo=%d   MAP REGISTER %d: DISPLAY RAM %s: Data=%02X page=%d\n",
+                    po_lo, po_lo, extra_info, data, 8 + (data & 0x01));
+              set_display_ram_page (po_lo, 8 + (data & 0x01));
+              switch (po_lo)
+                {               /*'active' page */
+                case 0:
+                  g_blanking_flag = g_blanking_flag | 1;
+                  break;
+                case 1:
+                  g_blanking_flag = g_blanking_flag | 2;
+                  break;
+                case 2:
+                  g_blanking_flag = g_blanking_flag | 4;
+                  break;
+                case 3:
+                  g_blanking_flag = g_blanking_flag | 8;
+                  break;
+                }
+            }
+        }
       if (g_blanking_flag)
-	{
-	  xlog (MOTHERBOARD, "Blanking flag ON (%X)\n", g_blanking_flag);
-	}
+        {
+          xlog (MOTHERBOARD, "Blanking flag ON (%X)\n", g_blanking_flag);
+        }
       else
-	{
-	  xlog (MOTHERBOARD, "Blanking flag OFF (%X)\n", g_blanking_flag);
-	}
+        {
+          xlog (MOTHERBOARD, "Blanking flag OFF (%X)\n", g_blanking_flag);
+        }
       break;
     case 0x0B:
       xlog (MOTHERBOARD, "mb_out(%02X): Clear Display Flag[%02X]\n", po_hi,
-	    data);
+            data);
       g_display_flag = FALSE;
       break;
     case 0x0C:
       xlog (MOTHERBOARD, "mb_out(%02X): Clear z80 NMI Flag[%02X]\n", po_hi,
-	    data);
+            data);
       g_non_mask_interrupt = FALSE;
       break;
     case 0x0D:
       xlog (MOTHERBOARD,
-	    "mb_out(%02X): NOT VALID Input (I/O status reg 2) [%02X]\n",
-	    po_hi, data);
+            "mb_out(%02X): NOT VALID Input (I/O status reg 2) [%02X]\n",
+            po_hi, data);
       xlog (MOTHERBOARD, "         ###   NOT IMPLEMENTED   ###\n");
       break;
     case 0x0E:
       xlog (MOTHERBOARD,
-	    "mb_out(%02X): NOT VALID Input (I/O status reg 1) [%02X]\n",
-	    po_hi, data);
+            "mb_out(%02X): NOT VALID Input (I/O status reg 1) [%02X]\n",
+            po_hi, data);
       xlog (MOTHERBOARD, "         ###   NOT IMPLEMENTED   ###\n");
       break;
     case 0x0F:
       xlog (MOTHERBOARD, "mb_out(%02X): [I/O] Output I/O control reg[%02X]\n",
-	    po_hi, data);
+            po_hi, data);
       set_io_control_register (data);
       break;
     default:
       xlog (ALL,
-	    "mobo_out: ERROR. Output To NON-STANDARD Advantage Port[%02X]:  Data:%02X    %c\n",
-	    port, data, prn);
+            "mobo_out: ERROR. Output To NON-STANDARD Advantage Port[%02X]:  Data:%02X    %c\n",
+            port, data, prn);
       break;
     }
 }
@@ -426,7 +426,7 @@ mobo_out (BYTE port, BYTE data)
 /*up. Actual disk handling is covered by NSE fdc code.                             */
 int
 disk_manager (int diskop, int diskno, char *disk_string, int extra1,
-	      int extra2)
+              int extra2)
 {
   int status;
   int dmq;
@@ -442,44 +442,44 @@ disk_manager (int diskop, int diskno, char *disk_string, int extra1,
     case MOUNT:
 
       if (disk_string == NULL)
-	{
-	  if (g_nsd[diskno - 1].fdfn != NULL)
-	    {
-	      strcpy (disk_string, g_nsd[diskno - 1].fdfn);
-	    }
-	  else
-	    {
-	      disk_string[0] = '\0';
-	    }
+        {
+          if (g_nsd[diskno - 1].fdfn != NULL)
+            {
+              strcpy (disk_string, g_nsd[diskno - 1].fdfn);
+            }
+          else
+            {
+              disk_string[0] = '\0';
+            }
 
-	}
+        }
 
 
       xlog (FDC, "DISKOP - MOUNT   ");
       xlog (FDC, " Disk no. %d, Disk name: %s Switch: %d\n", diskno,
-	    disk_string, extra1);
+            disk_string, extra1);
       if ((diskno > 0) && (diskno < (dmq + 1)))
-	{
-	  floppy_mount (diskno, disk_string, extra1);
-	}
+        {
+          floppy_mount (diskno, disk_string, extra1);
+        }
       if ((diskno > 100) && (diskno < (MACHINE_HD_MAX + 101)))
-	{
-	  hdmount (disk_string);
-	}
+        {
+          hdmount (disk_string);
+        }
 
       break;
     case UMOUNT:
       xlog (FDC, "DISKOP - UMOUNT  ");
       xlog (FDC, " Disk no. %d, Disk name: %s Switch: %d\n", diskno,
-	    disk_string, extra1);
+            disk_string, extra1);
       if ((diskno > 0) && (diskno < (dmq + 1)))
-	{
-	  umount (diskno);
-	}
+        {
+          umount (diskno);
+        }
       if ((diskno > 100) && (diskno < (MACHINE_HD_MAX + 101)))
-	{
-	  hdumount ();
-	}
+        {
+          hdumount ();
+        }
       break;
     case MOUNTED:
       /* Check disknumber is a valid device number: 0-4 for DD Floppy Disk Drives, 101-102 for 5" */
@@ -487,56 +487,56 @@ disk_manager (int diskop, int diskno, char *disk_string, int extra1,
 
       xlog (FDC, "DISKOP - MOUNTED- is disk mounted?  ");
       xlog (FDC, " Disk no. %d, Disk name: %s Switch: %d\n", diskno,
-	    disk_string, extra1);
+            disk_string, extra1);
       if ((diskno > 0) && (diskno < (dmq + 1)))
-	{
-	  if (g_nsd[diskno - 1].fdd != NULL)
-	    {
-	      xlog (FDC, "         Disk %d IS mounted\n", diskno);
-	      status = 1;
-	    }
-	  else
-	    {
-	      xlog (FDC, "         Disk %d IS NOT mounted\n", diskno);
-	      status = 0;
-	    }
-	}
+        {
+          if (g_nsd[diskno - 1].fdd != NULL)
+            {
+              xlog (FDC, "         Disk %d IS mounted\n", diskno);
+              status = 1;
+            }
+          else
+            {
+              xlog (FDC, "         Disk %d IS NOT mounted\n", diskno);
+              status = 0;
+            }
+        }
 
       if ((diskno > 100) && (diskno < 102))
-	{
-	  if (g_nshd.hdd != NULL)
-	    {
-	      xlog (FDC, "         Disk %d IS mounted\n", diskno);
-	      status = 1;
-	    }
-	  else
-	    {
-	      xlog (FDC, "         Disk %d IS NOT mounted\n", diskno);
-	      status = 0;
-	    }
-	}
+        {
+          if (g_nshd.hdd != NULL)
+            {
+              xlog (FDC, "         Disk %d IS mounted\n", diskno);
+              status = 1;
+            }
+          else
+            {
+              xlog (FDC, "         Disk %d IS NOT mounted\n", diskno);
+              status = 0;
+            }
+        }
 
       break;
     case INITIALISE:
       xlog (FDC,
-	    "DISKOP - INITIALISE - initialise all floppy disk drives and leave unmounted\n");
+            "DISKOP - INITIALISE - initialise all floppy disk drives and leave unmounted\n");
       initialise_floppies ();
       if (MACHINE_HD_MAX)
-	{
-	  initialise_hard_disk_structure ();
-	}
+        {
+          initialise_hard_disk_structure ();
+        }
       break;
     case BOOT:
       xlog (FDC, "DISKOP - BOOT - INITIAL LOAD first sector(s) into RAM  ");
       xlog (FDC, "Disk no. %d, name: %s   No of bytes: %03X  RAM:%04X\n",
-	    diskno, g_nsd[0].fdfn, (WORD) extra1, (WORD) extra2);
+            diskno, g_nsd[0].fdfn, (WORD) extra1, (WORD) extra2);
       fseek (g_nsd[diskno - 1].fdd, 0L, SEEK_SET);
       status = fread (&g_ram[(WORD) extra2], (WORD) extra1, 1, g_nsd[0].fdd);
       break;
     default:
       xlog (FDC, "DISKOP - FAULTY OP No. %d  -- ", diskop);
       xlog (FDC, " Disk no. %d, Disk name: %s Switch: %d\n", diskno,
-	    disk_string, extra1);
+            disk_string, extra1);
       break;
     }
   return (status);
@@ -551,9 +551,9 @@ timer_tick (void)
       g_rtclock_tick_flag = RTCLOCK_TICK_TRUE;
       xlog (DEV, "RTCLOCK TICK\n");
       if (g_IFF)
-	{
-	  g_cpux->interrupt_req_flag = TRUE;
-	}
+        {
+          g_cpux->interrupt_req_flag = TRUE;
+        }
     }
 }
 
@@ -591,7 +591,7 @@ set_io_control_register (int io_ctl)
   int icmd;
   g_io_control_reg = io_ctl;
   icmd = (io_ctl & 0x07);
-  g_io_control_reg = icmd;	/* save command so we know what results signify */
+  g_io_control_reg = icmd;      /* save command so we know what results signify */
   switch (icmd)
     {
     case 0:
@@ -608,7 +608,7 @@ set_io_control_register (int io_ctl)
       break;
     case 3:
       xlog (CMD,
-	    "set_io_control_register: CMD 3: Complement KB MI 4-key-Reset Enable Flag\n");
+            "set_io_control_register: CMD 3: Complement KB MI 4-key-Reset Enable Flag\n");
       /***/
       break;
     case 4:
@@ -622,14 +622,14 @@ set_io_control_register (int io_ctl)
     case 7:
       xlog (CMD, "set_io_control_register: CMD 7: ");
       if (prefix_toggle)
-	{
-	  xlog (CMD, "Complement KB MI 4-key-Reset Enable  Flag\n");
-	  g_four_key_reset_enable_flag ^= 1;
-	}
+        {
+          xlog (CMD, "Complement KB MI 4-key-Reset Enable  Flag\n");
+          g_four_key_reset_enable_flag ^= 1;
+        }
       else
-	{
-	  xlog (CMD, "Caps Lock\n");
-	}
+        {
+          xlog (CMD, "Caps Lock\n");
+        }
       prefix_toggle = 0;
       break;
     case 6:
@@ -644,20 +644,20 @@ set_io_control_register (int io_ctl)
     {
       g_floppy->fd_acquire_mode = HIGH;
       xlog (FDC, "    08: acquire_mode = HIGH                   sector= %d\n",
-	    g_floppy->fd_sector_num);
+            g_floppy->fd_sector_num);
       if (!g_floppy->fd_acquire_mode_prev)
-	{
-	  start_sector_read ();
-	}
+        {
+          start_sector_read ();
+        }
       g_floppy->fd_acquire_mode_prev = g_floppy->fd_acquire_mode;
     }
   else
     {
       g_floppy->fd_acquire_mode = LOW;
       xlog (FDC,
-	    "    08: acquire_mode = LOW         sector= %d  (==>  track = %d  sector %d)\n",
-	    g_floppy->fd_sector_num, g_floppy->fd_track_num,
-	    (g_floppy->fd_sector_num + 1) % 10);
+            "    08: acquire_mode = LOW         sector= %d  (==>  track = %d  sector %d)\n",
+            g_floppy->fd_sector_num, g_floppy->fd_track_num,
+            (g_floppy->fd_sector_num + 1) % 10);
       g_floppy->fd_acquire_mode_prev = g_floppy->fd_acquire_mode;
     }
 
@@ -691,7 +691,7 @@ set_io_control_register (int io_ctl)
   if (io_ctl & 0x80)
     {
       xlog (CMD,
-	    "set_io_control_register: ******** Enable Display Interrupt &&&&&&&&&\n");
+            "set_io_control_register: ******** Enable Display Interrupt &&&&&&&&&\n");
     }
 
 
@@ -768,19 +768,19 @@ get_status_reg_1 (void)
 
   if (g_floppy->fdd == NULL)
     {
-      status |= 0x40;		/* no disk = sector-mark always high */
+      status |= 0x40;           /* no disk = sector-mark always high */
     }
   else
     {
       if (g_floppy->fd_sector_mark)
-	{
-	  status |= 0x40;
-	  xlog (CMD, "status_reg_1: [40] sector mark high \n");
-	}
+        {
+          status |= 0x40;
+          xlog (CMD, "status_reg_1: [40] sector mark high \n");
+        }
       else
-	{
-	  xlog (CMD, "status_reg_1: [40] sector mark LOW \n");
-	}
+        {
+          xlog (CMD, "status_reg_1: [40] sector mark LOW \n");
+        }
     }
 
 
@@ -801,8 +801,8 @@ get_status_reg_1 (void)
 BYTE
 get_status_reg_2 (void)
 {
-  BYTE z;			/* keyb char */
-  BYTE zz;			/* aread char */
+  BYTE z;                       /* keyb char */
+  BYTE zz;                      /* aread char */
   BYTE a_in;
   BYTE status;
   int chars_in;
@@ -810,55 +810,55 @@ get_status_reg_2 (void)
   if (!g_ascii)
     {
       if ((kbd_buff_stat ()))
-	{
-	  z = kbd_buff_in ();
-	  if (z != 0xFF)
-	    {
-	      g_kbd_char = z;
-	      xlog (KEYB,
-		    "get_status_reg_2: @@@@@@@@@ KBD CHAR:  = %02X [%c]\n",
-		    g_kbd_char, prn (g_kbd_char));
-	      g_kbd_data_flag = 1;
-	      g_char_overrun = 0;
-	    }
-	}
+        {
+          z = kbd_buff_in ();
+          if (z != 0xFF)
+            {
+              g_kbd_char = z;
+              xlog (KEYB,
+                    "get_status_reg_2: @@@@@@@@@ KBD CHAR:  = %02X [%c]\n",
+                    g_kbd_char, prn (g_kbd_char));
+              g_kbd_data_flag = 1;
+              g_char_overrun = 0;
+            }
+        }
     }
   else
     {
-      if (!g_charwait)		/* while charwait > 0, don't process this code at all */
-	{			/* aread: ascii file read in */
-	  xlog (KEYB, "ASCII - IN:START sub-subroutine\n");
-	  if (g_ascii_in != NULL)
-	    {
-	      if ((chars_in = (int) fread (&a_in, 1, 1, g_ascii_in)) == 0)
-		{
-		  fclose (g_ascii_in);
-		  g_ascii = 0;
-		  g_ascii_in = NULL;
-		  return (0);
-		}
-	      else
-		{
-		  zz = (a_in & 0x7f);
-		  g_charwait = 1;	/* normal - single wait */
-		  if (zz == 0x0d)	/* kill off real cr chars */
-		    {		/* convert CRLF to just LF */
-		      fread (&a_in, 1, 1, g_ascii_in);
-		      zz = (a_in & 0x7f);
-		    }
-		  if (g_capslock)
-		    zz = (BYTE) toupper (zz);
-		  if (zz == 0x0a)	/* long charwait after CRLF */
-		    {
-		      zz = 0x0d;
-		      g_charwait = 100;
-		    }
-		  /* unix EOL = LF not CR so translate */
-		  g_kbd_data_flag = 1;
-		  g_kbd_char = zz;
-		}
-	    }
-	}
+      if (!g_charwait)          /* while charwait > 0, don't process this code at all */
+        {                       /* aread: ascii file read in */
+          xlog (KEYB, "ASCII - IN:START sub-subroutine\n");
+          if (g_ascii_in != NULL)
+            {
+              if ((chars_in = (int) fread (&a_in, 1, 1, g_ascii_in)) == 0)
+                {
+                  fclose (g_ascii_in);
+                  g_ascii = 0;
+                  g_ascii_in = NULL;
+                  return (0);
+                }
+              else
+                {
+                  zz = (a_in & 0x7f);
+                  g_charwait = 1;       /* normal - single wait */
+                  if (zz == 0x0d)       /* kill off real cr chars */
+                    {           /* convert CRLF to just LF */
+                      fread (&a_in, 1, 1, g_ascii_in);
+                      zz = (a_in & 0x7f);
+                    }
+                  if (g_capslock)
+                    zz = (BYTE) toupper (zz);
+                  if (zz == 0x0a)       /* long charwait after CRLF */
+                    {
+                      zz = 0x0d;
+                      g_charwait = 100;
+                    }
+                  /* unix EOL = LF not CR so translate */
+                  g_kbd_data_flag = 1;
+                  g_kbd_char = zz;
+                }
+            }
+        }
     }
 
   g_auto_repeat = 0;
@@ -870,22 +870,22 @@ get_status_reg_2 (void)
     case 0:
     case 5:
       if (g_floppy->fd_motor_on)
-	{
-	  status = /*floppy->sector_num; */ g_floppy->fdc_state_sector_num;
-	  xlog (CMD, "get_status_reg_2: Sector Number is  %X\n",
-		g_floppy->fdc_state_sector_num);
-	}
+        {
+          status = /*floppy->sector_num; */ g_floppy->fdc_state_sector_num;
+          xlog (CMD, "get_status_reg_2: Sector Number is  %X\n",
+                g_floppy->fdc_state_sector_num);
+        }
       else
-	{
-	  status = 0x0E;	/* motor OFF */
-	  xlog (CMD,
-		"get_status_reg_2: 'Sector Number' is  0E h   (= MOTOR OFF)\n");
-	}
+        {
+          status = 0x0E;        /* motor OFF */
+          xlog (CMD,
+                "get_status_reg_2: 'Sector Number' is  0E h   (= MOTOR OFF)\n");
+        }
       break;
     case 1:
       status = g_kbd_char & 0x0f;
       xlog (CMD, "get_status_reg_2: Show Character LSBs %0X\n",
-	    g_kbd_char & 0x0f);
+            g_kbd_char & 0x0f);
       break;
     case 2:
       status = g_kbd_char / 0x10;
@@ -896,58 +896,58 @@ get_status_reg_2 (void)
       break;
     case 3:
       if (g_kbd_data_flag | g_kbd_interrupt)
-	{
-	  status = status | 0x40;
-	}
+        {
+          status = status | 0x40;
+        }
       xlog (CMD, "get_status_reg_2: Show KBD Mask Intrpt %X\n",
-	    status & 0x01);
+            status & 0x01);
       break;
     case 4:
       if (g_cursor_lock)
-	{
-	  status |= 1;
-	}
+        {
+          status |= 1;
+        }
       xlog (CMD, "get_status_reg_2: Show Cursor Lock %X\n", status & 0x01);
       break;
     case 6:
       if (prefix_toggle)
-	{
-	  /*status |= 1; */
-	  xlog (CMD, "get_status_reg_2: Prefix Toggle ON\n");
-	}
+        {
+          /*status |= 1; */
+          xlog (CMD, "get_status_reg_2: Prefix Toggle ON\n");
+        }
       else
-	{
-	  xlog (CMD, "get_status_reg_2: Prefix Toggle off\n");
-	}
+        {
+          xlog (CMD, "get_status_reg_2: Prefix Toggle off\n");
+        }
       break;
     case 7:
       if (prefix_toggle)
-	{
-	  if (g_four_key_reset_enable_flag)
-	    {
-	      status |= 1;
-	      xlog (CMD,
-		    "get_status_reg_2: Keyboard NMI 4_key_reset_enable Flag is TRUE\n");
-	    }
-	  else
-	    {
-	      xlog (CMD,
-		    "get_status_reg_2: Keyboard NMI 4_key_reset_enable Flag is FALSE\n");
-	    }
-	  prefix_toggle = 0;
-	}
+        {
+          if (g_four_key_reset_enable_flag)
+            {
+              status |= 1;
+              xlog (CMD,
+                    "get_status_reg_2: Keyboard NMI 4_key_reset_enable Flag is TRUE\n");
+            }
+          else
+            {
+              xlog (CMD,
+                    "get_status_reg_2: Keyboard NMI 4_key_reset_enable Flag is FALSE\n");
+            }
+          prefix_toggle = 0;
+        }
       else
-	{
-	  if (g_capslock)
-	    {
-	      status |= 1;
-	      xlog (CMD, "get_status_reg_2: Caps Lock  ON\n");
-	    }
-	  else
-	    {
-	      xlog (CMD, "get_status_reg_2: Caps Lock  off\n");
-	    }
-	}
+        {
+          if (g_capslock)
+            {
+              status |= 1;
+              xlog (CMD, "get_status_reg_2: Caps Lock  ON\n");
+            }
+          else
+            {
+              xlog (CMD, "get_status_reg_2: Caps Lock  off\n");
+            }
+        }
       break;
     }
 
@@ -996,7 +996,7 @@ get_status_reg_2 (void)
 
 
 void
-one_z80_cycle (WORD * paf, unsigned int *ppc)	//pointers to AF and PC
+one_z80_cycle (WORD * paf, unsigned int *ppc)   //pointers to AF and PC
 {
   char prn;
   char charout;
@@ -1011,12 +1011,12 @@ one_z80_cycle (WORD * paf, unsigned int *ppc)	//pointers to AF and PC
       g_floppy_controller_clock++;
       g_floppy_controller_clock %= FLOPPY_PULSE;
       if (!g_floppy_controller_clock)
-	{
-	  floppy_state ();
-	}
+        {
+          floppy_state ();
+        }
     }
 
-		 /*========================================*/
+                 /*========================================*/
 
 /* slow aread char inputs by releasing the charwait flag after a while */
 /* give guest software enough time to handle last character input */
@@ -1027,12 +1027,12 @@ one_z80_cycle (WORD * paf, unsigned int *ppc)	//pointers to AF and PC
   if (!g_aread_clock)
     {
       if (g_charwait)
-	{
-	  g_charwait--;
-	}
+        {
+          g_charwait--;
+        }
     }
 
-		     /*===========================================*/
+                     /*===========================================*/
 
   /* Advantage screenlog */
   /* watches for entry address to boot prom charout call. Takes output */
@@ -1043,26 +1043,26 @@ one_z80_cycle (WORD * paf, unsigned int *ppc)	//pointers to AF and PC
       prn = '.';
       charout = (*paf / 256);
       if ((charout > 0x1f) && (charout < 0x7f))
-	{
-	  prn = charout;
-	}
+        {
+          prn = charout;
+        }
       screen_log (charout);
       xlog (MOTHERBOARD, "CONOUT             (%c)    \n", prn);
     }
 
 
-		  /*==============================================*/
+                  /*==============================================*/
 
   /*Advantage reset code. Called from monitor, (TODO: 4-key reset) */
   if (g_machine_reset_flag)
     {
       g_machine_reset_flag = 0;
-      mobo_out (0xa2, 0x84);	/* enable prom boot code page at 8000H */
-      g_cpux->pc = 0x8066;	/* jump to NMI reset at 0066 (which is */
-    }				/* mapped to 8066 anyway.              */
+      mobo_out (0xa2, 0x84);    /* enable prom boot code page at 8000H */
+      g_cpux->pc = 0x8066;      /* jump to NMI reset at 0066 (which is */
+    }                           /* mapped to 8066 anyway.              */
 
 
-		/*=================================================*/
+                /*=================================================*/
 
 
 /* TODO! *******************NEED a series of pulses of longer and longer periods to activate */
@@ -1072,6 +1072,6 @@ one_z80_cycle (WORD * paf, unsigned int *ppc)	//pointers to AF and PC
 /* count pulse for minimal time, then series of divide-by-two counts to give        */
 /* exponential time delays ( - as on HRZ circuitry? )                               */
 
-	       /*==================================================*/
+               /*==================================================*/
 
 }

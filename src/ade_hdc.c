@@ -25,12 +25,12 @@ HDC_in (BYTE port)
   if (g_hd_delay)
     {
       for (i = 0; i < 60; i++)
-	{
-	  for (j = 0; j < 70; j++)
-	    {
-	      ;
-	    }
-	}
+        {
+          for (j = 0; j < 70; j++)
+            {
+              ;
+            }
+        }
     }
   g_p_lo = port & 0x07;
   xlog (HDC, "HDC_IN - port = %d\n", g_p_lo);
@@ -40,70 +40,70 @@ HDC_in (BYTE port)
 
 
       switch (g_p_lo)
-	{
-	case 0:
-	  /* get data from hard-disk cache RAM */
+        {
+        case 0:
+          /* get data from hard-disk cache RAM */
 
-	  data = g_hd5->hd_cache_ram[g_hd5->hd_ram_ptr];
-	  prn = '.';
-	  if ((data > 0x1f) && (data < 0x7f))
-	    {
-	      prn = data;
-	    }
+          data = g_hd5->hd_cache_ram[g_hd5->hd_ram_ptr];
+          prn = '.';
+          if ((data > 0x1f) && (data < 0x7f))
+            {
+              prn = data;
+            }
 
 
-	  xlog (HDC,
-		"HDC_IN_00: Read Data Byte from HD_RAM.  hd_ram_ptr = %03X  byte= %02X (%c)\n",
-		g_hd5->hd_ram_ptr, data, prn);
-	  g_hd5->hd_ram_ptr++;
-	  break;
-	  break;
-	case 01:
-	  xlog (HDC, "HDC_IN_01: Get HD Status\n");
-	  hard_disk_state ();
-	  data = mk_hd_status ();
-	  break;
-	case 2:
-	  xlog (HDC, "HDC_IN_02: Clear RAM address, Unit %d\n", g_hd_unit);
-	  g_hd5->hd_ram_ptr = 0;
-	  data = 0;
-	  break;
-	case 3:
-	  xlog (HDC, "HDC_IN_03: Clear Sector Flag, Unit %d\n", g_hd_unit);
-	  g_hd5->hd_sector_flag = FALSE;
-	  data = 0;
-	  break;
-	case 4:
-	  xlog (HDC,
-		"HDC_IN_04: Start SYNC, Unit %d  (??? Not Required in NSE)\n",
-		g_hd_unit);
+          xlog (HDC,
+                "HDC_IN_00: Read Data Byte from HD_RAM.  hd_ram_ptr = %03X  byte= %02X (%c)\n",
+                g_hd5->hd_ram_ptr, data, prn);
+          g_hd5->hd_ram_ptr++;
+          break;
+          break;
+        case 01:
+          xlog (HDC, "HDC_IN_01: Get HD Status\n");
+          hard_disk_state ();
+          data = mk_hd_status ();
+          break;
+        case 2:
+          xlog (HDC, "HDC_IN_02: Clear RAM address, Unit %d\n", g_hd_unit);
+          g_hd5->hd_ram_ptr = 0;
+          data = 0;
+          break;
+        case 3:
+          xlog (HDC, "HDC_IN_03: Clear Sector Flag, Unit %d\n", g_hd_unit);
+          g_hd5->hd_sector_flag = FALSE;
+          data = 0;
+          break;
+        case 4:
+          xlog (HDC,
+                "HDC_IN_04: Start SYNC, Unit %d  (??? Not Required in NSE)\n",
+                g_hd_unit);
       /****************** NI *************/
-	  xlog (HDC, "DUMMY function\n");
-	  data = 0;
-	  break;
-	case 5:
-	  xlog (HDC, "HDC_IN_05: Start READ \n");
-	  g_hd5->hd_state = READ_0;
-	  data = 0;
-	  break;
-	case 6:
-	  xlog (HDC, "HDC_IN_06: Start WRITE\n");
-	  g_hd5->hd_state = WRITE_0;
-	  g_hd_sync = 0;
-	  data = 0;
-	  break;
-	case 7:
-	  xlog (HDC,
-		"HDC_IN_07: FORMAT WRITE, Unit %d (Not Required in NSE)\n",
-		g_hd_unit);
-	  xlog (HDC, "DUMMY function\n");
-	  data = 0;
-	  break;
-	default:
-	  xlog (HDC, "ERROR in HDC_in: ------- Command Port: %02X \n", port);
-	  data = 0xaa;
-	  break;
-	}
+          xlog (HDC, "DUMMY function\n");
+          data = 0;
+          break;
+        case 5:
+          xlog (HDC, "HDC_IN_05: Start READ \n");
+          g_hd5->hd_state = READ_0;
+          data = 0;
+          break;
+        case 6:
+          xlog (HDC, "HDC_IN_06: Start WRITE\n");
+          g_hd5->hd_state = WRITE_0;
+          g_hd_sync = 0;
+          data = 0;
+          break;
+        case 7:
+          xlog (HDC,
+                "HDC_IN_07: FORMAT WRITE, Unit %d (Not Required in NSE)\n",
+                g_hd_unit);
+          xlog (HDC, "DUMMY function\n");
+          data = 0;
+          break;
+        default:
+          xlog (HDC, "ERROR in HDC_in: ------- Command Port: %02X \n", port);
+          data = 0xaa;
+          break;
+        }
     }
   else
     {
@@ -121,59 +121,59 @@ HDC_out (BYTE po_lo, BYTE data)
 
   po_lo = po_lo & 0x07;
   xlog (HDC, "HDC_OUT - port(low nybble) = %d    data = %d  %02X\n", po_lo,
-	data, data);
+        data, data);
 
   if (g_hd5->hdd != NULL)
     {
       switch (po_lo)
-	{
-	case 6:
-	  xlog (HDC, "HDC_OUT_6: LOAD HD DRIVE CONTROL REGISTER\n");
-	  load_hd_drive_control_register (data);
-	  break;
-	case 7:
-	  prn = '.';
-	  if ((data > 0x1f) && (data < 0x7f))
-	    {
-	      prn = data;
-	    }
+        {
+        case 6:
+          xlog (HDC, "HDC_OUT_6: LOAD HD DRIVE CONTROL REGISTER\n");
+          load_hd_drive_control_register (data);
+          break;
+        case 7:
+          prn = '.';
+          if ((data > 0x1f) && (data < 0x7f))
+            {
+              prn = data;
+            }
 
-	  xlog (HDC,
-		"HDC_OUT_07: Write Data Byte into HD_RAM.  hd_ram_ptr = %03X  byte= %02X (%c)\n",
-		g_hd5->hd_ram_ptr, data, prn);
+          xlog (HDC,
+                "HDC_OUT_07: Write Data Byte into HD_RAM.  hd_ram_ptr = %03X  byte= %02X (%c)\n",
+                g_hd5->hd_ram_ptr, data, prn);
 
-	  g_hd5->hd_cache_ram[g_hd5->hd_ram_ptr] = data;
+          g_hd5->hd_cache_ram[g_hd5->hd_ram_ptr] = data;
 /* if start outputting data and START WRITE not already issued, clear sync, change state */
-	  if (g_hd5->hd_ram_ptr == 0)
-	    {
-	      g_hd_sync = 0;
-	      g_hd5->hd_state_counter = 1;
-	      g_hd5->hd_state = WRITE_1;
-	    }
+          if (g_hd5->hd_ram_ptr == 0)
+            {
+              g_hd_sync = 0;
+              g_hd5->hd_state_counter = 1;
+              g_hd5->hd_state = WRITE_1;
+            }
 
 
 /* look for start of writable data - position of sync-byte */
-	  if ((!g_hd_sync) && (g_hd5->hd_ram_ptr > 30) && (g_hd5->hd_ram_ptr < 90))
-	    {
-	      if (g_hd5->hd_cache_ram[g_hd5->hd_ram_ptr] == 0x01)
-		{
-		  g_hd_sync = g_hd5->hd_ram_ptr;
-		  g_hd5->hd_read_write_active = TRUE;
-		  xlog (HDC, "FOUND SYNC byte at CACHE[%d]\n",
-			g_hd5->hd_ram_ptr);
-		}
-	    }
-	  g_hd5->hd_ram_ptr++;
-	  break;
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	  xlog (HDC, "Port Low Nybble = %d ####### DUMMY function #######\n");
-	  break;
-	}
+          if ((!g_hd_sync) && (g_hd5->hd_ram_ptr > 30) && (g_hd5->hd_ram_ptr < 90))
+            {
+              if (g_hd5->hd_cache_ram[g_hd5->hd_ram_ptr] == 0x01)
+                {
+                  g_hd_sync = g_hd5->hd_ram_ptr;
+                  g_hd5->hd_read_write_active = TRUE;
+                  xlog (HDC, "FOUND SYNC byte at CACHE[%d]\n",
+                        g_hd5->hd_ram_ptr);
+                }
+            }
+          g_hd5->hd_ram_ptr++;
+          break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+          xlog (HDC, "Port Low Nybble = %d ####### DUMMY function #######\n");
+          break;
+        }
     }
   else
     {
@@ -193,27 +193,27 @@ load_hd_drive_control_register (BYTE data)
   bit_s_hi = data & 0x04;
   xlog (HDC, "    Bits 0,1:   Surface selected = %d\n", g_hd5->hd_surface);
   xlog (HDC, "    Bit  2  : =RESERVED=  extra heads bit = %d\n",
-	(data & 0x04) / 4);
+        (data & 0x04) / 4);
   if (bit_s_hi)
     {
       g_hd5->hd_surface = g_hd5->hd_surface | bit_s_hi;
       xlog (HDC,
-	    "NOTE: hd_surface is also using the =RESERVED= bit, so hd_surface is now %d\n",
-	    g_hd5->hd_surface);
+            "NOTE: hd_surface is also using the =RESERVED= bit, so hd_surface is now %d\n",
+            g_hd5->hd_surface);
     }
 
 
   xlog (HDC, "    Bit  3  :   Low Write Current  [NI]   = %d\n",
-	(data & 0x08) / 8);
+        (data & 0x08) / 8);
   g_hd5->hd_step_direction = (data & 0x20) / 32;
   g_hd5->hd_step_pulse = (data & 0x10) / 16;
   xlog (HDC, "    Bit  4  :   Head Step Pulse           = %d\n",
-	g_hd5->hd_step_pulse);
+        g_hd5->hd_step_pulse);
   xlog (HDC,
-	"    Bit  5  :   Head Step Direction       = %d   (0 = IN, 1 = OUT\n",
-	g_hd5->hd_step_direction);
+        "    Bit  5  :   Head Step Direction       = %d   (0 = IN, 1 = OUT\n",
+        g_hd5->hd_step_direction);
   xlog (HDC,
-	"                (Also Write Precompensation, but Not Implemented)\n");
+        "                (Also Write Precompensation, but Not Implemented)\n");
   if ((!g_hd5->hd_step_pulse) && (g_hd5->hd_step_pulse_prev))
     {
       xlog (HDC, "STEP \n");
@@ -224,7 +224,7 @@ load_hd_drive_control_register (BYTE data)
   xlog (HDC, "    Bit  6  :   Unused\n");
   header_read_enable = (data & (BYTE) 0x80) / 128;
   xlog (HDC, "    Bit  7  :   Read Sector Header Enable = %d \n",
-	header_read_enable);
+        header_read_enable);
   if (header_read_enable)
     {
       xlog (HDC, "Header Read Enable\n");
@@ -244,29 +244,29 @@ void
 cylinder_step ()
 {
 
-  if (g_hd5->hd_step_direction)	/* Stepping OUTWARDS */
+  if (g_hd5->hd_step_direction) /* Stepping OUTWARDS */
     {
-      if (g_hd5->cylinder)	/* decrease ONLY if track-number > 0 */
-	{
-	  g_hd5->cylinder--;
-	  if (!g_hd5->cylinder)
-	    g_hd5->hd_track_zero = TRUE;	/* when get to Track 0, set Track_Zero flag */
-	}
+      if (g_hd5->cylinder)      /* decrease ONLY if track-number > 0 */
+        {
+          g_hd5->cylinder--;
+          if (!g_hd5->cylinder)
+            g_hd5->hd_track_zero = TRUE;        /* when get to Track 0, set Track_Zero flag */
+        }
     }
-  else				/*step_dir==0 , so stepping INWARDS */
+  else                          /*step_dir==0 , so stepping INWARDS */
     {
       g_hd5->cylinder++;
       if (g_hd5->cylinder > g_hd5->hd_max_cylinders)
-	{			/* cylinder can't step in further than max_cylinders */
-	  g_hd5->cylinder = g_hd5->hd_max_cylinders;
-	}
-      g_hd5->hd_track_zero = FALSE;	/* if stepped IN, Track 0 flag MUST be off */
+        {                       /* cylinder can't step in further than max_cylinders */
+          g_hd5->cylinder = g_hd5->hd_max_cylinders;
+        }
+      g_hd5->hd_track_zero = FALSE;     /* if stepped IN, Track 0 flag MUST be off */
     }
 
   xlog (HDC, " STEP-CMD  - CYLINDER :%3d   -- SURFACE %d\n", g_hd5->cylinder,
-	g_hd5->hd_surface);
+        g_hd5->hd_surface);
   xlog (HDC, "   STEPPED TO  cylinder %d\n", g_hd5->cylinder);
-  g_hd5->hd_seek_complete = FALSE;	/* delay the seek period */
+  g_hd5->hd_seek_complete = FALSE;      /* delay the seek period */
   g_hdseek_delay = 4;
 }
 
@@ -277,7 +277,7 @@ BYTE
 mk_hd_status ()
 {
 
-  BYTE hd_status = 0;		/* clear previous value of hd_status */
+  BYTE hd_status = 0;           /* clear previous value of hd_status */
   if (g_hd5->hd_sector_flag)
     {
       hd_status = hd_status | (BYTE) 0x80;
@@ -339,7 +339,7 @@ mk_hd_status ()
       hd_status = hd_status | 0x01;
     }
 
-  show_status (hd_status);	/* temporary */
+  show_status (hd_status);      /* temporary */
   return (hd_status);
 }
 
@@ -349,9 +349,9 @@ show_status (BYTE hd_status)
 {
 
   xlog (HDC, "HD Cyl:Surf:Sector is %d:%d:%d  - hd_status is %02X : \n",
-	g_hd5->cylinder, g_hd5->hd_surface, g_hd5->hd_sector_num, hd_status);
+        g_hd5->cylinder, g_hd5->hd_surface, g_hd5->hd_sector_num, hd_status);
   xlog (HDC, "+---- ---- ---- ----  ---- ---- ---- ----+\n");
-  if (hd_status & (BYTE) 0x80)	/*bit 7 */
+  if (hd_status & (BYTE) 0x80)  /*bit 7 */
     {
       xlog (HDC, "| SF |");
     }
@@ -360,7 +360,7 @@ show_status (BYTE hd_status)
       xlog (HDC, "| sf |");
     }
 
-  if (hd_status & 0x40)		/*bit 6 */
+  if (hd_status & 0x40)         /*bit 6 */
     {
       xlog (HDC, " if |");
     }
@@ -498,25 +498,25 @@ write_cached_sector ()
 
 
   xlog (HDC,
-	"WRITE_CACHED_SECTOR:wrirpcylinder: %d   cyl_factor: %04x  psurface: %d  psector: %5d , track_num=%4d log_sect= %5d\n",
-	pcylinder, cyl_factor, psurface, psector, track_num, logical_sector);
+        "WRITE_CACHED_SECTOR:wrirpcylinder: %d   cyl_factor: %04x  psurface: %d  psector: %5d , track_num=%4d log_sect= %5d\n",
+        pcylinder, cyl_factor, psurface, psector, track_num, logical_sector);
   logical_sector += track_num;
   file_offset = ((long) (psector_address) * (long) DSECTOR);
   xlog (HDC, "write_cached_sector: file_offset= %08lx    =sect %5d\n",
-	file_offset, (int) (file_offset / 0x200L));
+        file_offset, (int) (file_offset / 0x200L));
   error = fseek (g_hd5->hdd, file_offset, SEEK_SET);
   if (error == -1)
     {
       xlog (HDC,
-	    "Write Cached Sector: Can't seek to %ld on hard-disk image %s \n",
-	    file_offset, g_hd5->hdfn);
+            "Write Cached Sector: Can't seek to %ld on hard-disk image %s \n",
+            file_offset, g_hd5->hdfn);
     }
   error = (int) fwrite (&g_hd5->hd_cache_ram[g_hd_sync + 10], 512, 1, g_hd5->hdd);
   if (error == 0)
     {
       xlog (HDC,
-	    "hdc: Write Sector: Can'twrite at %ld on hard-disk image %s \n",
-	    file_offset, g_hd5->hdfn);
+            "hdc: Write Sector: Can'twrite at %ld on hard-disk image %s \n",
+            file_offset, g_hd5->hdfn);
     }
 
 
@@ -540,7 +540,7 @@ copy_sector_to_ram ()
       g_hd5->hd_cache_ram[k] = g_hd5->hd_sectorc[i][k];
     }
 
-  g_hd5->hd_ram_ptr = 0x20f;	/* we've entered 512+14 bytes into cache RAM, so set pointer to next */
+  g_hd5->hd_ram_ptr = 0x20f;    /* we've entered 512+14 bytes into cache RAM, so set pointer to next */
 }
 
 
@@ -554,22 +554,22 @@ copy_write_cache (int diskadd)
     {
       g_hd5->hd_sectorc[diskadd][j] = g_hd5->hd_cache_ram[g_hd_sync + j];
       if (j < 12)
-	{
-	  xlog (HDC, "Copying WRITE Cache  %03X   data %02X\n", j,
-		g_hd5->hd_cache_ram[g_hd_sync + j]);
-	}
+        {
+          xlog (HDC, "Copying WRITE Cache  %03X   data %02X\n", j,
+                g_hd5->hd_cache_ram[g_hd_sync + j]);
+        }
     }
 
   xlog (HDC, "AFTER WRITE_SECTOR to hd5->hd_sectorc cache %d     [ %04X ]\n",
-	diskadd, diskadd);
+        diskadd, diskadd);
   xlog (HDC, " st  phy  cyl  hed  lsl  lsh  stl  sth  crc  crc~\n");
   xlog (HDC,
-	" %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X  \n\n",
-	g_hd5->hd_sectorc[diskadd][0], g_hd5->hd_sectorc[diskadd][1],
-	g_hd5->hd_sectorc[diskadd][2], g_hd5->hd_sectorc[diskadd][3],
-	g_hd5->hd_sectorc[diskadd][4], g_hd5->hd_sectorc[diskadd][5],
-	g_hd5->hd_sectorc[diskadd][6], g_hd5->hd_sectorc[diskadd][7],
-	g_hd5->hd_sectorc[diskadd][8], g_hd5->hd_sectorc[diskadd][9]);
+        " %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X  \n\n",
+        g_hd5->hd_sectorc[diskadd][0], g_hd5->hd_sectorc[diskadd][1],
+        g_hd5->hd_sectorc[diskadd][2], g_hd5->hd_sectorc[diskadd][3],
+        g_hd5->hd_sectorc[diskadd][4], g_hd5->hd_sectorc[diskadd][5],
+        g_hd5->hd_sectorc[diskadd][6], g_hd5->hd_sectorc[diskadd][7],
+        g_hd5->hd_sectorc[diskadd][8], g_hd5->hd_sectorc[diskadd][9]);
 }
 
 
@@ -586,9 +586,9 @@ copy_cache_header ()
   shifted_track =
     (((g_hd5->cylinder * (g_hd5->hd_max_heads + 1)) + g_hd5->hd_surface) * 16);
   xlog (HDC,
-	"copy_cache_header: cylinder=%d  max_heads=%d  surface=%d  shifted-track=%04X\n",
-	g_hd5->cylinder, (g_hd5->hd_max_heads + 1), g_hd5->hd_surface,
-	shifted_track);
+        "copy_cache_header: cylinder=%d  max_heads=%d  surface=%d  shifted-track=%04X\n",
+        g_hd5->cylinder, (g_hd5->hd_max_heads + 1), g_hd5->hd_surface,
+        shifted_track);
   if (g_hd5->cylinder > g_hd5->hd_max_cylinders)
     {
       g_hd5->cylinder = g_hd5->hd_max_cylinders;
@@ -601,21 +601,21 @@ copy_cache_header ()
   /* so restrict header xfer to max-sector-number?? */
 
   xlog (HDC,
-	" we are looking to xfer our cached premade header for sector %04X\n",
-	physical_sector_num);
+        " we are looking to xfer our cached premade header for sector %04X\n",
+        physical_sector_num);
   xlog (HDC, " st  phy  cyl  hed  lsl  lsh  stl  sth  crc  crc~\n");
   xlog (HDC,
-	" %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X  \n",
-	g_hd5->hd_sectorc[i][0], g_hd5->hd_sectorc[i][1], g_hd5->hd_sectorc[i][2],
-	g_hd5->hd_sectorc[i][3], g_hd5->hd_sectorc[i][4], g_hd5->hd_sectorc[i][5],
-	g_hd5->hd_sectorc[i][6], g_hd5->hd_sectorc[i][7], g_hd5->hd_sectorc[i][8],
-	g_hd5->hd_sectorc[i][9]);
+        " %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X  \n",
+        g_hd5->hd_sectorc[i][0], g_hd5->hd_sectorc[i][1], g_hd5->hd_sectorc[i][2],
+        g_hd5->hd_sectorc[i][3], g_hd5->hd_sectorc[i][4], g_hd5->hd_sectorc[i][5],
+        g_hd5->hd_sectorc[i][6], g_hd5->hd_sectorc[i][7], g_hd5->hd_sectorc[i][8],
+        g_hd5->hd_sectorc[i][9]);
   for (k = 0; k < 11; k++)
     {
       g_hd5->hd_cache_ram[k] = g_hd5->hd_sectorc[i][k];
     }
 
-  g_hd5->hd_ram_ptr = 10;		/* we've entered 10 bytes into cache RAM, so set pointer to next */
+  g_hd5->hd_ram_ptr = 10;               /* we've entered 10 bytes into cache RAM, so set pointer to next */
   if (g_ade_debug & HDC)
     {
       display_header ("READ");
@@ -630,18 +630,18 @@ display_header (const char *info)
   xlog (HDC, "              %s HEADER\n", info);
   xlog (HDC, "  ST   PHY  CYL  HED  SNl  SNh  SNl  SNh  CRC  CRC~\n");
   xlog (HDC,
-	"  %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X \n",
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_START],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_PHYS_SECTOR],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_CYLINDER],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_SURFACE]
-	/* or 'head number' */ ,
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_LOG_SECTOR_LO],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_LOG_SECTOR_HI],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_SHIFT_TRACK_LO],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_SHIFT_TRACK_HI],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_CRC],
-	g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_CRC_CHECK]);
+        "  %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X \n",
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_START],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_PHYS_SECTOR],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_CYLINDER],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_SURFACE]
+        /* or 'head number' */ ,
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_LOG_SECTOR_LO],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_LOG_SECTOR_HI],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_SHIFT_TRACK_LO],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_SHIFT_TRACK_HI],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_CRC],
+        g_hd5->hd_cache_ram[g_hd_sync + HD_HDR_CRC_CHECK]);
 }
 
 
@@ -666,16 +666,16 @@ hdmount (const char *filename)
 
   xlog (HDC, "we want to mount hard drive\n");
   g_hd5 = (&g_nshd);
-  *hdfilename = '\0';		/* make it an empty string */
+  *hdfilename = '\0';           /* make it an empty string */
   fatal = 0;
   if (*filename != '/')
-    {				/* Not an absolute F/N, must be relative */
+    {                           /* Not an absolute F/N, must be relative */
       /* so need to include where we are in absolute terms */
       strcpy (hdfilename, g_env_pwd);
       if ((strlen (hdfilename)) > 1)
-	{
-	  strcat (hdfilename, "/");
-	}
+        {
+          strcat (hdfilename, "/");
+        }
     }
   strcat (hdfilename, filename);
   xlog (HDC, "hdfilename is %s\n", hdfilename);
@@ -697,84 +697,84 @@ hdmount (const char *filename)
     {
 
       if ((g_hd5->hdd = fopen (hdfilename, filemode)) == NULL)
-	{
-	  printf ("   *** Can't Mount hard Drive, File < %s > ***\n",
-		  hdfilename);
-	}
+        {
+          printf ("   *** Can't Mount hard Drive, File < %s > ***\n",
+                  hdfilename);
+        }
       else
-	{
-	  strcpy (g_hd5->hdfn, hdfilename);
-	  fseek (g_hd5->hdd, 0L, SEEK_SET);
-	  (void) fread (hdlabel, 128, 1, g_hd5->hdd);	/* get hd label area: contains disk validation */
-	  /* North Star hard Disks begin with 2 bytes which are always 00h and FFh */
-	  if ((hdlabel[0] != 0x00) || (hdlabel[1] != 0xff))
-	    {
-	      fatal = 1;
-	    }
-	  else
-	    {
-	      fatal = 0;
-	    }
+        {
+          strcpy (g_hd5->hdfn, hdfilename);
+          fseek (g_hd5->hdd, 0L, SEEK_SET);
+          (void) fread (hdlabel, 128, 1, g_hd5->hdd);   /* get hd label area: contains disk validation */
+          /* North Star hard Disks begin with 2 bytes which are always 00h and FFh */
+          if ((hdlabel[0] != 0x00) || (hdlabel[1] != 0xff))
+            {
+              fatal = 1;
+            }
+          else
+            {
+              fatal = 0;
+            }
 
 
-	  if (fatal)
-	    {
-	      /* We could leave the invalid disk image mounted and then format  */
-	      /* it. While this would make life easier, it's safer to refuse to */
-	      /* mount a file which could be something other than a N* hard-disk */
-	      /* image file, and to insist on a new image-file manufactured     */
-	      /* with 'mkhd'.                                                   */
+          if (fatal)
+            {
+              /* We could leave the invalid disk image mounted and then format  */
+              /* it. While this would make life easier, it's safer to refuse to */
+              /* mount a file which could be something other than a N* hard-disk */
+              /* image file, and to insist on a new image-file manufactured     */
+              /* with 'mkhd'.                                                   */
 
-	      printf ("   ERROR! %s may not be a NSE Hard-Disk!\n",
-		      hdfilename);
-	      hdumount ();	/* refuse to mount invalid image-file */
-	    }
-	  else
-	    {
+              printf ("   ERROR! %s may not be a NSE Hard-Disk!\n",
+                      hdfilename);
+              hdumount ();      /* refuse to mount invalid image-file */
+            }
+          else
+            {
 
-	      fseek (g_hd5->hdd, 0L, SEEK_END);	/*set file ptr to end of disk image */
-	      flen = ftell (g_hd5->hdd);
-	      fseek (g_hd5->hdd, 0L, SEEK_SET);	/*reset file ptr to start if disk image */
-	      get_hd_info (hdlabel);	/* then place them into nshd structure   */
-	      sprintf (g_vstring, "\nMounted  HARD DISK <%s> %ldK", hdfilename,
-		       (long) (flen / 1024));
-	      status_print (g_vstring, 0);
-	      strcpy (g_hd5->hdfn, hdfilename);
-	      /* set up hdc disk properties */
-	      xlog (HDC, "Mounted Hard Disk <%s>  size = %ldK\n",
-		    g_hd5->hdfn, (long) (flen / 1024));
-	      g_hd5->hd_max_sectors = (hdlabel[40] * 256) + hdlabel[39];
-	      if ((hdlabel[0] != 0) || (hdlabel[1] != 0xff))
-		{
-		  xlog (HDC, "\nHard Disk <%s> has  no valid Label,\n",
-			g_hd5->hdfn);
-		  xlog (HDC, " so \'hd_max_sectors\' size is incorrect.\n");
-		}
-	      else
-		{
-		  xlog (HDC, ", hd_max_sectors = %d \n", g_hd5->hd_max_sectors);
-		}
+              fseek (g_hd5->hdd, 0L, SEEK_END); /*set file ptr to end of disk image */
+              flen = ftell (g_hd5->hdd);
+              fseek (g_hd5->hdd, 0L, SEEK_SET); /*reset file ptr to start if disk image */
+              get_hd_info (hdlabel);    /* then place them into nshd structure   */
+              sprintf (g_vstring, "\nMounted  HARD DISK <%s> %ldK", hdfilename,
+                       (long) (flen / 1024));
+              status_print (g_vstring, 0);
+              strcpy (g_hd5->hdfn, hdfilename);
+              /* set up hdc disk properties */
+              xlog (HDC, "Mounted Hard Disk <%s>  size = %ldK\n",
+                    g_hd5->hdfn, (long) (flen / 1024));
+              g_hd5->hd_max_sectors = (hdlabel[40] * 256) + hdlabel[39];
+              if ((hdlabel[0] != 0) || (hdlabel[1] != 0xff))
+                {
+                  xlog (HDC, "\nHard Disk <%s> has  no valid Label,\n",
+                        g_hd5->hdfn);
+                  xlog (HDC, " so \'hd_max_sectors\' size is incorrect.\n");
+                }
+              else
+                {
+                  xlog (HDC, ", hd_max_sectors = %d \n", g_hd5->hd_max_sectors);
+                }
 
-	      g_hd5->hd_sector_num = 14;
-	      g_hd5->hd_state = SECTOR_0;
-	      g_hd5->hd_ram_ptr = 0;
-	      g_hd5->hd_step_direction = 0;
-	      g_hdseek_delay = 0;
-	      g_hd5->hd_step_pulse = 0;
-	      /* initial (before use) hard-disk status bit values */
-	      g_hd5->hd_sector_flag = FALSE;	/* status-bit 7 is OFF */
-	      g_hd5->hd_index_flag = FALSE;	/* status-bit 6 is ON  */
-	      g_hd5->hd_read_write_active = FALSE;	/* status-bit 5 is OFF */
-	      g_hd5->hd_drive_ready = TRUE;	/* status_bit 4 is OFF */
-	      g_hd5->hd_drive_selected = TRUE;	/*status-bit 3 is OFF  */
-	      {
-		g_hd5->cylinder = 0;
-		g_hd5->hd_track_zero = TRUE;	/* status-bit 2 is OFF  */
-	      }
-	      g_hd5->hd_seek_complete = TRUE;	/* status-bit 1 is OFF */
-	      g_hd5->hd_write_fault = FALSE;	/* status-bit 0 is ON  */
-	    }
-	}
+              g_hd5->hd_sector_num = 14;
+              g_hd5->hd_state = SECTOR_0;
+              g_hd5->hd_ram_ptr = 0;
+              g_hd5->hd_step_direction = 0;
+              g_hdseek_delay = 0;
+              g_hd5->hd_step_pulse = 0;
+              /* initial (before use) hard-disk status bit values */
+              g_hd5->hd_sector_flag = FALSE;    /* status-bit 7 is OFF */
+              g_hd5->hd_index_flag = FALSE;     /* status-bit 6 is ON  */
+              g_hd5->hd_read_write_active = FALSE;      /* status-bit 5 is OFF */
+              g_hd5->hd_drive_ready = TRUE;     /* status_bit 4 is OFF */
+              g_hd5->hd_drive_selected = TRUE;  /*status-bit 3 is OFF  */
+              {
+                g_hd5->cylinder = 0;
+                g_hd5->hd_track_zero = TRUE;    /* status-bit 2 is OFF  */
+              }
+              g_hd5->hd_seek_complete = TRUE;   /* status-bit 1 is OFF */
+              g_hd5->hd_write_fault = FALSE;    /* status-bit 0 is ON  */
+            }
+        }
     }
 }
 
@@ -797,14 +797,14 @@ hdumount (void)
     }
   g_hd5->hdd = NULL;
   /* finishing values for hard disk status bits */
-  g_hd5->hd_sector_flag = OFF;	/*status-bit 7 */
-  g_hd5->hd_index_flag = OFF;	/*status-bit 6 */
-  g_hd5->hd_read_write_active = FALSE;	/*status-bit 5 */
-  g_hd5->hd_drive_ready = FALSE;	/*status-bit 4 */
-  g_hd5->hd_drive_selected = FALSE;	/*status-bit 3 */
-  g_hd5->hd_track_zero = FALSE;	/*status-bit 2 */
-  g_hd5->hd_seek_complete = FALSE;	/*SPEED_NOT_READY *//*status-bit 1 */
-  g_hd5->hd_write_fault = TRUE;	/*status-bit 0 */
+  g_hd5->hd_sector_flag = OFF;  /*status-bit 7 */
+  g_hd5->hd_index_flag = OFF;   /*status-bit 6 */
+  g_hd5->hd_read_write_active = FALSE;  /*status-bit 5 */
+  g_hd5->hd_drive_ready = FALSE;        /*status-bit 4 */
+  g_hd5->hd_drive_selected = FALSE;     /*status-bit 3 */
+  g_hd5->hd_track_zero = FALSE; /*status-bit 2 */
+  g_hd5->hd_seek_complete = FALSE;      /*SPEED_NOT_READY *//*status-bit 1 */
+  g_hd5->hd_write_fault = TRUE; /*status-bit 0 */
   g_hd5->hdfn[0] = '\0';
 /*  free_sector_cache (hd); */
 }
@@ -827,16 +827,16 @@ get_hd_info (BYTE * hdlabel)
   unsigned int flen;
   unsigned int fsectors;
   unsigned int tsectors;
-  unsigned int xsectors;	/*largest number of possible sectors */
+  unsigned int xsectors;        /*largest number of possible sectors */
 
   g_hd5 = (&g_nshd);
   msectors = hdlabel[DLDSZE] + (256 * hdlabel[DLDSZE + 1]);
   mheads = hdlabel[DLMXH];
   if (!mheads)
-    mheads = 3;			/* default is 4 heads (disk = SG5A) if no info */
+    mheads = 3;                 /* default is 4 heads (disk = SG5A) if no info */
   mcyls = hdlabel[DLMXC] + (256 * hdlabel[DLMXC + 1]);
   if (!mcyls)
-    mcyls = 152;		/* default is 152 (disk=SG5A) if no info */
+    mcyls = 152;                /* default is 152 (disk=SG5A) if no info */
   g_hd5->hd_max_sectors = msectors;
   g_hd5->hd_max_heads = mheads;
   g_hd5->hd_max_cylinders = mcyls;
@@ -847,13 +847,13 @@ get_hd_info (BYTE * hdlabel)
   fseek (g_hd5->hdd, 0L, SEEK_SET);
   csectors = (mcyls + 1) * (mheads + 1) * 16;
   tsectors = g_hd5->hd_total_cylinders * (mheads + 1) * 16;
-  fsectors = flen / 512;	/*max physical sectors capable on diskfile */
+  fsectors = flen / 512;        /*max physical sectors capable on diskfile */
   xlog (HDC,
-	"Hard_disk: USABLE  size = %d cylinders,       %d heads, %d max sectors \"per label\" %d max calc sectors  %d maxsectors/filesize\n",
-	mcyls + 1, mheads + 1, msectors, csectors, fsectors);
+        "Hard_disk: USABLE  size = %d cylinders,       %d heads, %d max sectors \"per label\" %d max calc sectors  %d maxsectors/filesize\n",
+        mcyls + 1, mheads + 1, msectors, csectors, fsectors);
   xlog (HDC,
-	"Hard_disk: TOTAL   size = %d total cylinders, %d heads, %d  TOTAL sectors  \" per safe shipping cylinders\"\n",
-	g_hd5->hd_total_cylinders + 1, mheads + 1, tsectors);
+        "Hard_disk: TOTAL   size = %d total cylinders, %d heads, %d  TOTAL sectors  \" per safe shipping cylinders\"\n",
+        g_hd5->hd_total_cylinders + 1, mheads + 1, tsectors);
 
 /*find largest sectors-number available*/
   xsectors = msectors;
@@ -899,9 +899,9 @@ load_hd_cache (int num_sectors)
       ld_sectors (i);
       calc_cache_crc (i);
       if (g_hd5->hd_sectorc[i] == NULL)
-	{
-	  xlog (HDC, "out of memory: sector-cache\n");
-	}
+        {
+          xlog (HDC, "out of memory: sector-cache\n");
+        }
     }
 }
 
@@ -919,14 +919,14 @@ mk_header (int sector_number, int heads)
   BYTE chead;
   phys = sector_number % 16;
   shftrk = sector_number & 0x0fff0;
-  logical = phys;		/*anticipate evens */
+  logical = phys;               /*anticipate evens */
   if (phys % 2)
     {
       logical = (logical + 8) % 16;
     }
   logical = logical + shftrk;
   chead = (sector_number % (16 * heads)) / 16;
-  ccyl = sector_number / (16 * heads);	/*current cylinder */
+  ccyl = sector_number / (16 * heads);  /*current cylinder */
   cylfactor = (BYTE) ((ccyl & 0x0300) / 16);
   cyllo = ccyl & 0x0ff;
   g_hd5->hd_sectorc[sector_number][0] = 0;
@@ -943,12 +943,12 @@ mk_header (int sector_number, int heads)
   g_hd5->hd_sectorc[sector_number][7] = (BYTE) (shftrk / 256);
   g_hd5->hd_sectorc[sector_number][8] =
     (BYTE) ((g_hd5->hd_sectorc[sector_number][1] +
-	     g_hd5->hd_sectorc[sector_number][2] +
-	     g_hd5->hd_sectorc[sector_number][3] +
-	     g_hd5->hd_sectorc[sector_number][4] +
-	     g_hd5->hd_sectorc[sector_number][5] +
-	     g_hd5->hd_sectorc[sector_number][6] +
-	     g_hd5->hd_sectorc[sector_number][7]) & 0x0ff);
+             g_hd5->hd_sectorc[sector_number][2] +
+             g_hd5->hd_sectorc[sector_number][3] +
+             g_hd5->hd_sectorc[sector_number][4] +
+             g_hd5->hd_sectorc[sector_number][5] +
+             g_hd5->hd_sectorc[sector_number][6] +
+             g_hd5->hd_sectorc[sector_number][7]) & 0x0ff);
   g_hd5->hd_sectorc[sector_number][9] =
     (BYTE) (0x0ff - g_hd5->hd_sectorc[sector_number][8]);
 
@@ -957,10 +957,10 @@ mk_header (int sector_number, int heads)
 
 /*  xlog (HDC, " st  phy  cyl  hed  lsl  lsh  stl  sth  crc  crc~  unit  Sector %d  [ %04X ]\n", sector_number, sector_number);
   xlog (HDC,
-	" %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X    %d\n",
-	hd5->hd_sectorc[sector_number][0], hd5->hd_sectorc[sector_number][1], hd5->hd_sectorc[sector_number][2],
-	hd5->hd_sectorc[sector_number][3], hd5->hd_sectorc[sector_number][4], hd5->hd_sectorc[sector_number][5],
-	hd5->hd_sectorc[sector_number][6], hd5->hd_sectorc[sector_number][7], hd5->hd_sectorc[sector_number][8], hd5->hd_sectorc[sector_number][9], unsector_numbert);
+        " %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X   %02X    %d\n",
+        hd5->hd_sectorc[sector_number][0], hd5->hd_sectorc[sector_number][1], hd5->hd_sectorc[sector_number][2],
+        hd5->hd_sectorc[sector_number][3], hd5->hd_sectorc[sector_number][4], hd5->hd_sectorc[sector_number][5],
+        hd5->hd_sectorc[sector_number][6], hd5->hd_sectorc[sector_number][7], hd5->hd_sectorc[sector_number][8], hd5->hd_sectorc[sector_number][9], unsector_numbert);
 */
 }
 
@@ -975,7 +975,7 @@ ld_sectors (int i)
   if (error)
     {
       xlog (HDC, "READ ERROR seeking on disk %s at sector %d\n", g_nshd.hdfn,
-	    i);
+            i);
     }
 
   hok = fread (&(g_hd5->hd_sectorc[i][10]), 0x200, 1, hd);
@@ -1036,14 +1036,14 @@ initialise_hard_disk_structure ()
   g_hd5 = (&g_nshd);
   g_hd5->hdd = NULL;
   /* finishing values for hard disk status bits */
-  g_hd5->hd_sector_flag = OFF;	/*status-bit 7 */
-  g_hd5->hd_index_flag = OFF;	/*status-bit 6 */
-  g_hd5->hd_read_write_active = FALSE;	/*status-bit 5 */
-  g_hd5->hd_drive_ready = H_4_NOT_READY;	/*status-bit 4 */
-  g_hd5->hd_drive_selected = FALSE;	/*status-bit 3 */
-  g_hd5->hd_track_zero = FALSE;	/*status-bit 2 */
-  g_hd5->hd_seek_complete = FALSE;	/*status-bit 1 */
-  g_hd5->hd_write_fault = TRUE;	/*status-bit 0 */
+  g_hd5->hd_sector_flag = OFF;  /*status-bit 7 */
+  g_hd5->hd_index_flag = OFF;   /*status-bit 6 */
+  g_hd5->hd_read_write_active = FALSE;  /*status-bit 5 */
+  g_hd5->hd_drive_ready = H_4_NOT_READY;        /*status-bit 4 */
+  g_hd5->hd_drive_selected = FALSE;     /*status-bit 3 */
+  g_hd5->hd_track_zero = FALSE; /*status-bit 2 */
+  g_hd5->hd_seek_complete = FALSE;      /*status-bit 1 */
+  g_hd5->hd_write_fault = TRUE; /*status-bit 0 */
 }
 
 
@@ -1072,46 +1072,46 @@ hard_disk_state ()
     case INDEX_0:
 
 
-      g_hd5->hd_index_flag = TRUE;	/*index flag  ACTIVE LOW */
+      g_hd5->hd_index_flag = TRUE;      /*index flag  ACTIVE LOW */
       copy_cache_header ();
       /*read_cache_header ();      *//* tells which sector we're on */
-      g_hd5->hd_read_write_active = FALSE;	/*start of sector, rwbusy goes low */
+      g_hd5->hd_read_write_active = FALSE;      /*start of sector, rwbusy goes low */
       g_hd5->hd_state = INDEX_1;
-      g_hd5->hd_state_counter = 2;	/*two */
+      g_hd5->hd_state_counter = 2;      /*two */
 /****************** this stuff here is just for debug logging info */
       track_sector = g_hd5->hd_sector_num;
       if (track_sector % 2)
-	{			/* if odd sector need to add skew */
-	  track_sector = ((track_sector + 8) % 16);
-	}
+        {                       /* if odd sector need to add skew */
+          track_sector = ((track_sector + 8) % 16);
+        }
       logical_sector_num =
-	(g_hd5->cylinder * (g_hd5->hd_max_heads + 1) * 16) +
-	(g_hd5->hd_surface * 16) + track_sector;
+        (g_hd5->cylinder * (g_hd5->hd_max_heads + 1) * 16) +
+        (g_hd5->hd_surface * 16) + track_sector;
       xlog (HDC,
-	    "########  Cylinder:%4d   Head: %1d   Sector:%2d  DiskAddress:%5d   ####\n",
-	    g_hd5->cylinder, g_hd5->hd_surface, g_hd5->hd_sector_num,
-	    logical_sector_num);
+            "########  Cylinder:%4d   Head: %1d   Sector:%2d  DiskAddress:%5d   ####\n",
+            g_hd5->cylinder, g_hd5->hd_surface, g_hd5->hd_sector_num,
+            logical_sector_num);
 /*****************/
       break;
     case INDEX_1:
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  g_hd5->hd_index_flag = FALSE;	/* set index flag INACTIVE low */
-	  g_hd5->hd_sector_flag = TRUE;	/* sector flag ACTIVE HIGH */
-	  g_hd5->hd_state = INDEX_2;
-	  g_hd5->hd_state_counter = 2;
-	  break;
-	}
+        {
+          g_hd5->hd_index_flag = FALSE; /* set index flag INACTIVE low */
+          g_hd5->hd_sector_flag = TRUE; /* sector flag ACTIVE HIGH */
+          g_hd5->hd_state = INDEX_2;
+          g_hd5->hd_state_counter = 2;
+          break;
+        }
       break;
     case INDEX_2:
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  g_hd5->hd_read_write_active = FALSE;	/*start of sector, rwbusy goes low */
-	  g_hd5->hd_state = INDEX_3;
-	  break;
-	}
+        {
+          g_hd5->hd_read_write_active = FALSE;  /*start of sector, rwbusy goes low */
+          g_hd5->hd_state = INDEX_3;
+          break;
+        }
       break;
     case INDEX_3:
       g_hd5->hd_state = SECTOR_1;
@@ -1121,35 +1121,35 @@ hard_disk_state ()
 /* Start of sectors 1 to 15 begins here - main sequence*/
 /***************************************/
     case SECTOR_0:
-      g_hd5->hd_sector_flag = TRUE;	/* sector flag is active HIGH */
-      g_hd5->hd_read_write_active = FALSE;	/*start of sector, rwbusy goes low */
+      g_hd5->hd_sector_flag = TRUE;     /* sector flag is active HIGH */
+      g_hd5->hd_read_write_active = FALSE;      /*start of sector, rwbusy goes low */
       copy_cache_header ();
       g_hd5->hd_state_counter = 2;
       g_hd5->hd_state = SECTOR_1;
 /*********************  calculations for debug logging info */
       track_sector = g_hd5->hd_sector_num;
       if (track_sector % 2)
-	{			/* if odd sector need to add skew */
-	  track_sector = ((track_sector + 8) % 16);
-	}
+        {                       /* if odd sector need to add skew */
+          track_sector = ((track_sector + 8) % 16);
+        }
       logical_sector_num =
-	(g_hd5->cylinder * (g_hd5->hd_max_heads + 1) * 16) +
-	(g_hd5->hd_surface * 16) + track_sector;
+        (g_hd5->cylinder * (g_hd5->hd_max_heads + 1) * 16) +
+        (g_hd5->hd_surface * 16) + track_sector;
       xlog (HDC,
-	    "########  Cylinder:%4d   Head: %1d   Sector:%2d  DiskAddress:%5d   ####\n",
-	    g_hd5->cylinder, g_hd5->hd_surface, g_hd5->hd_sector_num,
-	    logical_sector_num);
+            "########  Cylinder:%4d   Head: %1d   Sector:%2d  DiskAddress:%5d   ####\n",
+            g_hd5->cylinder, g_hd5->hd_surface, g_hd5->hd_sector_num,
+            logical_sector_num);
 /**********************/
       break;
     case SECTOR_1:
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  g_hd5->hd_read_write_active = FALSE;	/* was TRUE; */
-	  /*hd5->hd_state_counter = 2; */
-	  g_hd5->hd_state = SECTOR_2;
-	  break;
-	}
+        {
+          g_hd5->hd_read_write_active = FALSE;  /* was TRUE; */
+          /*hd5->hd_state_counter = 2; */
+          g_hd5->hd_state = SECTOR_2;
+          break;
+        }
       break;
 /****************************************************************/
 /* READ SECTOR SEQUENCE HERE                                    */
@@ -1165,23 +1165,23 @@ hard_disk_state ()
       xlog (HDC, "READ-SECTOR:     HD STATE READ_1: \n");
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  g_hd5->hd_state = READ_2;
-	  g_hd5->hd_read_write_active = TRUE;
-	  g_hd5->hd_state_counter = 8;	//*eight *//*
-	  break;
-	}
+        {
+          g_hd5->hd_state = READ_2;
+          g_hd5->hd_read_write_active = TRUE;
+          g_hd5->hd_state_counter = 8;  //*eight *//*
+          break;
+        }
       break;
     case READ_2:
       xlog (HDC, "READ-SECTOR:     HD STATE READ_2: \n");
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  g_hd5->hd_state = SECTOR_2;	/*sector ends */
-	  g_hd5->hd_read_write_active = FALSE;
-	  /*hd5->hd_state_counter = 2; */
-	  break;
-	}
+        {
+          g_hd5->hd_state = SECTOR_2;   /*sector ends */
+          g_hd5->hd_read_write_active = FALSE;
+          /*hd5->hd_state_counter = 2; */
+          break;
+        }
       break;
 /****************************************************************/
 /* WRITE SECTOR SEQUENCE HERE                                   */
@@ -1195,38 +1195,38 @@ hard_disk_state ()
     case WRITE_1:
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  if (g_hd_sync)
-	    {
-	      write_cached_sector ();
-	    }
-	  g_hd5->hd_state = WRITE_2;
-	  g_hd5->hd_state_counter = 2;
-	  break;
-	}
+        {
+          if (g_hd_sync)
+            {
+              write_cached_sector ();
+            }
+          g_hd5->hd_state = WRITE_2;
+          g_hd5->hd_state_counter = 2;
+          break;
+        }
       break;
     case WRITE_2:
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  g_hd5->hd_state = SECTOR_2;	/*sector ends */
-	  g_hd5->hd_read_write_active = FALSE;
-	  /*hd5->hd_state_counter = 1; */
-	  break;
-	}
+        {
+          g_hd5->hd_state = SECTOR_2;   /*sector ends */
+          g_hd5->hd_read_write_active = FALSE;
+          /*hd5->hd_state_counter = 1; */
+          break;
+        }
       break;
 /***************************************************************/
 /*          END OF SECTOR -> NEXT SECTOR                       */
 /***************************************************************/
     case SECTOR_2:
       if (g_hd_delay)
-	{
-	  g_hd5->hd_state_counter = 115;	/* vary hard drive speed between */
-	}			/* 'fast' and 'normal'           */
+        {
+          g_hd5->hd_state_counter = 115;        /* vary hard drive speed between */
+        }                       /* 'fast' and 'normal'           */
       else
-	{
-	  g_hd5->hd_state_counter = 1;
-	}
+        {
+          g_hd5->hd_state_counter = 1;
+        }
       g_hd5->hd_state = SECTOR_3;
 
       break;
@@ -1234,20 +1234,20 @@ hard_disk_state ()
       xlog (HDC, "SECTOR END:     HD STATE SECTOR_2: \n");
       g_hd5->hd_state_counter--;
       if (!g_hd5->hd_state_counter)
-	{
-	  g_hd5->hd_state = SECTOR_4;	/*sector ends */
-	  break;
-	}
+        {
+          g_hd5->hd_state = SECTOR_4;   /*sector ends */
+          break;
+        }
       break;
     case SECTOR_4:
       g_hd5->hd_sector_num++;
       if (g_hd5->hd_sector_num >= 16)
-	{			/* NS HD has 16 sectors (0-15), back to sector 0 */
-	  g_hd5->hd_sector_num = 0;
-	  g_hd5->hd_state = INDEX_0;
-	  break;
-	}
-      g_hd5->hd_state = SECTOR_0;	/* not sector 0, back to main-sequence (1-15) */
+        {                       /* NS HD has 16 sectors (0-15), back to sector 0 */
+          g_hd5->hd_sector_num = 0;
+          g_hd5->hd_state = INDEX_0;
+          break;
+        }
+      g_hd5->hd_state = SECTOR_0;       /* not sector 0, back to main-sequence (1-15) */
       break;
 /***************************************************************/
 /*           BAD STATE NUMBER - COMPLAIN                       */
@@ -1256,5 +1256,5 @@ hard_disk_state ()
       xlog (HDC, "Strange state value: %d \n", g_hd5->hd_state);
       g_hd5->hd_state = SECTOR_0;
       break;
-    }				/* end switch */
+    }                           /* end switch */
 }

@@ -104,7 +104,7 @@ sio_buff_in (void)
 
   while (!sio_buffstat ())
     { /* do nuthin' */ ;
-    }				/*wait for char available */
+    }                           /*wait for char available */
 
   g_sio_ocptr++;
   g_sio_ocptr &= PORT_IN_BUFF_MASK;
@@ -121,7 +121,7 @@ pio_buff_in (void)
 
   while (!pio_in_buffstat ())
     { /* do nuthin' */ ;
-    }				/*wait for char available */
+    }                           /*wait for char available */
 
   g_pio_ocptr++;
   g_pio_ocptr &= PORT_IN_BUFF_MASK;
@@ -160,31 +160,31 @@ pio_input_thread (void)
   if (diff > (PORT_IN_BUFF_SIZE - 10))
     {
       xlog (ALL,
-	    "STALLING TILL CATCH-UP:   icptr = %4d    ocptr = %4d \n",
-	    g_pio_icptr, g_pio_ocptr);
+            "STALLING TILL CATCH-UP:   icptr = %4d    ocptr = %4d \n",
+            g_pio_icptr, g_pio_ocptr);
     }
   else
     {
-      if (s->fp == NULL)	/* no file */
-	{
-	  xlog (ALL,
-		"pio_thread:  s->fp is not valid, no file. No char input.\n");
-	}
+      if (s->fp == NULL)        /* no file */
+        {
+          xlog (ALL,
+                "pio_thread:  s->fp is not valid, no file. No char input.\n");
+        }
       else
-	{
-	  fd = fileno (s->fp);
-	  count = 0;
-	  count = read (fd, &cc, 1);
-	  if (count > 0)
-	    {
-	      g_pio_icptr++;
-	      g_pio_icptr &= PORT_IN_BUFF_MASK;
+        {
+          fd = fileno (s->fp);
+          count = 0;
+          count = read (fd, &cc, 1);
+          if (count > 0)
+            {
+              g_pio_icptr++;
+              g_pio_icptr &= PORT_IN_BUFF_MASK;
 
-	      *(g_pio_character_buff_ptr + g_pio_icptr) = cc;
+              *(g_pio_character_buff_ptr + g_pio_icptr) = cc;
 
-	      Setlreg (BC, cc);
-	    }
-	}
+              Setlreg (BC, cc);
+            }
+        }
 
     }
 }
@@ -224,36 +224,36 @@ sio_input_thread (void)
   if (diff > (PORT_IN_BUFF_SIZE - 10))
     {
       xlog (ALL,
-	    "STALLING TILL CATCH-UP:   icptr = %4d    ocptr = %4d \n",
-	    g_sio_icptr, g_sio_ocptr);
+            "STALLING TILL CATCH-UP:   icptr = %4d    ocptr = %4d \n",
+            g_sio_icptr, g_sio_ocptr);
     }
   else
     {
-      if (s->fp == NULL)	/* no file */
-	{
-	  xlog (ALL,
-		"sio_thread:  s->fp is not valid, no file. No char input.\n");
-	}
+      if (s->fp == NULL)        /* no file */
+        {
+          xlog (ALL,
+                "sio_thread:  s->fp is not valid, no file. No char input.\n");
+        }
       else
-	{
-	  fd = fileno (s->fp);
-	  count = 0;
-	  count = read (fd, &cc, 1);
+        {
+          fd = fileno (s->fp);
+          count = 0;
+          count = read (fd, &cc, 1);
 
-	  if (count > 0)	// IE NO ERROR, AND MORE THAN ZERO
-	    {
-	      g_sio_icptr++;
-	      g_sio_icptr &= PORT_IN_BUFF_MASK;
+          if (count > 0)        // IE NO ERROR, AND MORE THAN ZERO
+            {
+              g_sio_icptr++;
+              g_sio_icptr &= PORT_IN_BUFF_MASK;
 
-	      *(g_sio_character_buff_ptr + g_sio_icptr) = cc;
+              *(g_sio_character_buff_ptr + g_sio_icptr) = cc;
 
 
-	      xlog (ALL,
-		    "Char on SIO Hardware Input:  %02X  <%c>   icptr = %4d    ocptr = %4d \n",
-		    cc, prn (cc), g_sio_icptr, g_sio_ocptr);
+              xlog (ALL,
+                    "Char on SIO Hardware Input:  %02X  <%c>   icptr = %4d    ocptr = %4d \n",
+                    cc, prn (cc), g_sio_icptr, g_sio_ocptr);
 //            Setlreg (BC, cc);
-	    }
-	}
+            }
+        }
 
     }
 }

@@ -29,12 +29,12 @@ most of their customers were using 8080 machines.
 
 #include <string.h>
 
-#define PC cpux->pc
-#define AF cpux->af[cpux->af_sel]
-#define BC  cpux->regs[cpux->regs_sel].bc
-#define DE  cpux->regs[cpux->regs_sel].de
-#define HL  cpux->regs[cpux->regs_sel].hl
-#define SP  cpux->sp
+#define PC      g_cpux->pc
+#define AF      g_cpux->af[g_cpux->af_sel]
+#define BC      g_cpux->regs[g_cpux->regs_sel].bc
+#define DE      g_cpux->regs[g_cpux->regs_sel].de
+#define HL      g_cpux->regs[g_cpux->regs_sel].hl
+#define SP      g_cpux->sp
 
 extern int current_cpu;
 
@@ -386,27 +386,27 @@ DAsm (WORD start, char *linebuff, BYTE * opcode1)
       codeptr++;
       index_reg = 'X';
       if (*codeptr != 0xCB)
-	T = plus_instructions[*codeptr++];
+        T = plus_instructions[*codeptr++];
       else
-	{
-	  codeptr++;
-	  offset = *codeptr++;
-	  instruction_length = 1;
-	  T = CB_plus_instructions[*codeptr++];
-	}
+        {
+          codeptr++;
+          offset = *codeptr++;
+          instruction_length = 1;
+          T = CB_plus_instructions[*codeptr++];
+        }
       break;
     case 0xFD:
       codeptr++;
       index_reg = 'Y';
       if (*codeptr != 0xCB)
-	T = plus_instructions[*codeptr++];
+        T = plus_instructions[*codeptr++];
       else
-	{
-	  codeptr++;
-	  offset = *codeptr++;
-	  instruction_length = 1;
-	  T = CB_plus_instructions[*codeptr++];
-	}
+        {
+          codeptr++;
+          offset = *codeptr++;
+          instruction_length = 1;
+          T = CB_plus_instructions[*codeptr++];
+        }
       break;
     default:
       T = Instructions[*codeptr++];
@@ -451,10 +451,10 @@ DAsm (WORD start, char *linebuff, BYTE * opcode1)
       strcat (linebuff, H);
       strcat (linebuff, position_ptr + 1);
       if ((*(codeptr - 1) > 0x1f) && (*(codeptr - 1) < 0x7f))
-	{
-	  sprintf (H, "       \'%c\'", *(codeptr - 1));
-	  strcat (linebuff, H);
-	}
+        {
+          sprintf (H, "       \'%c\'", *(codeptr - 1));
+          strcat (linebuff, H);
+        }
       break;
 
     case 2:
@@ -463,18 +463,18 @@ DAsm (WORD start, char *linebuff, BYTE * opcode1)
       linebuff[position_ptr - outbuff] = '\0';
 
       if (!instruction_length)
-	offset = *codeptr++;
+        offset = *codeptr++;
 
       reljump = offset;
       if (reljump & 0x80)
-	{
-	  reljump = 256 - reljump;
-	  start = (WORD) ((int) start + 2 - reljump) & 0x0ffff;
-	}
+        {
+          reljump = 256 - reljump;
+          start = (WORD) ((int) start + 2 - reljump) & 0x0ffff;
+        }
       else
-	{
-	  start = (WORD) ((int) start + 2 + reljump) & 0x0ffff;
-	}
+        {
+          start = (WORD) ((int) start + 2 + reljump) & 0x0ffff;
+        }
       sprintf (H, "%04X", start);
       strcat (linebuff, H);
       strcat (linebuff, position_ptr + 1);
@@ -504,7 +504,7 @@ DAsm (WORD start, char *linebuff, BYTE * opcode1)
 /* Builds disassembly line which is written to logfile if enabled by the debug command */
 void
 construct_z80_line (char *z80_machine_line, char *registers, BYTE pc0,
-		    BYTE pc1, BYTE pc2, BYTE pc3, WORD pcc)
+                    BYTE pc1, BYTE pc2, BYTE pc3, WORD pcc)
 {
   BYTE iarray[4];
   char pc_number[5];
@@ -547,7 +547,7 @@ construct_z80_line (char *z80_machine_line, char *registers, BYTE pc0,
 
 
   sprintf (z80_machine_line, "%s %s %s %s", pc_number, instruction_codes,
-	   registers, opcodes_string);
+           registers, opcodes_string);
 
 
 }

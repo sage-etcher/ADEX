@@ -4,7 +4,7 @@
 // GENERIC FILE CHOOSER
 void
 select_a_file (gint filemode, const char *foldername, const char *title,
-	       GtkWindow * parent)
+               GtkWindow * parent)
 {
 
   GtkWidget *filechooser;
@@ -14,20 +14,20 @@ select_a_file (gint filemode, const char *foldername, const char *title,
   modestring = mstring;
   strcpy (modestring, "SELECT");
 
-  g_file_choice_name = NULL;	//clear buffer which will be used for possible new filename
-  g_file_choice_val = 0;		//zero choice selection number for file chooser
+  g_file_choice_name = NULL;    //clear buffer which will be used for possible new filename
+  g_file_choice_val = 0;                //zero choice selection number for file chooser
 
 
   filechooser = gtk_file_chooser_dialog_new (title,
-					     parent,
-					     filemode,
-					     modestring, filemode, "CANCEL",
-					     GTK_RESPONSE_CANCEL, NULL);
+                                             parent,
+                                             filemode,
+                                             modestring, filemode, "CANCEL",
+                                             GTK_RESPONSE_CANCEL, NULL);
   gtk_window_set_transient_for (GTK_WINDOW (filechooser),
-				GTK_WINDOW (g_window));
+                                GTK_WINDOW (g_window));
 
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (filechooser),
-				       foldername);
+                                       foldername);
   g_file_choice_val = gtk_dialog_run (GTK_DIALOG (filechooser));
   g_file_choice_name =
     gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
@@ -51,33 +51,33 @@ pick_aread_file (GtkMenuItem * item, GtkWindow * pwindow)
   if (!g_started)
     {
       sprintf (g_vstring,
-	       "\n'aread' option not valid. ADE not started yet. Hit 'GO' button to start");
+               "\n'aread' option not valid. ADE not started yet. Hit 'GO' button to start");
       status_print (g_vstring, TRUE);
     }
   else
     {
 
-      g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;	// aread file must exist
+      g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;     // aread file must exist
 
 
-      select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
-		     "",	// current folder to look in at start - unspecified
-		     "Select ASCII INPUT ('aread') File ... ",	// title for the file-chooser dialog
-		     pwindow	// chooser dialog parent window
-	);
+      select_a_file (g_choose_mode,     // allow creation of new file  or not? set 'save' or 'open'
+                     "",        // current folder to look in at start - unspecified
+                     "Select ASCII INPUT ('aread') File ... ",  // title for the file-chooser dialog
+                     pwindow    // chooser dialog parent window
+        );
 
       if (g_file_choice_name != NULL)
-	{
-	  strcpy (g_aread_name, g_file_choice_name);
-	  sprintf (g_vstring, "\nSelected aread file:  \"%s\"", g_aread_name);
-	  status_print (g_vstring, 0);
-	  set_up_aread_input ();
-	}
+        {
+          strcpy (g_aread_name, g_file_choice_name);
+          sprintf (g_vstring, "\nSelected aread file:  \"%s\"", g_aread_name);
+          status_print (g_vstring, 0);
+          set_up_aread_input ();
+        }
       else
-	{
-	  sprintf (g_vstring, "\n'aread' File Selection Cancelled ...");
-	  status_print (g_vstring, 0);
-	}
+        {
+          sprintf (g_vstring, "\n'aread' File Selection Cancelled ...");
+          status_print (g_vstring, 0);
+        }
     }
 }
 
@@ -98,13 +98,13 @@ select_io (GtkMenuItem * item, GtkWindow * iwindow, gchar * chooser_title)
 
   io_chooser =
     gtk_file_chooser_dialog_new (chooser_title, iwindow,
-				 GTK_FILE_CHOOSER_ACTION_OPEN, "Cancel",
-				 GTK_RESPONSE_CANCEL, "  SIO In  ", 200,
-				 "  SIO Out ", 201, "  PIO In  ", 210,
-				 "  PIO Out  ", 211, NULL);
+                                 GTK_FILE_CHOOSER_ACTION_OPEN, "Cancel",
+                                 GTK_RESPONSE_CANCEL, "  SIO In  ", 200,
+                                 "  SIO Out ", 201, "  PIO In  ", 210,
+                                 "  PIO Out  ", 211, NULL);
 
   gtk_window_set_transient_for (GTK_WINDOW (io_chooser),
-				GTK_WINDOW (iwindow));
+                                GTK_WINDOW (iwindow));
 
 /*  gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (io_chooser), NSI_DISK_DIR);*/
 
@@ -118,11 +118,11 @@ select_io (GtkMenuItem * item, GtkWindow * iwindow, gchar * chooser_title)
     case 210:
     case 211:
       filename =
-	gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (io_chooser));
+        gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (io_chooser));
       if (filename == NULL)
-	{
-	  g_io_result = GTK_RESPONSE_CANCEL;
-	}
+        {
+          g_io_result = GTK_RESPONSE_CANCEL;
+        }
       break;
     default:
       g_io_result = GTK_RESPONSE_CANCEL;

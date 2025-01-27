@@ -31,11 +31,11 @@
 /*************** DUMMY - JUST PRINTS TRAP ADDRESS **************************/
 void
 trap_func (WORD * a_f, WORD * b_c, WORD * d_e, WORD * h_l, WORD * s_p,
-	   U_INT * p_c)
+           U_INT * p_c)
 {
   xlog (TRAP,
-	"trap.c: AF=%04X, BC=%04X, DE=%04X, HL=%04X, SP=%04X, PC=%04X\n",
-	*a_f, *b_c, *d_e, *h_l, *s_p, *p_c);
+        "trap.c: AF=%04X, BC=%04X, DE=%04X, HL=%04X, SP=%04X, PC=%04X\n",
+        *a_f, *b_c, *d_e, *h_l, *s_p, *p_c);
 }
 
 

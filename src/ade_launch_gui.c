@@ -6,28 +6,28 @@ void
 go_action (void)
 {
   if (!g_stopsim)
-    {				//already running
+    {                           //already running
       sprintf (g_vstring, "\nADE already running");
       status_print (g_vstring, TRUE);
     }
   else
     {
       if (g_no_boot_disk)
-	{
-	  wait_for_boot_floppy ();
-	}
+        {
+          wait_for_boot_floppy ();
+        }
       else
-	{
-	  if (!g_started)
-	    {
-	      clear_video_ram ();
-	      clear_display_buffer ();
-	    }
-	  sprintf (g_vstring, "\nAdvantage Emulator is RUNNING");
-	  status_print (g_vstring, FALSE);
-	  g_stopsim = 0;
-	  g_started = TRUE;
-	}
+        {
+          if (!g_started)
+            {
+              clear_video_ram ();
+              clear_display_buffer ();
+            }
+          sprintf (g_vstring, "\nAdvantage Emulator is RUNNING");
+          status_print (g_vstring, FALSE);
+          g_stopsim = 0;
+          g_started = TRUE;
+        }
     }
 }
 
@@ -38,12 +38,12 @@ wait_for_boot_floppy (void)
   if (g_warn_boot_floppy)
     {
       if (g_nsd[0].fdd == NULL)
-	{
-	  sprintf (g_vstring,
-		   "\n!!!!  NO BOOT FLOPPY FOUND!   LOAD BOOT FLOPPY (FD1)");
-	  status_print (g_vstring, TRUE);
-	  g_warn_boot_floppy = 0;
-	}
+        {
+          sprintf (g_vstring,
+                   "\n!!!!  NO BOOT FLOPPY FOUND!   LOAD BOOT FLOPPY (FD1)");
+          status_print (g_vstring, TRUE);
+          g_warn_boot_floppy = 0;
+        }
     }
 }
 
@@ -54,14 +54,14 @@ pause_action (void)
   if (!g_started)
     {
       sprintf (g_vstring,
-	       "\nCan't 'PAUSE'. Not started yet. Hit 'GO' button to start");
+               "\nCan't 'PAUSE'. Not started yet. Hit 'GO' button to start");
       status_print (g_vstring, TRUE);
     }
   else
     {
       g_stopsim = 1;
       sprintf (g_vstring,
-	       "\nAdvantage Emulator PAUSED. Hit 'go' to run again.");
+               "\nAdvantage Emulator PAUSED. Hit 'go' to run again.");
       status_print (g_vstring, FALSE);
     }
 }
@@ -72,7 +72,7 @@ reset_action (void)
   if (!g_started)
     {
       sprintf (g_vstring,
-	       "\n'RESET' not valid. Not started yet. Hit 'GO' button to start");
+               "\n'RESET' not valid. Not started yet. Hit 'GO' button to start");
       status_print (g_vstring, TRUE);
     }
   else
@@ -178,7 +178,7 @@ status_print (const char *scptr, int beep)
   mark = gtk_text_buffer_get_insert (g_status_buffer);
   gtk_text_buffer_get_iter_at_mark (g_status_buffer, &g_status_end_iter, mark);
   gtk_text_buffer_insert (g_status_buffer, &g_status_end_iter,
-			  (const gchar *) scptr, -1);
+                          (const gchar *) scptr, -1);
   gtk_text_view_set_buffer (GTK_TEXT_VIEW (g_statusinfo), g_status_buffer);
   mark = gtk_text_buffer_get_insert (g_status_buffer);
   gtk_text_view_scroll_mark_onscreen (g_statusinfo, mark);
@@ -221,8 +221,8 @@ launch_gui (void)
 //  make_rgb_blank_data ();
 
 // setup keyboard queue pointerss
-  g_advq = (&g_kqueue[0]);		// ade main window
-  g_memq = (&g_kqueue[1]);		// memtext window
+  g_advq = (&g_kqueue[0]);              // ade main window
+  g_memq = (&g_kqueue[1]);              // memtext window
   /*cook status textview widget */
   g_statusinfo = GTK_TEXT_VIEW (g_Wstatusinfo);
   g_settings = GTK_MENU_BAR (g_Wsettings);
@@ -231,7 +231,7 @@ launch_gui (void)
   g_status_buffer = gtk_text_view_get_buffer (g_statusinfo);
   gtk_text_view_set_buffer (GTK_TEXT_VIEW (g_statusinfo), g_status_buffer);
   gtk_text_buffer_set_text (g_status_buffer, (const gchar *) "",
-			    (gint) 0 /*llen */ );
+                            (gint) 0 /*llen */ );
 
   g_dots_per_pixel = 2;
   g_x_dots_per_pixel = 1;
@@ -274,7 +274,7 @@ launch_gui (void)
   display_name = (const gchar *) gdk_display_get_name (g_gdkdisplay);
   gdk_display_open (display_name);
   g_signal_connect (G_OBJECT (g_window), "destroy", G_CALLBACK (exit_action),
-		    NULL);
+                    NULL);
   /*status_print (display_name, 0); */
   launch_advantage ();
   g_idle_add ((GSourceFunc) run, NULL);
@@ -330,9 +330,9 @@ open_log_files (void)
       strcat (g_nc_logfilename, NC_LOGFILENAME);
       g_nc_log = fopen (g_nc_logfilename, "w");
       if ((g_nc_log = fopen (g_nc_logfilename, "w")) == NULL)
-	{
-	  printf ("!!!!: nc_log \"%s\" not opened.\n", g_nc_logfilename);
-	}
+        {
+          printf ("!!!!: nc_log \"%s\" not opened.\n", g_nc_logfilename);
+        }
     }
 
 

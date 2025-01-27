@@ -132,7 +132,7 @@ get_dbg_new_value ()
 
   debug_string = gtk_entry_get_text (g_debugvalue);
   strncpy (dbgtmp, debug_string, 4);
-  dbgtmp[4] = '\0';		//truncate to first 4 chars if longer
+  dbgtmp[4] = '\0';             //truncate to first 4 chars if longer
   g_ade_debug = asc2hex ((char *) dbgtmp);
   g_ade_debug = g_ade_debug & 0x0FFFF;
   populate_debug_buttons ();

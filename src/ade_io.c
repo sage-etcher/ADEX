@@ -26,10 +26,10 @@
 #include <X11/XKBlib.h>
 
 /* Z80 registers */
-#define AF	cpux->af[cpux->af_sel]
-#define BC	cpux->regs[cpux->regs_sel].bc
-#define DE	cpux->regs[cpux->regs_sel].de
-#define HL	cpux->regs[cpux->regs_sel].hl
+#define AF      cpux->af[cpux->af_sel]
+#define BC      cpux->regs[cpux->regs_sel].bc
+#define DE      cpux->regs[cpux->regs_sel].de
+#define HL      cpux->regs[cpux->regs_sel].hl
 #define SP      cpux->sp
 
 
@@ -40,7 +40,7 @@ kbd_buff_stat ()
   int i;
 
   if (g_keyboard_active)
-    {				//still working on last input char, so wait
+    {                           //still working on last input char, so wait
       return (BYTE) 0;
     }
 
@@ -48,19 +48,19 @@ kbd_buff_stat ()
   if (!kq_query (g_advq))
     {
       if (g_ascii)
-	{
-	  load_aread_line ();
-	  return (BYTE) (0xFF);
-	}
+        {
+          load_aread_line ();
+          return (BYTE) (0xFF);
+        }
       else
-	{
-	  for (i = 0; i < 30000; i++)
-	    {
-	      i = i + 1;
-	      i = i - 1;
-	    }
-	  return (BYTE) 0;
-	}
+        {
+          for (i = 0; i < 30000; i++)
+            {
+              i = i + 1;
+              i = i - 1;
+            }
+          return (BYTE) 0;
+        }
     }
   else
     {
@@ -104,9 +104,9 @@ load_aread_line ()
   else
     {
       for (i = 0; i < strlen (aread_buffer); i++)
-	{
-	  jqin (0, (WORD) aread_buffer[i], g_advq);
-	}
+        {
+          jqin (0, (WORD) aread_buffer[i], g_advq);
+        }
     }
 }
 
@@ -118,9 +118,9 @@ lststat (void)
   struct sio *s = &siotab[PIO_CARD_OUT];
   int fd;
 
-  if (s->fp == NULL)		/* no file */
+  if (s->fp == NULL)            /* no file */
     return 0;
-  if (s->tty == 0)		/* disk files are always ready */
+  if (s->tty == 0)              /* disk files are always ready */
     return 1;
 
   nanosleep (&g_pulse, &g_rem);
@@ -178,7 +178,7 @@ out_port_slotcard (BYTE slotnum, BYTE po_lo, BYTE data)
       break;
     default:
       xlog (MOTHERBOARD, "Bad data [%02X] output to port %d to slot %d\n",
-	    data, po_lo, slotnum);
+            data, po_lo, slotnum);
     }
 
 }
@@ -196,8 +196,8 @@ PIO_in (BYTE port_lo)
   BYTE data;
 
   xlog (MOTHERBOARD,
-	"mb_in: [Input] Access PIO board in slot 2 - port_lo = %X \n",
-	port_lo);
+        "mb_in: [Input] Access PIO board in slot 2 - port_lo = %X \n",
+        port_lo);
   switch (port_lo)
     {
     case 0:
@@ -210,7 +210,7 @@ PIO_in (BYTE port_lo)
       break;
     default:
       xlog (MOTHERBOARD, "parallel_in OTHER (%X): NOT IMPLEMENTED\n",
-	    port_lo);
+            port_lo);
       break;
     }
 /* parallel I/O */
@@ -229,9 +229,9 @@ parallel_in ()
   if (s->tty)
     {
       if (read (fileno (s->fp), &c, 1) == 0)
-	return 0;
+        return 0;
       else
-	return c;
+        return c;
     }
   g_pio_input_flag = TRUE;
 
@@ -301,8 +301,8 @@ PIO_out (BYTE port_lo, BYTE data)
 
   pcmd = port_lo & 0x07;
   xlog (MOTHERBOARD,
-	"mb_out(%02x): Access PIO board in slot 2  data: [%02x]  '%c'\n",
-	port_lo, data, prn (data));
+        "mb_out(%02x): Access PIO board in slot 2  data: [%02x]  '%c'\n",
+        port_lo, data, prn (data));
   switch (pcmd)
     {
     case 0:
@@ -344,7 +344,7 @@ parallel_out (BYTE c)
   struct sio *s = &siotab[PIO_CARD_OUT];
 
   xlog (DEV, "parallel_out: OUTPUT to parallel port char %02X (%c)\n", c,
-	prn (c));
+        prn (c));
 
   g_pio_output_flag = TRUE;
 
@@ -388,23 +388,23 @@ SIO_in (BYTE port_lo)
   BYTE status = 0;
 
   xlog (MOTHERBOARD, "mb_in: [Input] Access SIO board in slot %d (SIO)\n",
-	(6 - g_p_hi));
+        (6 - g_p_hi));
   switch (port_lo)
     {
     case 0:
       xlog (MOTHERBOARD, "### SIO input from ring buffer \n");
       status = sio_buffstat ();
       if (status)
-	{
-	  data = sio_buff_in ();
-	  xlog (QUEUE,
-		"sio_card_in from sio_char_buff:      char is %02X [%c]\n",
-		data, prn (data));
-	}
+        {
+          data = sio_buff_in ();
+          xlog (QUEUE,
+                "sio_card_in from sio_char_buff:      char is %02X [%c]\n",
+                data, prn (data));
+        }
       else
-	{
-	  data = 0;
-	}
+        {
+          data = 0;
+        }
       break;
     case 1:
       data = get_sio_status ();
@@ -443,8 +443,8 @@ void
 SIO_out (BYTE po_lo, BYTE data)
 {
   xlog (MOTHERBOARD,
-	"mb_out: Access I/O board in slot %d [po_lo=%02X   %02x]\n",
-	(6 - g_p_hi), po_lo, data);
+        "mb_out: Access I/O board in slot %d [po_lo=%02X   %02x]\n",
+        (6 - g_p_hi), po_lo, data);
   switch (po_lo)
     {
     case 0:
@@ -452,15 +452,15 @@ SIO_out (BYTE po_lo, BYTE data)
 
 // Only if testing the SIO I/O with the DEMODIAG disk options
       if (g_sio_test)
-	{
-	  g_sio_icptr++;
-	  g_sio_icptr &= PORT_IN_BUFF_MASK;
+        {
+          g_sio_icptr++;
+          g_sio_icptr &= PORT_IN_BUFF_MASK;
 
-	  *(g_sio_character_buff_ptr + g_sio_icptr) = data;
-	  xlog (QUEUE,
-		"SIO_TEST:Char added to sio_character_buff:  %02X  <%c>   icptr = %4d    ocptr = %4d \n",
-		data, prn (data), g_sio_icptr, g_sio_ocptr);
-	}
+          *(g_sio_character_buff_ptr + g_sio_icptr) = data;
+          xlog (QUEUE,
+                "SIO_TEST:Char added to sio_character_buff:  %02X  <%c>   icptr = %4d    ocptr = %4d \n",
+                data, prn (data), g_sio_icptr, g_sio_ocptr);
+        }
 /////////////////////////////////////////////////////////////
       break;
     case 1:
@@ -488,12 +488,12 @@ sio_card_stat (void)
   int fd;
 
   if (s->fp == NULL)
-    {				/* no file */
+    {                           /* no file */
       xlog (ALL, "sio_card_stat: file pointer = NULL\n");
       return 0;
     }
   if (s->tty == 0)
-    {				/* disk files are always ready */
+    {                           /* disk files are always ready */
       return 1;
       xlog (ALL, "sio_card_stat: disk file 'always' ready\n");
     }
@@ -528,15 +528,15 @@ sio_card_in ()
   if (s->tty)
     {
       if (read (fileno (s->fp), &c, 1) == 0)
-	{
-	  xlog (ALL, "sio_card_in: end of file - no read (1A)\n");
-	  return (BYTE) 0x1a;
-	}
+        {
+          xlog (ALL, "sio_card_in: end of file - no read (1A)\n");
+          return (BYTE) 0x1a;
+        }
       else
-	{
-	  xlog (ALL, "sio_card_in:  read c (%02X)\n", c);
-	  return (BYTE) c;
-	}
+        {
+          xlog (ALL, "sio_card_in:  read c (%02X)\n", c);
+          return (BYTE) c;
+        }
     }
 
 
@@ -609,30 +609,30 @@ set_sio_interrupt_mask (BYTE data)
   if (data & 0x01)
     {
       xlog (DEV,
-	    "set_sio_interrupt_mask: [01] set USART  TxEmpty - Char Sent - Interrupt\n");
+            "set_sio_interrupt_mask: [01] set USART  TxEmpty - Char Sent - Interrupt\n");
     }
 
   if (data & 0x02)
     {
       xlog (DEV,
-	    "set_sio_interrupt_mask: [02] set USART  TxReady - Want New Char - Interrupt\n");
+            "set_sio_interrupt_mask: [02] set USART  TxReady - Want New Char - Interrupt\n");
     }
 
   if (data & 0x04)
     {
       xlog (DEV,
-	    "set_sio_interrupt_mask: [04] set USART  RxReady - New Char Available - Interrupt\n");
+            "set_sio_interrupt_mask: [04] set USART  RxReady - New Char Available - Interrupt\n");
     }
 
   if (data & 0x08)
     {
       xlog (DEV,
-	    "set_sio_interrupt_mask: [08] set USART  Sync Detect - Modem Available - Interrupt\n");
+            "set_sio_interrupt_mask: [08] set USART  Sync Detect - Modem Available - Interrupt\n");
     }
   if (data & 0x0f0)
     {
       xlog (DEV,
-	    "set_sio_interrupt_mask: [08] set USART - !!!!! - Invalid Interrupt\n");
+            "set_sio_interrupt_mask: [08] set USART - !!!!! - Invalid Interrupt\n");
     }
 
 
@@ -721,86 +721,86 @@ jqin (int active, WORD key, struct kbdq *xq)
     {
       xlog (QUEUE, "Key is function key- check for unused keys\n");
       switch (key)
-	{
-	case 0xFF01:
-	  key = 0x01;
-	  break;
-	case 0xFF02:
-	  key = 0x02;
-	  break;
-	case 0xFF03:
-	  key = 0x03;
-	  break;
-	case 0xFF04:
-	  key = 0x04;
-	  break;
-	case 0xFF05:
-	  key = 0x05;
-	  break;
-	case 0xFF06:
-	  key = 0x06;
-	  break;
-	case 0xFF07:
-	  key = 0x07;
-	  break;
-	case 0xFF08:		/* Control-H = Back Space */
-	  key = 0x08;
-	  break;
-	case 0xFF09:
-	  key = 0x09;
-	  break;
-	case 0xFF0a:
-	  key = 0x0a;
-	  break;
-	case 0xFFe3:		/* Control-L =Cursor Right */
-	  key = 0x0c;
-	  break;
+        {
+        case 0xFF01:
+          key = 0x01;
+          break;
+        case 0xFF02:
+          key = 0x02;
+          break;
+        case 0xFF03:
+          key = 0x03;
+          break;
+        case 0xFF04:
+          key = 0x04;
+          break;
+        case 0xFF05:
+          key = 0x05;
+          break;
+        case 0xFF06:
+          key = 0x06;
+          break;
+        case 0xFF07:
+          key = 0x07;
+          break;
+        case 0xFF08:            /* Control-H = Back Space */
+          key = 0x08;
+          break;
+        case 0xFF09:
+          key = 0x09;
+          break;
+        case 0xFF0a:
+          key = 0x0a;
+          break;
+        case 0xFFe3:            /* Control-L =Cursor Right */
+          key = 0x0c;
+          break;
 
-	case 0xFF0d:		/* Carriage Return */
-	  key = 0x0d;
-	  break;
-	case 0xFF0e:		/* Control-N =Clr to End of Line */
-	  key = 0x0E;
-	  break;
-	case 0xFF0F:		/* Control-O =Clr to End of Page */
-	  key = 0x0F;
-	  break;
+        case 0xFF0d:            /* Carriage Return */
+          key = 0x0d;
+          break;
+        case 0xFF0e:            /* Control-N =Clr to End of Line */
+          key = 0x0E;
+          break;
+        case 0xFF0F:            /* Control-O =Clr to End of Page */
+          key = 0x0F;
+          break;
 
-	case 0xFF52:		/* Cursor Key UP */
-	  key = 0x82;
-	  break;
-	case 0xFF54:		/* Cursor Key DOWN */
-	  key = 0x8a;
-	  break;
-	case 0xFF51:		/* Cursor Key LEFT */
-	  key = 0x88;
-	  break;
-	case 0xFF53:		/* Cursor Key RIGHT */
-	  key = 0x86;
-	  break;
-	case 0xFF1b:		/* Cursor Key HOME */
-	  key = 0x1B;
-	  break;
-	case 0xFF50:		/* Cursor Key HOME */
-	  key = 0x1E;
-	  break;
-	case 0xFF55:		/* NEW LINE *//*$$$$$$$$ WRONG VALUE FIX */
-	  key = 0x1F;
-	  break;
+        case 0xFF52:            /* Cursor Key UP */
+          key = 0x82;
+          break;
+        case 0xFF54:            /* Cursor Key DOWN */
+          key = 0x8a;
+          break;
+        case 0xFF51:            /* Cursor Key LEFT */
+          key = 0x88;
+          break;
+        case 0xFF53:            /* Cursor Key RIGHT */
+          key = 0x86;
+          break;
+        case 0xFF1b:            /* Cursor Key HOME */
+          key = 0x1B;
+          break;
+        case 0xFF50:            /* Cursor Key HOME */
+          key = 0x1E;
+          break;
+        case 0xFF55:            /* NEW LINE *//*$$$$$$$$ WRONG VALUE FIX */
+          key = 0x1F;
+          break;
 
-	default:
-	  xlog (QUEUE, "jqin: Unexpected function key detected: %06X\n", key);
-	  ctlkey = key & 0x007f;
-	  if (ctlkey < 0x20)
-	    {
-	      key = ctlkey;
-	    }
-	  else
-	    {
-	      key = 0;
-	    }
-	  break;
-	}
+        default:
+          xlog (QUEUE, "jqin: Unexpected function key detected: %06X\n", key);
+          ctlkey = key & 0x007f;
+          if (ctlkey < 0x20)
+            {
+              key = ctlkey;
+            }
+          else
+            {
+              key = 0;
+            }
+          break;
+        }
     }
 
 
@@ -809,7 +809,7 @@ jqin (int active, WORD key, struct kbdq *xq)
 
   if ((g_capslock) && (key > 0x060) && (key < 0x07b))
     {
-      key &= 0x0df;		/* clear bit 5 */
+      key &= 0x0df;             /* clear bit 5 */
     }
 
   if (key)
@@ -822,9 +822,9 @@ jqin (int active, WORD key, struct kbdq *xq)
     }
   if (xq->qlen > QMAX)
     {
-      return (-1);		/*error */
+      return (-1);              /*error */
     }
-  return (0);			/* OK */
+  return (0);                   /* OK */
 }
 
 
@@ -840,9 +840,9 @@ kqin (BYTE key, struct kbdq *xq)
   xlog (QUEUE, "KQIN: xq->qin = %d  xq->qlen=%d\n", xq->qin, xq->qlen);
   if (xq->qlen > QMAX)
     {
-      return (0xFF);		/*error */
+      return (0xFF);            /*error */
     }
-  return (0);			/* OK */
+  return (0);                   /* OK */
 }
 
 
@@ -860,12 +860,12 @@ jq_push_in (int active, WORD key, struct kbdq *xq)
     }
   xq->qkey[xq->qout] = key;
   xlog (QUEUE, "JQ_PUSH_IN: xq->qin = %d  xq->qout = %d  xq->qlen=%d\n",
-	xq->qin, xq->qout, xq->qlen);
+        xq->qin, xq->qout, xq->qlen);
   if (xq->qlen > QMAX)
     {
-      return (-1);		/*error */
+      return (-1);              /*error */
     }
-  return (0);			/* OK */
+  return (0);                   /* OK */
 }
 
 
@@ -874,14 +874,14 @@ BYTE
 kqout (struct kbdq *xq)
 {
   unsigned char key;
-  if (xq->qout != xq->qin)	/* shouldn't be the same if something in the queue */
+  if (xq->qout != xq->qin)      /* shouldn't be the same if something in the queue */
     {
       xlog (QUEUE, "\n\nKQOUT: xq->qout=%d  xq->qin=%d\n", xq->qout, xq->qin);
       key = xq->qkey[xq->qout];
       xq->qout++;
       xq->qout = xq->qout % QMAX;
       xlog (QUEUE, "KQOUT: xq->qout=%d  xq->qin=%d  key=%06X \n", xq->qout,
-	    xq->qin, key);
+            xq->qin, key);
       xq->qlen--;
       return (key);
     }
@@ -908,15 +908,15 @@ int
 jqout (int active, struct kbdq *xq)
 {
   unsigned int key;
-  if (xq->qout != xq->qin)	/* shouldn't be the same if something in the queue */
+  if (xq->qout != xq->qin)      /* shouldn't be the same if something in the queue */
     {
       xlog (QUEUE, "\n\nJQOUT: active= %dxq->qout=%d  xq->qin=%d\n", active,
-	    xq->qout, xq->qin);
+            xq->qout, xq->qin);
       key = xq->qkey[xq->qout];
       xq->qout++;
       xq->qout = xq->qout % QMAX;
       xlog (QUEUE, "JQOUT: xq->qout=%d  xq->qin=%d  key=%06X \n", xq->qout,
-	    xq->qin, key);
+            xq->qin, key);
       xq->qlen--;
       return (key);
     }
@@ -993,15 +993,15 @@ main_key_q (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
 {
   BYTE kchar;
   unsigned int pckeycode;
-  unsigned int pckeyval;	// gdk keyval value
-  unsigned int pcstate;		// meta keys
+  unsigned int pckeyval;        // gdk keyval value
+  unsigned int pcstate;         // meta keys
 
   UNUSED (widget);
   UNUSED (user_data);
 
   pckeycode = event->hardware_keycode;
   pckeyval = event->keyval;
-  pcstate = event->state;	// meta-keys info
+  pcstate = event->state;       // meta-keys info
 
 
 
@@ -1039,7 +1039,7 @@ main_key_q (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
     }
 
   if (pckeycode == ADVANTAGE_CAPS_LOCK)
-    {				//CAPSLOCK TOGGLE
+    {                           //CAPSLOCK TOGGLE
       toggle_capslock ();
       xlog (KEYB, "CAPS LOCK  toggled %d\n", g_capslock);
     }
@@ -1053,11 +1053,11 @@ main_key_q (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
   kchar = kxlate_keycode (event->hardware_keycode);
 
   xlog (KEYB,
-	"main_key_q: hardware_keycode = %04X    kchar= %02X prn=[%c] \n",
-	event->hardware_keycode, kchar, prn (kchar));
+        "main_key_q: hardware_keycode = %04X    kchar= %02X prn=[%c] \n",
+        event->hardware_keycode, kchar, prn (kchar));
 
 
-  if (kchar != 0xFF)		// throw away any NULL keys
+  if (kchar != 0xFF)            // throw away any NULL keys
     {
       kqin (kchar, g_advq);
     }
@@ -1079,9 +1079,9 @@ sio_test_toggle (void)
       status_print ("\nSIO Test Jumper is now ON", 0);
       status_print ("\nSIO queue cleared.\n", 0);
       if (g_sio_character_buff_ptr == NULL)
-	{
-	  calloc_buffer_pointer ("sio_i", &g_sio_character_buff_ptr);
-	}
+        {
+          calloc_buffer_pointer ("sio_i", &g_sio_character_buff_ptr);
+        }
       g_sio_icptr = 0;
       g_sio_ocptr = 0;
     }
@@ -1097,12 +1097,12 @@ unsigned char
 kxlate_keycode (int hkeycode)
 {
   int index;
-  int offset = 1;		// 1 = JUST kchar
-  int kxshift_flag = 0;		// clear any previous value
+  int offset = 1;               // 1 = JUST kchar
+  int kxshift_flag = 0;         // clear any previous value
   unsigned char achar;
 
 
-  index = 0;			// index now points to first of the seven char values
+  index = 0;                    // index now points to first of the seven char values
 
 
 
@@ -1115,52 +1115,52 @@ kxlate_keycode (int hkeycode)
 
   if ((g_ade_cmd_flag) && (g_adv_kbd_scancodes[hkeycode][5] != 0xFF))
     {
-      offset = 5;		// COMMAND KEY VALUE THERE
+      offset = 5;               // COMMAND KEY VALUE THERE
     }
   else
-    {				// look at shift and control key attributes
+    {                           // look at shift and control key attributes
       xlog (KEYB,
-	    "kxlate_keycode: capslock=%d   cursor_lock=%d ade_shift_flag=%d ade_control_flag=%d\n",
-	    g_capslock, g_cursor_lock, g_ade_shift_flag, g_ade_control_flag);
+            "kxlate_keycode: capslock=%d   cursor_lock=%d ade_shift_flag=%d ade_control_flag=%d\n",
+            g_capslock, g_cursor_lock, g_ade_shift_flag, g_ade_control_flag);
 
       if (((g_adv_kbd_scancodes[hkeycode][0] == 1) && (g_capslock))
-	  || (g_ade_shift_flag))
-	{
-	  kxshift_flag = TRUE;
-	}
+          || (g_ade_shift_flag))
+        {
+          kxshift_flag = TRUE;
+        }
 
       if ((g_adv_kbd_scancodes[hkeycode][0] == 2) && (g_cursor_lock))
-	{
-	  kxshift_flag = FALSE;
-	  hkeycode = kxlate_cursor_lock (hkeycode);
-	}
+        {
+          kxshift_flag = FALSE;
+          hkeycode = kxlate_cursor_lock (hkeycode);
+        }
 
 
       if ((g_ade_control_flag) && (kxshift_flag))
-	{
-	  offset = 4;
-	}
+        {
+          offset = 4;
+        }
 
       if ((!g_ade_control_flag) && (kxshift_flag))
-	{
-	  offset = 2;
-	}
+        {
+          offset = 2;
+        }
 
       if ((g_ade_control_flag) && (!kxshift_flag))
-	{
-	  offset = 3;
-	}
+        {
+          offset = 3;
+        }
 
     }
 
 
   achar = g_adv_kbd_scancodes[hkeycode][index + offset];
   xlog (KEYB,
-	"kxlate_keycode: ade_shift_flag=%d   ade_control_flag=%d   alt_key=%d ade_meta_flag=%d\n",
-	g_ade_shift_flag, g_ade_control_flag, g_ade_cmd_flag, g_ade_meta_flag);
+        "kxlate_keycode: ade_shift_flag=%d   ade_control_flag=%d   alt_key=%d ade_meta_flag=%d\n",
+        g_ade_shift_flag, g_ade_control_flag, g_ade_cmd_flag, g_ade_meta_flag);
   xlog (KEYB,
-	"kxlate_keycode: hardware_keycode == %02X   offset=%d char = %02X   [%c]\n",
-	hkeycode, offset, achar, prn (achar));
+        "kxlate_keycode: hardware_keycode == %02X   offset=%d char = %02X   [%c]\n",
+        hkeycode, offset, achar, prn (achar));
 
   return achar;
 }
@@ -1171,56 +1171,56 @@ kxlate_cursor_lock (int hkeycode)
 {
 
   switch (hkeycode)
-    {				// use different keycodes if cursor_lock
-    case 0x52:			// K-MINUS
+    {                           // use different keycodes if cursor_lock
+    case 0x52:                  // K-MINUS
       hkeycode = 0x90;
       break;
 
-    case 0x3F:			// K-COMMA
+    case 0x3F:                  // K-COMMA
       hkeycode = 0x91;
       break;
 
-    case 0x4F:			// K-7
+    case 0x4F:                  // K-7
       hkeycode = 0x92;
       break;
 
-    case 0x50:			// K-8
+    case 0x50:                  // K-8
       hkeycode = 0x93;
       break;
 
-    case 0x51:			// K-9
+    case 0x51:                  // K-9
       hkeycode = 0x94;
       break;
 
-    case 0x53:			// K-4
+    case 0x53:                  // K-4
       hkeycode = 0x95;
       break;
 
-    case 0x54:			// K-5
+    case 0x54:                  // K-5
       hkeycode = 0x96;
       break;
 
-    case 0x55:			// K-6
+    case 0x55:                  // K-6
       hkeycode = 0x97;
       break;
 
-    case 0x57:			// K-1
+    case 0x57:                  // K-1
       hkeycode = 0x98;
       break;
 
-    case 0x58:			// K-2
+    case 0x58:                  // K-2
       hkeycode = 0x99;
       break;
 
-    case 0x59:			// K-3
+    case 0x59:                  // K-3
       hkeycode = 0x9A;
       break;
 
-    case 0x5A:			// K-0
+    case 0x5A:                  // K-0
       hkeycode = 0x9B;
       break;
 
-    case 0x5B:			// K-PERIOD
+    case 0x5B:                  // K-PERIOD
       hkeycode = 0x9C;
       break;
     }
@@ -1236,15 +1236,15 @@ kxlate_win_function (int hkeycode)
   switch (hkeycode)
     {
 
-    case 0x43:			// F1
+    case 0x43:                  // F1
       hkeycode = 0x9D;
       break;
 
-    case 0x44:			// F2
+    case 0x44:                  // F2
       hkeycode = 0x9E;
       break;
 
-    case 0x45:			// F3
+    case 0x45:                  // F3
       hkeycode = 0x9F;
       break;
 
@@ -1274,7 +1274,7 @@ display_state (int kbdstate)
     nlocked = 1;
 
   xlog (KEYB, "state: shift=%d  control=%d  alt=%d  c-lock=%d   n-lock=%d\n",
-	shifted, ctrled, alted, clocked, nlocked);
+        shifted, ctrled, alted, clocked, nlocked);
 }
 
 void

@@ -115,7 +115,7 @@ trap_enter (void)
   strcpy (g_trap_string, gtk_entry_get_text (g_trap_entry));
   if ((strlen (g_trap_string)) > 4)
     {
-      g_trap_string[4] = '\0';	//truncate to first 4 chars if longer
+      g_trap_string[4] = '\0';  //truncate to first 4 chars if longer
     }
   g_cpux->trap_address = asc2hex ((char *) g_trap_string);
   g_cpux->trap_address = g_cpux->trap_address & 0x0FFFF;
@@ -143,7 +143,7 @@ break_enter (void)
   strcpy (g_break_string, gtk_entry_get_text (g_break_entry));
   if ((strlen (g_break_string)) > 4)
     {
-      g_break_string[4] = '\0';	//truncate to first 4 chars if longer
+      g_break_string[4] = '\0'; //truncate to first 4 chars if longer
     }
   g_break_address = asc2hex ((char *) g_break_string);
   g_break_address = g_break_address & 0x0FFFF;

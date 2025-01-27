@@ -182,18 +182,18 @@ show_slot_list (void)
     {
       g_slotx = (&g_slot[i]);
       if (g_slotx->slot_id == 0xFF)
-	{
-	  xlog (INFO,
-		"   Slot No.%d (Ports %cX H):  No peripheral card inserted.  \n",
-		i, (6 - i) + '0');
-	}
+        {
+          xlog (INFO,
+                "   Slot No.%d (Ports %cX H):  No peripheral card inserted.  \n",
+                i, (6 - i) + '0');
+        }
       else
-	{
-	  xlog
-	    (INFO,
-	     "   Slot No.%d (Ports %cX H):  Card is \"%s\", card-id of 0x%02X \n",
-	     i, (6 - i) + '0', g_slotx->slotname, g_slotx->slot_id);
-	}
+        {
+          xlog
+            (INFO,
+             "   Slot No.%d (Ports %cX H):  Card is \"%s\", card-id of 0x%02X \n",
+             i, (6 - i) + '0', g_slotx->slotname, g_slotx->slot_id);
+        }
     }
 }
 
@@ -221,60 +221,60 @@ add_slot_card (const char *cardname, int slotnum, int verbal)
   if (!found)
     {
       if (strcmp ("HDC", cname) == 0)
-	{
-	  found = 1;
-	  strcpy (g_slotx->slotname, "HDC");
-	  g_slotx->slot_id = HDC_ID;
-	  g_hdcslot = slotnum;
-	}
+        {
+          found = 1;
+          strcpy (g_slotx->slotname, "HDC");
+          g_slotx->slot_id = HDC_ID;
+          g_hdcslot = slotnum;
+        }
     }
 
   if (!found)
     {
       if (strcmp ("SIO", cname) == 0)
-	{
-	  found = 1;
-	  strcpy (g_slotx->slotname, "SIO");
-	  g_slotx->slot_id = SIO_ID;
-	  g_sioslot = slotnum;
-	}
+        {
+          found = 1;
+          strcpy (g_slotx->slotname, "SIO");
+          g_slotx->slot_id = SIO_ID;
+          g_sioslot = slotnum;
+        }
     }
 
 
   if (!found)
     {
       if (strcmp ("PIO", cname) == 0)
-	{
-	  found = 1;
-	  strcpy (g_slotx->slotname, "PIO");
-	  g_slotx->slot_id = PIO_ID;
-	  g_pioslot = slotnum;
-	}
+        {
+          found = 1;
+          strcpy (g_slotx->slotname, "PIO");
+          g_slotx->slot_id = PIO_ID;
+          g_pioslot = slotnum;
+        }
     }
 
   if (!found)
     {
 
       xlog (MOTHERBOARD,
-	    "add_slot_card:  Card type \"%s\" not available for inserting in slot %d\n",
-	    cname, slotnum);
+            "add_slot_card:  Card type \"%s\" not available for inserting in slot %d\n",
+            cname, slotnum);
       if (verbal)
-	{
-	  printf
-	    ("   Card type \"%s\" not available for inserting in slot %d\n",
-	     cname, slotnum);
-	}
+        {
+          printf
+            ("   Card type \"%s\" not available for inserting in slot %d\n",
+             cname, slotnum);
+        }
     }
   else
     {
       xlog (MOTHERBOARD,
-	    "add_slot_card:  Card type \"%s\"   inserted in slot %d    ID = %02X\n",
-	    cname, slotnum, g_slotx->slot_id);
+            "add_slot_card:  Card type \"%s\"   inserted in slot %d    ID = %02X\n",
+            cname, slotnum, g_slotx->slot_id);
       if (verbal)
-	{
-	  printf ("   Card type \"%s\"   inserted in slot %d ID = %02X\n",
-		  cname, slotnum, g_slotx->slot_id);
-	}
+        {
+          printf ("   Card type \"%s\"   inserted in slot %d ID = %02X\n",
+                  cname, slotnum, g_slotx->slot_id);
+        }
     }
 
 
@@ -289,15 +289,15 @@ remove_slot_card (int s)
   if (g_slotx->slot_id == 0xFF)
     {
       printf
-	("   Slot Number %d:  ERROR. Can't remove card. None inserted.\n", s);
+        ("   Slot Number %d:  ERROR. Can't remove card. None inserted.\n", s);
     }
   else
     {
       xlog (MOTHERBOARD,
-	    "   Slot card \"%s\", ID=%2X   removed from slot %d\n",
-	    g_slotx->slotname, g_slotx->slot_id, s);
+            "   Slot card \"%s\", ID=%2X   removed from slot %d\n",
+            g_slotx->slotname, g_slotx->slot_id, s);
       printf ("   Slot card \"%s\",  ID = 0x%2X   removed from slot %d\n",
-	      g_slotx->slotname, g_slotx->slot_id, s);
+              g_slotx->slotname, g_slotx->slot_id, s);
       g_slotx->slot_id = 0xFF;
       strcpy (g_slotx->slotname, "");
     }
@@ -313,16 +313,16 @@ hdc_add_slot (int newslot)
   if (g_hdcslot != newslot)
     {
       if (g_hdcslot)
-	{
-	  remove_slot_card (g_hdcslot);
-	}
+        {
+          remove_slot_card (g_hdcslot);
+        }
       add_slot_card ("HDC", newslot, 0);
       g_hdcslot = newslot;
       sprintf (g_cfg_arg[SLOTH], "%d", newslot);
       save_configuration ();
     }
   sprintf (newinfo, "HDC Hard Drive Controller Card Inserted in Slot %d",
-	   newslot);
+           newslot);
 
   gtk_label_set_text (g_hdc_label, (const gchar *) newinfo);
 }
@@ -336,9 +336,9 @@ sio_add_slot (int newslot)
   if (g_sioslot != newslot)
     {
       if (g_sioslot)
-	{
-	  remove_slot_card (g_sioslot);
-	}
+        {
+          remove_slot_card (g_sioslot);
+        }
       add_slot_card ("SIO", newslot, 0);
       g_sioslot = newslot;
       sprintf (g_cfg_arg[SLOTS], "%d", newslot);
@@ -358,16 +358,16 @@ pio_add_slot (int newslot)
   if (g_pioslot != newslot)
     {
       if (g_pioslot)
-	{
-	  remove_slot_card (g_pioslot);
-	}
+        {
+          remove_slot_card (g_pioslot);
+        }
       add_slot_card ("PIO", newslot, 0);
       g_pioslot = newslot;
       sprintf (g_cfg_arg[SLOTP], "%d", newslot);
       save_configuration ();
     }
   sprintf (newinfo, "PIO Parallel Port I/O Card Inserted in Slot %d",
-	   newslot);
+           newslot);
 
   gtk_label_set_text (g_pio_label, (const gchar *) newinfo);
 }
@@ -382,8 +382,8 @@ slot_0_hx (void)
       remove_slot_card (g_hdcslot);
       g_hdcslot = 0;
       gtk_label_set_text (g_hdc_label,
-			  (const gchar *)
-			  "HDC Hard Drive Controller Card Not Installed");
+                          (const gchar *)
+                          "HDC Hard Drive Controller Card Not Installed");
       sprintf (g_cfg_arg[SLOTH], "0");
       save_configuration ();
     }
@@ -478,8 +478,8 @@ slot_0_sx (void)
       remove_slot_card (g_sioslot);
       g_sioslot = 0;
       gtk_label_set_text (g_sio_label,
-			  (const gchar *)
-			  "SIO Serial Port I/O Card Not Installed");
+                          (const gchar *)
+                          "SIO Serial Port I/O Card Not Installed");
       sprintf (g_cfg_arg[SLOTS], "0");
       save_configuration ();
     }
@@ -573,8 +573,8 @@ slot_0_px (void)
       remove_slot_card (g_pioslot);
       g_pioslot = 0;
       gtk_label_set_text (g_pio_label,
-			  (const gchar *)
-			  "PIO Parallel Port I/O Card Not Installed");
+                          (const gchar *)
+                          "PIO Parallel Port I/O Card Not Installed");
       sprintf (g_cfg_arg[SLOTP], "0");
       save_configuration ();
     }

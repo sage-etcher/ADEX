@@ -83,7 +83,7 @@ prepare_emulator (void)
       (void) disk_manager (INITIALISE, 0, NULL, 0, 0);
     }
 
-  g_ascii_in = NULL;		/* ascii_input file pointer. not in use at startup */
+  g_ascii_in = NULL;            /* ascii_input file pointer. not in use at startup */
   g_native_flags = 0;
   g_loadadr = -1;
 
@@ -103,11 +103,11 @@ initialise_cpu_structure ()
   int j;
   g_cpux = (&g_cpu);
   g_logfile = NULL;
-  g_cpux->break_address = 0x1ffff;	/* set break address to roll-over point at top of memory */
-  g_cpux->trap_address = 0x0ffff;	/* DEFAULT TRAP ADDRESS RIGHT AT TOP OF MEMORY */
+  g_cpux->break_address = 0x1ffff;      /* set break address to roll-over point at top of memory */
+  g_cpux->trap_address = 0x0ffff;       /* DEFAULT TRAP ADDRESS RIGHT AT TOP OF MEMORY */
   for (j = 0; j < 2; j++)
     {
-      g_cpux->af[j] = 0x044;	/* accumulator with 00H has Zero and Parity flags set */
+      g_cpux->af[j] = 0x044;    /* accumulator with 00H has Zero and Parity flags set */
       g_cpux->regs[j].bc = 0;
       g_cpux->regs[j].de = 0;
       g_cpux->regs[j].hl = 0;
@@ -135,22 +135,22 @@ run (gint * alpha)
     {
       s_ctr = RUN_CYCLES;
       while (s_ctr)
-	{
-	  loop_z80 (g_cpux->pc);
-	  s_ctr--;
-	}
+        {
+          loop_z80 (g_cpux->pc);
+          s_ctr--;
+        }
 
     }
   else
     {
       for (i = 0x00; i < ADVANTAGE_VID_RAM_LEN; i++)
-	{
+        {
 
-	  g_vr_byte = *(g_videoram + i);	// get 8 pixels ; 8 bits of videoram[i]
-	  g_display_pixel_ptr = (g_display_buffer + (g_xlt_addr[i]));
-	  //display_pixel_ptr points to first of 24 bytes in pb24_data
-	  expand_bits_to_3_bytes (g_display_pixel_ptr, g_vr_byte);
-	}
+          g_vr_byte = *(g_videoram + i);        // get 8 pixels ; 8 bits of videoram[i]
+          g_display_pixel_ptr = (g_display_buffer + (g_xlt_addr[i]));
+          //display_pixel_ptr points to first of 24 bytes in pb24_data
+          expand_bits_to_3_bytes (g_display_pixel_ptr, g_vr_byte);
+        }
 
     }
 
@@ -162,14 +162,14 @@ xscreen (gint * alpha)
 {
   UNUSED (alpha);
   get_rgb_pixbuf_data (g_scanline);
-  gtk_image_set_from_pixbuf (GTK_IMAGE (g_ade_win), gdk_pixbuf_new_from_data (g_rgb_pixbuf_data, GDK_COLORSPACE_RGB,	// colorspace (must be RGB)
-									    0,	// has_alpha (0 for no alpha)
-									    8,	// bits-per-sample (must be 8)
-									    ADV_SCREEN_COLS * g_x_dots_per_pixel,	// 640 *1 cols
-									    ADV_SCREEN_ROWS * g_y_dots_per_pixel,	// 240 * 2 rows
-									    (ADV_SCREEN_COLS * g_x_dots_per_pixel * RGB_BYTES_PER_PIXEL),	// rowstride
-									    NULL, NULL	// destroy_fn, destroy_fn_data
-			     ));
+  gtk_image_set_from_pixbuf (GTK_IMAGE (g_ade_win), gdk_pixbuf_new_from_data (g_rgb_pixbuf_data, GDK_COLORSPACE_RGB,    // colorspace (must be RGB)
+                                                                            0,  // has_alpha (0 for no alpha)
+                                                                            8,  // bits-per-sample (must be 8)
+                                                                            ADV_SCREEN_COLS * g_x_dots_per_pixel,       // 640 *1 cols
+                                                                            ADV_SCREEN_ROWS * g_y_dots_per_pixel,       // 240 * 2 rows
+                                                                            (ADV_SCREEN_COLS * g_x_dots_per_pixel * RGB_BYTES_PER_PIXEL),       // rowstride
+                                                                            NULL, NULL  // destroy_fn, destroy_fn_data
+                             ));
   return (TRUE);
 }
 
@@ -185,17 +185,17 @@ input_idle (int *alpha)
   if (siotab[SIO_CARD_IN].fp != NULL)
     {
       for (j = 0; j < 32; j++)
-	{
-	  sio_input_thread ();
-	}
+        {
+          sio_input_thread ();
+        }
     }
 
   if (siotab[PIO_CARD_IN].fp != NULL)
     {
       for (j = 0; j < 32; j++)
-	{
-	  pio_input_thread ();
-	}
+        {
+          pio_input_thread ();
+        }
     }
   return (TRUE);
 }
@@ -213,11 +213,11 @@ void
 usage (void)
 {
   fprintf (stderr,
-	   "Usage: %s {flags} {commands}\n"
-	   "           -b <file>       boot using disk image file\n"
-	   "           -c <file>       rc_config configuration file (default= '.ade_rc')\n"
-	   "           -v              verbose startup information\n",
-	   g_eprogname);
+           "Usage: %s {flags} {commands}\n"
+           "           -b <file>       boot using disk image file\n"
+           "           -c <file>       rc_config configuration file (default= '.ade_rc')\n"
+           "           -v              verbose startup information\n",
+           g_eprogname);
   exit (1);
 }
 
@@ -273,26 +273,26 @@ PutBYTE (WORD ram_addr, BYTE v)
   switch (memslice)
     {
     case 0xc:
-    case 0xd:			/* prom - can't be written on */
+    case 0xd:                   /* prom - can't be written on */
     case 0xe:
     case 0xf:
       xlog (MEM, "Can't Write to PROM memory %05X\n", xmem);
       break;
 
-    case 0xa:			/* unused video ram can't be written on */
+    case 0xa:                   /* unused video ram can't be written on */
     case 0xb:
       break;
-    case 0x04:			/* Second 64K of Advantage RAM not used */
+    case 0x04:                  /* Second 64K of Advantage RAM not used */
     case 0x05:
     case 0x06:
     case 0x07:
       break;
-    case 0x08:			/* Normal Video RAM */
+    case 0x08:                  /* Normal Video RAM */
     case 0x09:
       g_ram[xmem] = v;
       output_vbytes (xmem, v);
       break;
-    case 0:			/* First 64K of Advantage RAM Memory */
+    case 0:                     /* First 64K of Advantage RAM Memory */
     case 1:
     case 2:
     case 3:
@@ -320,7 +320,7 @@ PutWORD (WORD ram_addr, WORD v)
 
 void
 z80_os_interface (WORD * xaf, WORD * xbc, WORD * xde, WORD * xhl,
-		  WORD * xix, WORD * xiy, U_INT * xpc, WORD * xsp)
+                  WORD * xix, WORD * xiy, U_INT * xpc, WORD * xsp)
 {
 /* Interface between emulated machine and the host OS. The type of command */
 /* specified by the value in the 'C' register, with the other registers    */
@@ -353,148 +353,148 @@ z80_os_interface (WORD * xaf, WORD * xbc, WORD * xde, WORD * xhl,
   switch (zcmd)
     {
 
-    case 0:			/* Initial Load */
+    case 0:                     /* Initial Load */
       /*de has number of bytes to load, hl has boot address in ram to load at */
       initial_load (xde, xhl);
       *xpc = *xhl;
       *xaf = OP_OK;
       break;
     case 1:
-				  /**** FILE OPERATIONS ****/
+                                  /**** FILE OPERATIONS ****/
       file_no = (b_arg & 0x07);
       file_op = (b_arg & 0x0f8) / 16;
 
       switch (file_op)
-	{
-	case 0:		/* open file */
+        {
+        case 0:         /* open file */
 
-	  ramptr = &(g_ram[(*xhl & 0x0ffff)]);
-	  status = open_zo_file (file_no, ramptr);
-	  if (status == 0)
-	    {
-	      *xaf = OP_OK;
-	    }
-	  else
-	    {
-	      *xaf = (OP_BAD | 0x0ff00);
-	    }
-	  break;
-	case 1:		/*read from file */
-	  /* hl points to ram address */
-	  /* de points to number of bytes to load */
+          ramptr = &(g_ram[(*xhl & 0x0ffff)]);
+          status = open_zo_file (file_no, ramptr);
+          if (status == 0)
+            {
+              *xaf = OP_OK;
+            }
+          else
+            {
+              *xaf = (OP_BAD | 0x0ff00);
+            }
+          break;
+        case 1:         /*read from file */
+          /* hl points to ram address */
+          /* de points to number of bytes to load */
 
-	  ramptr = &(g_ram[*xhl & 0x0ffff]);
-	  qty = *xde & 0x0ffff;
-	  status = fread (ramptr, 1, qty, g_zo_f[file_no]);
+          ramptr = &(g_ram[*xhl & 0x0ffff]);
+          qty = *xde & 0x0ffff;
+          status = fread (ramptr, 1, qty, g_zo_f[file_no]);
 
-	  if (status)		/* chunk of qty size read */
-	    {
-	      *xaf = OP_OK;
-	    }
-	  else
-	    {
-	      *xaf = (OP_BAD | 0x0ff00);
-	    }
+          if (status)           /* chunk of qty size read */
+            {
+              *xaf = OP_OK;
+            }
+          else
+            {
+              *xaf = (OP_BAD | 0x0ff00);
+            }
 
 /* fill last sector with CPM EOF chars */
-	  for (status = status; status < (unsigned int) qty; status++)
-	    {
-	      *(ramptr + status) = 0x1a;
-	    }
-	  break;
+          for (status = status; status < (unsigned int) qty; status++)
+            {
+              *(ramptr + status) = 0x1a;
+            }
+          break;
 
-	case 2:		/* write to file */
-	  /* hl points to ram address */
-	  /* de points to number of bytes to write to disk */
+        case 2:         /* write to file */
+          /* hl points to ram address */
+          /* de points to number of bytes to write to disk */
 
-	  ramptr = &(g_ram[*xhl & 0x0ffff]);
-	  qty = *xde & 0x0ffff;
-	  status = fwrite (ramptr, qty, 1, g_zo_f[file_no]);
-	  fflush (g_zo_f[file_no]);
+          ramptr = &(g_ram[*xhl & 0x0ffff]);
+          qty = *xde & 0x0ffff;
+          status = fwrite (ramptr, qty, 1, g_zo_f[file_no]);
+          fflush (g_zo_f[file_no]);
 
-	  if (status == 1)	/* CPM uses sector-size chunks */
-	    {
-	      *xaf = OP_OK;
-	    }
-	  else
-	    {
-	      *xaf = (OP_BAD | 0x0ff00);
-	    }
-	  break;
+          if (status == 1)      /* CPM uses sector-size chunks */
+            {
+              *xaf = OP_OK;
+            }
+          else
+            {
+              *xaf = (OP_BAD | 0x0ff00);
+            }
+          break;
 
-	case 5:		/* set file ptr at offset from start of file */
+        case 5:         /* set file ptr at offset from start of file */
 
-	  offset = (*xde * 0x10000) + *xhl;
-	  status = fseek (g_zo_f[file_no], (long) offset, SEEK_SET);
-	  if (!status)
-	    {
-	      *xaf = OP_OK;
-	    }
-	  else
-	    {
-	      *xaf = (OP_BAD | 0x0ff00);
-	    }
-	  break;
+          offset = (*xde * 0x10000) + *xhl;
+          status = fseek (g_zo_f[file_no], (long) offset, SEEK_SET);
+          if (!status)
+            {
+              *xaf = OP_OK;
+            }
+          else
+            {
+              *xaf = (OP_BAD | 0x0ff00);
+            }
+          break;
 
-	case 6:		/* set file ptr at offset from end of file */
+        case 6:         /* set file ptr at offset from end of file */
 
-	  offset = (*xde * 0x10000) + *xhl;
-	  status = fseek (g_zo_f[file_no], (long) offset, SEEK_END);
-	  if (!status)
-	    {
-	      *xaf = OP_OK;
-	    }
-	  else
-	    {
-	      *xaf = (OP_BAD | 0x0ff00);
-	    }
-	  break;
-	case 7:		/* report size of file */
-	  if (g_zo_f[file_no] != NULL)
-	    {
+          offset = (*xde * 0x10000) + *xhl;
+          status = fseek (g_zo_f[file_no], (long) offset, SEEK_END);
+          if (!status)
+            {
+              *xaf = OP_OK;
+            }
+          else
+            {
+              *xaf = (OP_BAD | 0x0ff00);
+            }
+          break;
+        case 7:         /* report size of file */
+          if (g_zo_f[file_no] != NULL)
+            {
 
-	      *xde = (g_zo_flen[file_no] / 0x10000) & 0x0ffff;	/* DE has filesize upper 16 bits */
-	      *xhl = (g_zo_flen[file_no] % 0x10000) & 0x0ffff;	/* HL has filesize lower 16 bits */
-	      *xaf = OP_OK;
-	    }
-	  else
-	    {
-	      *xaf = (0xff00 | OP_BAD);
-	    }
-	  break;
+              *xde = (g_zo_flen[file_no] / 0x10000) & 0x0ffff;  /* DE has filesize upper 16 bits */
+              *xhl = (g_zo_flen[file_no] % 0x10000) & 0x0ffff;  /* HL has filesize lower 16 bits */
+              *xaf = OP_OK;
+            }
+          else
+            {
+              *xaf = (0xff00 | OP_BAD);
+            }
+          break;
 
-	case 0x0f:		/* close file */
-	  if (g_zo_f[file_no] != NULL)
-	    {
-	      error = (fclose (g_zo_f[file_no]));
-	    }
-	  if (!error)
-	    {
-	      *xaf = OP_OK;
-	    }
-	  else
-	    {
-	      *xaf = (0xff00 | OP_BAD);
-	    }
-	  break;
+        case 0x0f:              /* close file */
+          if (g_zo_f[file_no] != NULL)
+            {
+              error = (fclose (g_zo_f[file_no]));
+            }
+          if (!error)
+            {
+              *xaf = OP_OK;
+            }
+          else
+            {
+              *xaf = (0xff00 | OP_BAD);
+            }
+          break;
 
-	  /***************Floppy ops***************/
-	case 0x41:		/*read from floppy image-file */
-	  xlog (INFO,
-		"z80_os_interface: read data from floppy unit %d TRACK %d SECTOR %d  TO RAM at %04X \n",
-		b_arg, d_arg, e_arg, xix);
-	  xlog (INFO, " ======== not yet implemented\n");
-	  break;
-	default:		/*file-ops */
-	  xlog (INFO, "z80_os_interface: BAD file/floppy_op %d\n", file_op);
-	  *xaf = (0x0ff00 | OP_BAD);
-	  break;
-	}
+          /***************Floppy ops***************/
+        case 0x41:              /*read from floppy image-file */
+          xlog (INFO,
+                "z80_os_interface: read data from floppy unit %d TRACK %d SECTOR %d  TO RAM at %04X \n",
+                b_arg, d_arg, e_arg, xix);
+          xlog (INFO, " ======== not yet implemented\n");
+          break;
+        default:                /*file-ops */
+          xlog (INFO, "z80_os_interface: BAD file/floppy_op %d\n", file_op);
+          *xaf = (0x0ff00 | OP_BAD);
+          break;
+        }
       break;
-    default:			/* zo-interface */
+    default:                    /* zo-interface */
       xlog (INFO,
-	    "z80_os_iinterface: UNKNOWN interface operation: %d    [ %02X ]\n",
-	    zcmd, zcmd);
+            "z80_os_iinterface: UNKNOWN interface operation: %d    [ %02X ]\n",
+            zcmd, zcmd);
       xlog (INFO, "*xaf = %08X \n", *xaf);
       *xaf = (0x0ff00 | OP_BAD);
       break;
@@ -507,29 +507,29 @@ open_zo_file (int fnum, BYTE * fname)
 {
   int error;
   g_zo_filename[fnum][0] = '\0';
-  strcpy (g_zo_filename[fnum], (char *) fname);	/* save filename string */
+  strcpy (g_zo_filename[fnum], (char *) fname); /* save filename string */
   if ((g_zo_f[fnum] = fopen (g_zo_filename[fnum], "r+")) == NULL)
     {
 
       if ((g_zo_f[fnum] = fopen (g_zo_filename[fnum], "w")) == NULL)
-	{
-	  error = 2;
-	  return (error);
-	}
+        {
+          error = 2;
+          return (error);
+        }
       else
-	{
-	  fclose (g_zo_f[fnum]);
-	  if ((g_zo_f[fnum] = fopen (g_zo_filename[fnum], "rb+")) == NULL)
-	    {
-	      error = 2;
-	      return (error);
-	    }
-	  else
-	    {
-	      error = 0;
-	      return (error);
-	    }
-	}
+        {
+          fclose (g_zo_f[fnum]);
+          if ((g_zo_f[fnum] = fopen (g_zo_filename[fnum], "rb+")) == NULL)
+            {
+              error = 2;
+              return (error);
+            }
+          else
+            {
+              error = 0;
+              return (error);
+            }
+        }
 
 
     }
@@ -550,31 +550,31 @@ initial_load (WORD * numbytes, WORD * ramaddress)
 {
   int loaded;
   xlog (INFO,
-	"z80_os_interface: INITIAL LOAD: loads first %X bytes of disk 1\n into memory at %04XH",
-	*numbytes, *ramaddress);
+        "z80_os_interface: INITIAL LOAD: loads first %X bytes of disk 1\n into memory at %04XH",
+        *numbytes, *ramaddress);
   xlog (INFO, " then jumps to instructions at %04XH.\n", *ramaddress);
   if (!disk_manager (MOUNTED, 1, NULL, 0, 0))
-    {				/*NO boot disk mounted!! */
-      g_interrupt_newpc = g_prom_base;	/* restart the prom (if one) */
+    {                           /*NO boot disk mounted!! */
+      g_interrupt_newpc = g_prom_base;  /* restart the prom (if one) */
     }
   else
     {
       loaded =
-	disk_manager (BOOT, 1, NULL, (*numbytes & 0x0ffff),
-		      (*ramaddress & 0x0ffff));
+        disk_manager (BOOT, 1, NULL, (*numbytes & 0x0ffff),
+                      (*ramaddress & 0x0ffff));
       if (!loaded)
-	{
-	  xlog (INFO, "initial_load:  Error? Not loaded?\n");
-	}
+        {
+          xlog (INFO, "initial_load:  Error? Not loaded?\n");
+        }
       else
-	{
-/*	  machine_initialiser ();*/
-	  g_cpux->ir = 0;		/* reset interrupt register to 0000 */
-	  g_interrupt_newpc = (*ramaddress & 0x0ffff);
-	  g_interrupt_req_flag = TRUE;
-	  g_rom_end = 0x0ffff;
-	  g_prom_base = 0x0ffff;
-	}
+        {
+/*        machine_initialiser ();*/
+          g_cpux->ir = 0;               /* reset interrupt register to 0000 */
+          g_interrupt_newpc = (*ramaddress & 0x0ffff);
+          g_interrupt_req_flag = TRUE;
+          g_rom_end = 0x0ffff;
+          g_prom_base = 0x0ffff;
+        }
     }
 }
 
@@ -646,7 +646,7 @@ load_advantage_prom ()
   int j;
   BYTE *romptr;
 
-  romptr = g_machine_prom_code;	/* start of binary code */
+  romptr = g_machine_prom_code; /* start of binary code */
 
   for (j = 0; j < g_machine_prom_length; j++)
     {
@@ -659,9 +659,9 @@ load_advantage_prom ()
   for (i = 1; i < 32; i++)
     {
       for (j = 0; j < 0x800; j++)
-	{
-	  g_ram[(0x30000 + (0x0800 * i) + j)] = g_ram[0x30000 + j];
-	}
+        {
+          g_ram[(0x30000 + (0x0800 * i) + j)] = g_ram[0x30000 + j];
+        }
     }
 
 /* reset sends advantage address PC here*/
