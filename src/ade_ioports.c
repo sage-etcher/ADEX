@@ -12,91 +12,91 @@ build_ioports_widgets_from_gresources ()
 
 /* debug checkbutton menu stuff */
 
-  builder =
+  g_builder =
     gtk_builder_new_from_resource ("/au/com/itelsoft/ade/ioports.glade");
 
-  Wioports_top = GTK_WIDGET (gtk_builder_get_object (builder, "ioports_top"));
-  ioports_top = GTK_WINDOW (Wioports_top);
+  g_Wioports_top = GTK_WIDGET (gtk_builder_get_object (g_builder, "ioports_top"));
+  g_ioports_top = GTK_WINDOW (g_Wioports_top);
 /*radiobuttons*/
-  Wsio_in_change =
-    GTK_WIDGET (gtk_builder_get_object (builder, "sio_in_change"));
-  sio_in_change = GTK_BUTTON (Wsio_in_change);
+  g_Wsio_in_change =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_in_change"));
+  g_sio_in_change = GTK_BUTTON (g_Wsio_in_change);
 
 
-  Wsio_in_detach =
-    GTK_WIDGET (gtk_builder_get_object (builder, "sio_in_detach"));
-  sio_in_detach = GTK_BUTTON (Wsio_in_detach);
+  g_Wsio_in_detach =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_in_detach"));
+  g_sio_in_detach = GTK_BUTTON (g_Wsio_in_detach);
 
 
-  Wsio_out_change =
-    GTK_WIDGET (gtk_builder_get_object (builder, "sio_out_change"));
-  sio_out_change = GTK_BUTTON (Wsio_out_change);
+  g_Wsio_out_change =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_out_change"));
+  g_sio_out_change = GTK_BUTTON (g_Wsio_out_change);
 
 
-  Wsio_out_detach =
-    GTK_WIDGET (gtk_builder_get_object (builder, "sio_out_detach"));
-  sio_out_detach = GTK_BUTTON (Wsio_out_detach);
+  g_Wsio_out_detach =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_out_detach"));
+  g_sio_out_detach = GTK_BUTTON (g_Wsio_out_detach);
 
 
-  Wsio_dev_detach =
-    GTK_WIDGET (gtk_builder_get_object (builder, "sio_dev_detach"));
-  sio_out_detach = GTK_BUTTON (Wsio_dev_detach);
+  g_Wsio_dev_detach =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_dev_detach"));
+  g_sio_out_detach = GTK_BUTTON (g_Wsio_dev_detach);
 
 
-  Wsio_dev_change =
-    GTK_WIDGET (gtk_builder_get_object (builder, "sio_dev_change"));
-  pio_in_change = GTK_BUTTON (Wsio_dev_change);
+  g_Wsio_dev_change =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_dev_change"));
+  g_pio_in_change = GTK_BUTTON (g_Wsio_dev_change);
 
 
-  Wpio_in_change =
-    GTK_WIDGET (gtk_builder_get_object (builder, "pio_in_change"));
-  pio_in_change = GTK_BUTTON (Wpio_in_change);
+  g_Wpio_in_change =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_in_change"));
+  g_pio_in_change = GTK_BUTTON (g_Wpio_in_change);
 
 
-  Wpio_in_detach =
-    GTK_WIDGET (gtk_builder_get_object (builder, "pio_in_detach"));
-  pio_in_detach = GTK_BUTTON (Wpio_in_detach);
+  g_Wpio_in_detach =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_in_detach"));
+  g_pio_in_detach = GTK_BUTTON (g_Wpio_in_detach);
 
 
-  Wpio_out_change =
-    GTK_WIDGET (gtk_builder_get_object (builder, "pio_out_change"));
-  pio_out_change = GTK_BUTTON (Wpio_out_change);
+  g_Wpio_out_change =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_out_change"));
+  g_pio_out_change = GTK_BUTTON (g_Wpio_out_change);
 
 
-  Wpio_out_detach =
-    GTK_WIDGET (gtk_builder_get_object (builder, "pio_out_detach"));
-  pio_out_detach = GTK_BUTTON (Wpio_out_detach);
+  g_Wpio_out_detach =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_out_detach"));
+  g_pio_out_detach = GTK_BUTTON (g_Wpio_out_detach);
 
-  Wpio_dev_detach =
-    GTK_WIDGET (gtk_builder_get_object (builder, "pio_dev_detach"));
-  pio_out_detach = GTK_BUTTON (Wpio_dev_detach);
-
-
-  Wpio_dev_change =
-    GTK_WIDGET (gtk_builder_get_object (builder, "pio_dev_change"));
-  pio_in_change = GTK_BUTTON (Wpio_dev_change);
+  g_Wpio_dev_detach =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_dev_detach"));
+  g_pio_out_detach = GTK_BUTTON (g_Wpio_dev_detach);
 
 
+  g_Wpio_dev_change =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_dev_change"));
+  g_pio_in_change = GTK_BUTTON (g_Wpio_dev_change);
 
 
-  Wsio_dev_fn = GTK_WIDGET (gtk_builder_get_object (builder, "sio_dev_fn"));
-  sio_dev_fn = GTK_LABEL (Wsio_dev_fn);
-  Wpio_dev_fn = GTK_WIDGET (gtk_builder_get_object (builder, "pio_dev_fn"));
-  pio_dev_fn = GTK_LABEL (Wpio_dev_fn);
-
-  Wsio_in_fn = GTK_WIDGET (gtk_builder_get_object (builder, "sio_in_fn"));
-  sio_in_fn = GTK_LABEL (Wsio_in_fn);
-  Wpio_in_fn = GTK_WIDGET (gtk_builder_get_object (builder, "pio_in_fn"));
-  pio_in_fn = GTK_LABEL (Wpio_in_fn);
-
-  Wsio_out_fn = GTK_WIDGET (gtk_builder_get_object (builder, "sio_out_fn"));
-  sio_out_fn = GTK_LABEL (Wsio_out_fn);
-  Wpio_out_fn = GTK_WIDGET (gtk_builder_get_object (builder, "pio_out_fn"));
-  pio_out_fn = GTK_LABEL (Wpio_out_fn);
 
 
-  gtk_builder_connect_signals (builder, NULL);
-  g_object_unref (builder);
+  g_Wsio_dev_fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_dev_fn"));
+  g_sio_dev_fn = GTK_LABEL (g_Wsio_dev_fn);
+  g_Wpio_dev_fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_dev_fn"));
+  g_pio_dev_fn = GTK_LABEL (g_Wpio_dev_fn);
+
+  g_Wsio_in_fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_in_fn"));
+  g_sio_in_fn = GTK_LABEL (g_Wsio_in_fn);
+  g_Wpio_in_fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_in_fn"));
+  g_pio_in_fn = GTK_LABEL (g_Wpio_in_fn);
+
+  g_Wsio_out_fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_out_fn"));
+  g_sio_out_fn = GTK_LABEL (g_Wsio_out_fn);
+  g_Wpio_out_fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_out_fn"));
+  g_pio_out_fn = GTK_LABEL (g_Wpio_out_fn);
+
+
+  gtk_builder_connect_signals (g_builder, NULL);
+  g_object_unref (g_builder);
 
 }
 
@@ -109,7 +109,7 @@ detach_sio_in ()
   strcpy (streamnbuff, "sio_in");
   if (detach (streamnbuff))
     {
-      strcpy (cfg_arg[SIOI], "");
+      strcpy (g_cfg_arg[SIOI], "");
       save_configuration ();
     }
   show_sio_in_current ();
@@ -122,7 +122,7 @@ detach_sio_out ()
   strcpy (streamnbuff, "sio_out");
   if (detach (streamnbuff))
     {
-      strcpy (cfg_arg[SIOO], "");
+      strcpy (g_cfg_arg[SIOO], "");
       save_configuration ();
     }
 
@@ -136,7 +136,7 @@ detach_sio_device (void)
   strcpy (streamnbuff, "sio_dev");
   if (detach (streamnbuff))
     {
-      strcpy (cfg_arg[SIODEV], "");
+      strcpy (g_cfg_arg[SIODEV], "");
       save_configuration ();
     }
   show_sio_device_current ();
@@ -151,7 +151,7 @@ detach_pio_in ()
   strcpy (streamnbuff, "pio_in");
   if (detach (streamnbuff))
     {
-      strcpy (cfg_arg[PIOI], "");
+      strcpy (g_cfg_arg[PIOI], "");
       save_configuration ();
     }
   show_pio_in_current ();
@@ -164,7 +164,7 @@ detach_pio_out ()
   strcpy (streamnbuff, "pio_out");
   if (detach (streamnbuff))
     {
-      strcpy (cfg_arg[PIOO], "");
+      strcpy (g_cfg_arg[PIOO], "");
       save_configuration ();
     }
 
@@ -179,7 +179,7 @@ detach_pio_device ()
   strcpy (streamnbuff, "pio_dev");
   if (detach (streamnbuff))
     {
-      strcpy (cfg_arg[PIODEV], "");
+      strcpy (g_cfg_arg[PIODEV], "");
       save_configuration ();
     }
   show_pio_device_current ();
@@ -193,8 +193,8 @@ ioports_unhide ()
     {
       ioports_setup ();
     }
-  gtk_widget_show (Wioports_top);
-  gtk_window_set_keep_above (ioports_top, TRUE);
+  gtk_widget_show (g_Wioports_top);
+  gtk_window_set_keep_above (g_ioports_top, TRUE);
 }
 
 
@@ -228,14 +228,14 @@ ioports_setup ()
   }
 
   ioports_initialised = 1;
-  gtk_widget_show (Wioports_top);
+  gtk_widget_show (g_Wioports_top);
 }
 
 
 void
 ioports_hide ()
 {
-  gtk_widget_hide (Wioports_top);
+  gtk_widget_hide (g_Wioports_top);
 }
 
 
@@ -245,11 +245,11 @@ show_sio_in_current ()
   xlog (INFO, "show_sio_in_current NI\n");
   if (siotab[2].filename != NULL)
     {
-      gtk_label_set_text (sio_in_fn, (const gchar *) (siotab[2].filename));
+      gtk_label_set_text (g_sio_in_fn, (const gchar *) (siotab[2].filename));
     }
   else
     {
-      gtk_label_set_text (sio_in_fn, (const gchar *) " sio_in     Detached");
+      gtk_label_set_text (g_sio_in_fn, (const gchar *) " sio_in     Detached");
     }
 
 }
@@ -261,11 +261,11 @@ show_sio_device_current ()
   xlog (INFO, "show_sio_device_current: %s\n", siotab[6].filename);
   if (siotab[6].filename != NULL)
     {
-      gtk_label_set_text (sio_dev_fn, (const gchar *) (siotab[6].filename));
+      gtk_label_set_text (g_sio_dev_fn, (const gchar *) (siotab[6].filename));
     }
   else
     {
-      gtk_label_set_text (sio_dev_fn,
+      gtk_label_set_text (g_sio_dev_fn,
 			  (const gchar *) " sio_dev     Detached");
     }
 
@@ -277,11 +277,11 @@ show_sio_out_current ()
   xlog (INFO, "show_sio_out_current NI\n");
   if (siotab[3].filename != NULL)
     {
-      gtk_label_set_text (sio_out_fn, (const gchar *) (siotab[3].filename));
+      gtk_label_set_text (g_sio_out_fn, (const gchar *) (siotab[3].filename));
     }
   else
     {
-      gtk_label_set_text (sio_out_fn,
+      gtk_label_set_text (g_sio_out_fn,
 			  (const gchar *) " sio_out     Detached");
     }
 
@@ -293,11 +293,11 @@ show_pio_in_current ()
   xlog (INFO, "show_pio_in_current NI\n");
   if (siotab[4].filename != NULL)
     {
-      gtk_label_set_text (pio_in_fn, (const gchar *) (siotab[4].filename));
+      gtk_label_set_text (g_pio_in_fn, (const gchar *) (siotab[4].filename));
     }
   else
     {
-      gtk_label_set_text (pio_in_fn, (const gchar *) " pio_in     Detached");
+      gtk_label_set_text (g_pio_in_fn, (const gchar *) " pio_in     Detached");
     }
 
 }
@@ -309,11 +309,11 @@ show_pio_out_current ()
   xlog (INFO, "show_pio_out_current NI\n");
   if (siotab[5].filename != NULL)
     {
-      gtk_label_set_text (pio_out_fn, (const gchar *) (siotab[5].filename));
+      gtk_label_set_text (g_pio_out_fn, (const gchar *) (siotab[5].filename));
     }
   else
     {
-      gtk_label_set_text (pio_out_fn,
+      gtk_label_set_text (g_pio_out_fn,
 			  (const gchar *) " pio_out     Detached");
     }
 
@@ -326,11 +326,11 @@ show_pio_device_current ()
   xlog (INFO, "show_pio_device_current NI\n");
   if (siotab[7].filename != NULL)
     {
-      gtk_label_set_text (pio_dev_fn, (const gchar *) (siotab[7].filename));
+      gtk_label_set_text (g_pio_dev_fn, (const gchar *) (siotab[7].filename));
     }
   else
     {
-      gtk_label_set_text (pio_dev_fn,
+      gtk_label_set_text (g_pio_dev_fn,
 			  (const gchar *) " pio_dev     Detached");
     }
 
@@ -345,25 +345,25 @@ attach_new_sio_device (void)
   strcpy (streamnbuff, "sio_dev");
 
   xlog (INFO, "attach new sio_dev\n");
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 "",		// current folder to look in at start - unspecified here
 		 "Looking for a BiDirectional SIO DEVICE",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in SIO DEVICE");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in SIO DEVICE");
+      status_print (g_vstring, 0);
     }
   else
     {
       detach (streamnbuff);
       xlog (INFO, "attach_new_sio_device: %s    %s\n", streamnbuff,
-	    file_choice_name);
-      attach (streamnbuff, file_choice_name);
+	    g_file_choice_name);
+      attach (streamnbuff, g_file_choice_name);
       show_sio_device_current ();
-      strcpy (cfg_arg[SIODEV], file_choice_name);
+      strcpy (g_cfg_arg[SIODEV], g_file_choice_name);
       detach_sio_in ();		/* replace separate i/o with bidirectional */
       detach_sio_out ();
       save_configuration ();
@@ -377,24 +377,24 @@ attach_new_sio_in ()
   strcpy (streamnbuff, "sio_in");
 
   xlog (INFO, "attach new sio_in NI\n");
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 "",		// current folder to look in at start - unspecified here
 		 "Looking for an Input File  for SIO-in",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in SIO-in attachment");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in SIO-in attachment");
+      status_print (g_vstring, 0);
     }
   else
     {
       detach (streamnbuff);
       detach_sio_device ();
-      attach (streamnbuff, file_choice_name);
+      attach (streamnbuff, g_file_choice_name);
       show_sio_in_current ();
-      strcpy (cfg_arg[SIOI], file_choice_name);
+      strcpy (g_cfg_arg[SIOI], g_file_choice_name);
       save_configuration ();
     }
 }
@@ -406,24 +406,24 @@ attach_new_sio_out ()
   strcpy (streamnbuff, "sio_out");
 
   xlog (INFO, "attach new sio_out NI\n");
-  choose_mode = GTK_FILE_CHOOSER_ACTION_SAVE;
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_SAVE;
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 "",		// current folder to look in at start - unspecified here
 		 "Looking for an Output File  for SIO-out",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in SIO-out attachment");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in SIO-out attachment");
+      status_print (g_vstring, 0);
     }
   else
     {
       detach (streamnbuff);
       detach_sio_device ();
-      attach (streamnbuff, file_choice_name);
+      attach (streamnbuff, g_file_choice_name);
       show_sio_out_current ();
-      strcpy (cfg_arg[SIOO], file_choice_name);
+      strcpy (g_cfg_arg[SIOO], g_file_choice_name);
       save_configuration ();
     }
 }
@@ -437,25 +437,25 @@ attach_new_pio_device (void)
   strcpy (streamnbuff, "pio_dev");
 
   xlog (INFO, "attach new pio_dev\n");
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 "",		// current folder to look in at start - unspecified here
 		 "Looking for a BiDirectional PIO DEVICE",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in PIO DEVICE");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in PIO DEVICE");
+      status_print (g_vstring, 0);
     }
   else
     {
       detach (streamnbuff);
       xlog (INFO, "attach_new_pio_device: %s    %s\n", streamnbuff,
-	    file_choice_name);
-      attach (streamnbuff, file_choice_name);
+	    g_file_choice_name);
+      attach (streamnbuff, g_file_choice_name);
       show_pio_device_current ();
-      strcpy (cfg_arg[PIODEV], file_choice_name);
+      strcpy (g_cfg_arg[PIODEV], g_file_choice_name);
       detach_pio_in ();		/* replace separate i/o with bidirectional */
       detach_pio_out ();
       save_configuration ();
@@ -469,24 +469,24 @@ attach_new_pio_in ()
   strcpy (streamnbuff, "pio_in");
 
   xlog (INFO, "attach new pio_in NI\n");
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 "",		// current folder to look in at start - unspecified here
 		 "Looking for an Input File  for PIO-in",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in PIO-in attachment");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in PIO-in attachment");
+      status_print (g_vstring, 0);
     }
   else
     {
       detach (streamnbuff);
       detach_pio_device ();
-      attach (streamnbuff, file_choice_name);
+      attach (streamnbuff, g_file_choice_name);
       show_pio_in_current ();
-      strcpy (cfg_arg[PIOI], file_choice_name);
+      strcpy (g_cfg_arg[PIOI], g_file_choice_name);
       save_configuration ();
     }
 }
@@ -499,24 +499,24 @@ attach_new_pio_out ()
   strcpy (streamnbuff, "pio_out");
 
   xlog (INFO, "attach new pio_out NI\n");
-  choose_mode = GTK_FILE_CHOOSER_ACTION_SAVE;
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_SAVE;
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 "",		// current folder to look in at start - unspecified here
 		 "Looking for an Input File  for PIO-out",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in PIO-out attachment");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in PIO-out attachment");
+      status_print (g_vstring, 0);
     }
   else
     {
       detach (streamnbuff);
       detach_pio_device ();
-      attach (streamnbuff, file_choice_name);
+      attach (streamnbuff, g_file_choice_name);
       show_pio_out_current ();
-      strcpy (cfg_arg[PIOO], file_choice_name);
+      strcpy (g_cfg_arg[PIOO], g_file_choice_name);
       save_configuration ();
     }
 }
@@ -602,13 +602,13 @@ attach (char *stream, char *iofilename)
       if ((strcmp (s->streamname, "pio_in")) == 0)
 	{
 //	  xlog (ALL, "ATTACH: PIO_IN\n");
-	  calloc_buffer_pointer (s->streamname, &pio_character_buff_ptr);
+	  calloc_buffer_pointer (s->streamname, &g_pio_character_buff_ptr);
 	}
 
       if ((strcmp (s->streamname, "sio_in")) == 0)
 	{
 //	  xlog (ALL, "ATTACH: SIO_IN\n");
-	  calloc_buffer_pointer (s->streamname, &sio_character_buff_ptr);
+	  calloc_buffer_pointer (s->streamname, &g_sio_character_buff_ptr);
 	}
 
       if (!iofilename || !*iofilename)
@@ -632,9 +632,9 @@ attach (char *stream, char *iofilename)
 	    s->streamname, iofilename);
       if ((file_desc = open (iofilename, opflags, 0666)) < 0)
 	{
-	  sprintf (vstring, "\n%s: Can't Open I/O Port File \"%s\"\n",
+	  sprintf (g_vstring, "\n%s: Can't Open I/O Port File \"%s\"\n",
 		   s->streamname, iofilename);
-	  status_print (vstring, TRUE);
+	  status_print (g_vstring, TRUE);
 	}
       else
 	{
@@ -664,7 +664,7 @@ attach (char *stream, char *iofilename)
 	      // if we have 'sio-in'
 	      if (!strcmp (s->streamname, "sio_in"))
 		{
-		  if (tcgetattr (fileno (s->fp), &sio_cooked) != 0)
+		  if (tcgetattr (fileno (s->fp), &g_sio_cooked) != 0)
 		    {
 		      perror ("tcgetattr");
 		      exit (1);
@@ -673,13 +673,13 @@ attach (char *stream, char *iofilename)
 		    {
 //		      xlog (ALL, "tcgetattr OK\n");
 
-		      sio_raw = sio_cooked;
-		      sio_raw.c_iflag = 0;
-		      sio_raw.c_oflag = 0;
-		      sio_raw.c_lflag = 0;
-		      memset (sio_raw.c_cc, 0, NCCS);
-		      sio_raw.c_cc[VINTR] = 0;
-		      sio_raw.c_cc[VMIN] = 1;
+		      g_sio_raw = g_sio_cooked;
+		      g_sio_raw.c_iflag = 0;
+		      g_sio_raw.c_oflag = 0;
+		      g_sio_raw.c_lflag = 0;
+		      memset (g_sio_raw.c_cc, 0, NCCS);
+		      g_sio_raw.c_cc[VINTR] = 0;
+		      g_sio_raw.c_cc[VMIN] = 1;
 		      sio_raw_tty (s);
 		    }
 		}
@@ -688,7 +688,7 @@ attach (char *stream, char *iofilename)
 	      // if we have 'pio-in'
 	      if (!strcmp (s->streamname, "pio_in"))
 		{
-		  if (tcgetattr (fileno (s->fp), &pio_cooked) != 0)
+		  if (tcgetattr (fileno (s->fp), &g_pio_cooked) != 0)
 		    {
 		      perror ("tcgetattr");
 		      exit (1);
@@ -697,13 +697,13 @@ attach (char *stream, char *iofilename)
 		    {
 		      xlog (ALL, "tcgetattr OK\n");
 
-		      pio_raw = pio_cooked;
-		      pio_raw.c_iflag = 0;
-		      pio_raw.c_oflag = 0;
-		      pio_raw.c_lflag = 0;
-		      memset (pio_raw.c_cc, 0, NCCS);
-		      pio_raw.c_cc[VINTR] = 0;
-		      pio_raw.c_cc[VMIN] = 1;
+		      g_pio_raw = g_pio_cooked;
+		      g_pio_raw.c_iflag = 0;
+		      g_pio_raw.c_oflag = 0;
+		      g_pio_raw.c_lflag = 0;
+		      memset (g_pio_raw.c_cc, 0, NCCS);
+		      g_pio_raw.c_cc[VINTR] = 0;
+		      g_pio_raw.c_cc[VMIN] = 1;
 		      pio_raw_tty (s);
 		    }
 		}
@@ -729,7 +729,7 @@ sio_raw_tty (struct sio *s)
 //  xlog (ALL, "sio_raw_tty:  checking s : s->streamname= %s\n", s->streamname);
   if ((ttyflags & (ISATTY | ISRAW)) == ISATTY)
     {
-      tcsetattr (fileno (s->fp), TCSAFLUSH, &sio_raw);
+      tcsetattr (fileno (s->fp), TCSAFLUSH, &g_sio_raw);
       ttyflags |= ISRAW;
     }
 }
@@ -740,7 +740,7 @@ pio_raw_tty (struct sio *s)
 //  xlog (ALL, "pio_raw_tty:  checking s : s->streamname= %s\n", s->streamname);
   if ((ttyflags & (ISATTY | ISRAW)) == ISATTY)
     {
-      tcsetattr (fileno (s->fp), TCSAFLUSH, &pio_raw);
+      tcsetattr (fileno (s->fp), TCSAFLUSH, &g_pio_raw);
       ttyflags |= ISRAW;
     }
 }
@@ -752,7 +752,7 @@ sio_cooked_tty (struct sio *s)
     {
       if (ttyflags & ISRAW)
 	{
-	  tcsetattr (fileno (s->fp), TCSAFLUSH, &sio_cooked);
+	  tcsetattr (fileno (s->fp), TCSAFLUSH, &g_sio_cooked);
 	  ttyflags &= ~ISRAW;
 	}
     }
@@ -766,7 +766,7 @@ pio_cooked_tty (struct sio *s)
     {
       if (ttyflags & ISRAW)
 	{
-	  tcsetattr (fileno (s->fp), TCSAFLUSH, &pio_cooked);
+	  tcsetattr (fileno (s->fp), TCSAFLUSH, &g_pio_cooked);
 	  ttyflags &= ~ISRAW;
 	}
     }
@@ -823,8 +823,8 @@ calloc_buffer_pointer (const char *sname, BYTE ** buff_ptr)
       *buff_ptr = (BYTE *) calloc (PORT_IN_BUFF_SIZE, 1);
       if (*buff_ptr == NULL)
 	{
-	  sprintf (vstring, "ERROR: No space for %s_nput Buffer\n", sname);
-	  status_print (vstring, TRUE);
+	  sprintf (g_vstring, "ERROR: No space for %s_nput Buffer\n", sname);
+	  status_print (g_vstring, TRUE);
 	}
     }
   xlog (MOTHERBOARD,

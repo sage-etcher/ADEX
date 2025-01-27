@@ -11,7 +11,7 @@
 
 
 unsigned char directory[DIRSIZ];
-unsigned char tmpbuff[D_BLOCKSIZ];
+unsigned char g_tmpbuff[D_BLOCKSIZ];
 FILE *ufile, *nsfile;
 long flen;
 
@@ -29,7 +29,7 @@ char linebuff[65];
 #ifdef DEBUG
 int debug = 1;
 #else
-int debug = 0;
+int g_ade_debug = 0;
 #endif
 
 
@@ -53,7 +53,7 @@ main (int argc, char **argv)
 
   set_fdensity (nsfile);
   printf ("\nNorth Star DOS disk-image \"%s\" files:\n\n", argv[1]);
-  if (debug)
+  if (g_ade_debug)
     printf ("SDflag = %d - dir_max = %d\n\n", SDflag, dir_max);
   for (i = 0; i < dir_max; i++)
     {
@@ -78,7 +78,7 @@ main (int argc, char **argv)
 
 	       /*** get disk address of file ***/
 	      dskadd = get_int16 (&dirbuff[ADDLO]);	/* block address */
-	      if (debug)
+	      if (g_ade_debug)
 		printf ("dskadd=%d\n", dskadd);
 
 

@@ -15,32 +15,32 @@ open_conf_file (void)
   // confname already contains a copy of the app's work_dir
   // $HOME/XXXXXXXX/
 
-  if ((dir_ok = is_dir (confname)) < 1)
+  if ((dir_ok = is_dir (g_confname)) < 1)
     {
-      mkdir_p (confname);
-      strcpy (new_dirs, confname);
+      mkdir_p (g_confname);
+      strcpy (new_dirs, g_confname);
       strcat (new_dirs, "disks");
       mkdir_p (new_dirs);
     }
 
-  if (!configfileflag)
+  if (!g_configfileflag)
     {
 /* generate default config file name */
       strcpy (conf_fn, "ade");
       strcat (conf_fn, ".conf");
-      strcat (confname, conf_fn);	// now got $HOME/XXXXXXXX/ade.conf
+      strcat (g_confname, conf_fn);	// now got $HOME/XXXXXXXX/ade.conf
     }
   else
     {
 /* generate special config file name */
-      strcat (confname, basename (xconfigfilename));
+      strcat (g_confname, basename (g_xconfigfilename));
     }
 
-  xlog (ALL, "ConfName = \"%s\"\n", confname);
-  if ((conf = fopen (confname, "r+")) == NULL)
+  xlog (ALL, "ConfName = \"%s\"\n", g_confname);
+  if ((g_conf = fopen (g_confname, "r+")) == NULL)
     {
       error = new_config_file ();
-      if ((conf = fopen (confname, "r+")) == NULL)
+      if ((g_conf = fopen (g_confname, "r+")) == NULL)
 	{
 	  bad_open = 1;
 	}
@@ -66,15 +66,15 @@ open_conf_file (void)
 void
 get_config (void)
 {
-  if (conf == NULL)
+  if (g_conf == NULL)
     {
       open_conf_file ();
     }
-  if (conf == NULL)
+  if (g_conf == NULL)
     {
-      sprintf (vstring, "Can't open conf file \"%s\"\n", confname);
-      status_print (vstring, TRUE);
-      xlog (ALL, "Can't open conf file \"%s\"\n", confname);
+      sprintf (g_vstring, "Can't open conf file \"%s\"\n", g_confname);
+      status_print (g_vstring, TRUE);
+      xlog (ALL, "Can't open conf file \"%s\"\n", g_confname);
     }
   else
     {
@@ -93,13 +93,13 @@ load_configuration (void)
   char *targ;
   int tkeynum;
   load_keywords ();
-  while ((fgets (cfgbuff, 127, conf)) != NULL)
+  while ((fgets (cfgbuff, 127, g_conf)) != NULL)
     {
       if ((cfgbuff[0] != '#') && (strlen (cfgbuff) > 3))
 	{
 	  cfgbuff[strlen (cfgbuff) - 1] = '\0';	/*scrub \n from end of second token */
-	  tkey = strtok (cfgbuff, white);
-	  targ = strtok (NULL, white);
+	  tkey = strtok (cfgbuff, g_white);
+	  targ = strtok (NULL, g_white);
 	  /*convert key to lower-case */
 	  for (i = 0; (unsigned int) i < strlen (tkey); i++)
 	    {
@@ -107,9 +107,9 @@ load_configuration (void)
 	    }
 	  i = 0;
 	  tkeynum = (-1);	/* error value default if not found */
-	  while (i < (max_cfg_key + 1))
+	  while (i < (g_max_cfg_key + 1))
 	    {
-	      if ((strcmp (cfg_key[i], tkey)) == 0)
+	      if ((strcmp (g_cfg_key[i], tkey)) == 0)
 		{
 		  tkeynum = i;
 		  i = 1000;	/* exit */
@@ -123,11 +123,11 @@ load_configuration (void)
 	    {			/*found a keyword */
 	      if (targ != NULL)
 		{
-		  strcpy (cfg_arg[tkeynum], targ);
+		  strcpy (g_cfg_arg[tkeynum], targ);
 		}
 	      else
 		{
-		  strcpy (cfg_arg[tkeynum], "");
+		  strcpy (g_cfg_arg[tkeynum], "");
 		}
 	    }
 
@@ -141,33 +141,33 @@ void
 load_keywords (void)
 {
 /*restricts number of, case of, config keywords */
-  max_cfg_key = 0;
-  strcpy (cfg_key[HDD], "hdd");
-  strcpy (cfg_key[FD1], "fd1");
-  strcpy (cfg_key[FD2], "fd2");
-  strcpy (cfg_key[DISKD], "disk_dir");
-  strcpy (cfg_key[DLY], "hd_delay");
-  strcpy (cfg_key[CAPS], "capslock");
-  strcpy (cfg_key[CURS], "cursor_lock");
-  strcpy (cfg_key[SLOTH], "slot_hdc");
-  strcpy (cfg_key[SLOTS], "slot_sio");
-  strcpy (cfg_key[SLOTP], "slot_pio");
-  strcpy (cfg_key[SIODEV], "sio_dev");
-  strcpy (cfg_key[SIOI], "sio_in");
-  strcpy (cfg_key[SIOO], "sio_out");
-  strcpy (cfg_key[PIOI], "pio_in");
-  strcpy (cfg_key[PIOO], "pio_out");
-  strcpy (cfg_key[PIODEV], "pio_dev");
-  strcpy (cfg_key[LOG], "log");
-  strcpy (cfg_key[SLOG], "screenlog");
-  strcpy (cfg_key[SEP], "=======");
-  strcpy (cfg_key[DBG], "debug_level");
-  strcpy (cfg_key[BRKA], "break_addr");
-  strcpy (cfg_key[BRKE], "break_on");
-  strcpy (cfg_key[TRAPA], "trap_addr");
-  strcpy (cfg_key[TRAPE], "trap_on");
-  strcpy (cfg_key[CKEND], "END");
-  max_cfg_key = CKEND;
+  g_max_cfg_key = 0;
+  strcpy (g_cfg_key[HDD], "hdd");
+  strcpy (g_cfg_key[FD1], "fd1");
+  strcpy (g_cfg_key[FD2], "fd2");
+  strcpy (g_cfg_key[DISKD], "disk_dir");
+  strcpy (g_cfg_key[DLY], "hd_delay");
+  strcpy (g_cfg_key[CAPS], "capslock");
+  strcpy (g_cfg_key[CURS], "cursor_lock");
+  strcpy (g_cfg_key[SLOTH], "slot_hdc");
+  strcpy (g_cfg_key[SLOTS], "slot_sio");
+  strcpy (g_cfg_key[SLOTP], "slot_pio");
+  strcpy (g_cfg_key[SIODEV], "sio_dev");
+  strcpy (g_cfg_key[SIOI], "sio_in");
+  strcpy (g_cfg_key[SIOO], "sio_out");
+  strcpy (g_cfg_key[PIOI], "pio_in");
+  strcpy (g_cfg_key[PIOO], "pio_out");
+  strcpy (g_cfg_key[PIODEV], "pio_dev");
+  strcpy (g_cfg_key[LOG], "log");
+  strcpy (g_cfg_key[SLOG], "screenlog");
+  strcpy (g_cfg_key[SEP], "=======");
+  strcpy (g_cfg_key[DBG], "debug_level");
+  strcpy (g_cfg_key[BRKA], "break_addr");
+  strcpy (g_cfg_key[BRKE], "break_on");
+  strcpy (g_cfg_key[TRAPA], "trap_addr");
+  strcpy (g_cfg_key[TRAPE], "trap_on");
+  strcpy (g_cfg_key[CKEND], "END");
+  g_max_cfg_key = CKEND;
 }
 
 
@@ -179,23 +179,23 @@ new_config_file (void)
   char newbuff[128];
   set_work_dir ();
 
-  if ((dir_ok = is_dir (confname)) < 1)
+  if ((dir_ok = is_dir (g_confname)) < 1)
     {
-      mkdir_p (confname);
+      mkdir_p (g_confname);
       error = 1;		// nor directory, therefor no conf file
     }
-  strcpy (newbuff, confname);
+  strcpy (newbuff, g_confname);
   strcat (newbuff, "ade.conf");
 
 
-  if ((conf = fopen (newbuff, "w")) == NULL)
+  if ((g_conf = fopen (newbuff, "w")) == NULL)
     {
       printf ("Unfortunately, we still can't create our config file.");
       error = 2;
     }
   else
     {
-      fclose (conf);
+      fclose (g_conf);
     }
   return (error);
 }
@@ -210,25 +210,25 @@ save_configuration (void)
   int i;
   int k;
   int j;
-  max_cfg_key = CKEND;
+  g_max_cfg_key = CKEND;
 //  prepare conf filename
   set_work_dir ();
 
-  if (!configfileflag)
+  if (!g_configfileflag)
     {
 /* generate default config file name */
-      strcat (confname, "ade.conf");
+      strcat (g_confname, "ade.conf");
     }
   else
     {
 /* generate special config file name */
-      strcat (confname, basename (xconfigfilename));
+      strcat (g_confname, basename (g_xconfigfilename));
     }
 
 /* 'wipe' config file. (truncate). Reset file-pointer to start */
-  if ((conf = fopen (confname, "w")) == NULL)
+  if ((g_conf = fopen (g_confname, "w")) == NULL)
     {
-      xlog (ALL, "save_config:  Can't open \"%s\" for writing.\n", confname);
+      xlog (ALL, "save_config:  Can't open \"%s\" for writing.\n", g_confname);
     }
   else
     {
@@ -236,35 +236,35 @@ save_configuration (void)
       sprintf (conf_line,
 	       "##### Configuration File for North Star ADE Emulator (c) %s\n",
 	       TODAY);
-      fputs (conf_line, conf);
+      fputs (conf_line, g_conf);
       strcpy (conf_line, "#####\n");
-      fputs (conf_line, conf);
+      fputs (conf_line, g_conf);
       strcpy (conf_line,
 	      "##### Avoid Editing This File Manually. Any Changes You Make Can\n");
-      fputs (conf_line, conf);
+      fputs (conf_line, g_conf);
       strcpy (conf_line,
 	      "##### Be Automatically Overwritten at Any Time.\n\n");
-      fputs (conf_line, conf);
+      fputs (conf_line, g_conf);
       // store log file names from header file
-      for (i = 0; i < (max_cfg_key); i++)
+      for (i = 0; i < (g_max_cfg_key); i++)
 	{
-	  k = (14 - strlen (cfg_key[i]));
-	  strcpy (conf_line, cfg_key[i]);	/*start with key string */
-	  if (strlen (cfg_arg[i]))
+	  k = (14 - strlen (g_cfg_key[i]));
+	  strcpy (conf_line, g_cfg_key[i]);	/*start with key string */
+	  if (strlen (g_cfg_arg[i]))
 	    {			/* no more unless cfg_arg present */
 
 	      for (j = 0; j < k; j++)
 		{
 		  strcat (conf_line, " ");
 		}
-	      strcat (conf_line, cfg_arg[i]);
+	      strcat (conf_line, g_cfg_arg[i]);
 	    }
 	  strcat (conf_line, "\n");
 	  xlog (INFO, "conf_line:\t\t\t%s", conf_line);
-	  fputs (conf_line, conf);
+	  fputs (conf_line, g_conf);
 	}
-      fflush (conf);
-      fclose (conf);
+      fflush (g_conf);
+      fclose (g_conf);
     }
 }
 
@@ -275,18 +275,18 @@ list_configuration (void)
   int i;
   int j;
   int k;
-  for (i = 0; i < max_cfg_key; i++)
+  for (i = 0; i < g_max_cfg_key; i++)
     {
-      k = (14 - strlen (cfg_key[i]));
-      xlog (INFO, "%s", cfg_key[i]);
-      if (strlen (cfg_arg[i]))
+      k = (14 - strlen (g_cfg_key[i]));
+      xlog (INFO, "%s", g_cfg_key[i]);
+      if (strlen (g_cfg_arg[i]))
 	{			/* no more unless cfg_arg present */
 
 	  for (j = 0; j < k; j++)
 	    {
 	      xlog (INFO, " ");
 	    }
-	  xlog (INFO, "%s", cfg_arg[i]);
+	  xlog (INFO, "%s", g_cfg_arg[i]);
 	}
       xlog (INFO, "\n");
     }
@@ -301,150 +301,150 @@ load_config_parameters (void)
   /* PARAMETERS LOADED FROM CONFIG FILE                    */
 
 
-  strcpy (work_dir, (getenv ("HOME")));	// /home directory
-  strcat (work_dir, "/");	// $HOME/
-  strcat (work_dir, ADE_CONF_DIR);	// $HOME/advantage
+  strcpy (g_work_dir, (getenv ("HOME")));	// /home directory
+  strcat (g_work_dir, "/");	// $HOME/
+  strcat (g_work_dir, ADE_CONF_DIR);	// $HOME/advantage
   /* hardware slots */
   set_slots_config ();		//need HDC to be installed before loading disks
 /* disk storage */
-  if ((strlen (cfg_arg[FD1])) > 4)
+  if ((strlen (g_cfg_arg[FD1])) > 4)
     {
-      floppy_mount (1, cfg_arg[FD1], 0);
-      no_boot_disk = FALSE;
+      floppy_mount (1, g_cfg_arg[FD1], 0);
+      g_no_boot_disk = FALSE;
     }
 
-  if ((strlen (cfg_arg[FD2])) > 4)
+  if ((strlen (g_cfg_arg[FD2])) > 4)
     {
-      floppy_mount (2, cfg_arg[FD2], 0);
+      floppy_mount (2, g_cfg_arg[FD2], 0);
     }
 
-  hd5 = (&nshd);
-  if ((strlen (cfg_arg[HDD])) > 4)
+  g_hd5 = (&g_nshd);
+  if ((strlen (g_cfg_arg[HDD])) > 4)
     {
-      hdmount (cfg_arg[HDD]);
+      hdmount (g_cfg_arg[HDD]);
     }
 
   /*debug value */
-  debug = asc2hex (cfg_arg[DBG]);
-  sprintf (hexstring, "%04X", debug);
-  gtk_entry_set_text (debugvalue, hexstring);
+  g_ade_debug = asc2hex (g_cfg_arg[DBG]);
+  sprintf (g_hexstring, "%04X", g_ade_debug);
+  gtk_entry_set_text (g_debugvalue, g_hexstring);
   /* break address */
-  break_address = asc2hex (cfg_arg[BRKA]);
-  sprintf (hexstring, "%04X", break_address);
-  gtk_entry_set_text (break_entry, hexstring);
+  g_break_address = asc2hex (g_cfg_arg[BRKA]);
+  sprintf (g_hexstring, "%04X", g_break_address);
+  gtk_entry_set_text (g_break_entry, g_hexstring);
   /* break_enable */
-  if ((strcmp (cfg_arg[BRKE], "on")) == 0)
+  if ((strcmp (g_cfg_arg[BRKE], "on")) == 0)
     {
-      break_active = TRUE;
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (break_enable), TRUE);
+      g_break_active = TRUE;
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (g_break_enable), TRUE);
     }
   else
     {
-      break_active = FALSE;
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (break_enable), FALSE);
-      strcpy (cfg_arg[BRKE], "off");
+      g_break_active = FALSE;
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (g_break_enable), FALSE);
+      strcpy (g_cfg_arg[BRKE], "off");
     }
 
 
   /* trap address */
-  cpux->trap_address = asc2hex (cfg_arg[TRAPA]);
-  sprintf (hexstring, "%04X", cpux->trap_address);
-  gtk_entry_set_text (trap_entry, hexstring);
+  g_cpux->trap_address = asc2hex (g_cfg_arg[TRAPA]);
+  sprintf (g_hexstring, "%04X", g_cpux->trap_address);
+  gtk_entry_set_text (g_trap_entry, g_hexstring);
   /* trap_enable */
-  if ((strcmp (cfg_arg[TRAPE], "on")) == 0)
+  if ((strcmp (g_cfg_arg[TRAPE], "on")) == 0)
     {
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (trap_enable), TRUE);
-      trap_active = TRUE;
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (g_trap_enable), TRUE);
+      g_trap_active = TRUE;
     }
   else
     {
-      trap_active = FALSE;
-      strcpy (cfg_arg[TRAPE], "off");
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (trap_enable), FALSE);
+      g_trap_active = FALSE;
+      strcpy (g_cfg_arg[TRAPE], "off");
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (g_trap_enable), FALSE);
     }
 
 
   /*capslock value */
-  if ((strcmp (cfg_arg[CAPS], "on")) == 0)
+  if ((strcmp (g_cfg_arg[CAPS], "on")) == 0)
     {
-      capslock = TRUE;
+      g_capslock = TRUE;
       turn_capslock (ON);
     }
   else
     {
-      capslock = FALSE;
+      g_capslock = FALSE;
       turn_capslock (OFF);
-      strcpy (cfg_arg[CAPS], "off");
+      strcpy (g_cfg_arg[CAPS], "off");
     }
 
   /*cursor_lock value */
-  if ((strcmp (cfg_arg[CURS], "on")) == 0)
+  if ((strcmp (g_cfg_arg[CURS], "on")) == 0)
     {
-      cursor_lock = TRUE;
+      g_cursor_lock = TRUE;
       turn_numlock (OFF);
     }
   else
     {
-      cursor_lock = FALSE;
+      g_cursor_lock = FALSE;
       turn_numlock (ON);
-      strcpy (cfg_arg[CURS], "off");
+      strcpy (g_cfg_arg[CURS], "off");
     }
 
   /*hd_delay value */
-  if ((strcmp (cfg_arg[DLY], "on")) == 0)
+  if ((strcmp (g_cfg_arg[DLY], "on")) == 0)
     {
-      hd_delay = TRUE;
+      g_hd_delay = TRUE;
     }
   else
     {
-      hd_delay = FALSE;
-      strcpy (cfg_arg[DLY], "off");
+      g_hd_delay = FALSE;
+      strcpy (g_cfg_arg[DLY], "off");
     }
 
 
   /* logfile name - NOTE 'work_dir' already ends with a '/' */
-  sprintf (logfilename, "%s%s", work_dir, LOGFILENAME);
-  sprintf (cfg_arg[LOG], "%s%s", work_dir, LOGFILENAME);
+  sprintf (g_logfilename, "%s%s", g_work_dir, LOGFILENAME);
+  sprintf (g_cfg_arg[LOG], "%s%s", g_work_dir, LOGFILENAME);
   /* screenlog name */
-  sprintf (slogfilename, "%s%s", work_dir, SCREENLOGFILENAME);
-  sprintf (cfg_arg[SLOG], "%s%s", work_dir, SCREENLOGFILENAME);
+  sprintf (g_slogfilename, "%s%s", g_work_dir, SCREENLOGFILENAME);
+  sprintf (g_cfg_arg[SLOG], "%s%s", g_work_dir, SCREENLOGFILENAME);
   /*    ioport connections */
-  if (strlen (cfg_arg[SIOI]))
+  if (strlen (g_cfg_arg[SIOI]))
     {
       strcpy (streamnbuff, "sio_in");
-      attach (streamnbuff, cfg_arg[SIOI]);
+      attach (streamnbuff, g_cfg_arg[SIOI]);
     }
 
-  if (strlen (cfg_arg[SIOO]))
+  if (strlen (g_cfg_arg[SIOO]))
     {
       strcpy (streamnbuff, "sio_out");
-      attach (streamnbuff, cfg_arg[SIOO]);
+      attach (streamnbuff, g_cfg_arg[SIOO]);
     }
 
-  if (strlen (cfg_arg[SIODEV]))
+  if (strlen (g_cfg_arg[SIODEV]))
     {
       strcpy (streamnbuff, "sio_dev");
-      attach (streamnbuff, cfg_arg[SIODEV]);
+      attach (streamnbuff, g_cfg_arg[SIODEV]);
     }
 
 
-  if (strlen (cfg_arg[PIOI]))
+  if (strlen (g_cfg_arg[PIOI]))
     {
       strcpy (streamnbuff, "pio_in");
-      attach (streamnbuff, cfg_arg[PIOI]);
+      attach (streamnbuff, g_cfg_arg[PIOI]);
     }
 
 
-  if (strlen (cfg_arg[PIOO]))
+  if (strlen (g_cfg_arg[PIOO]))
     {
       strcpy (streamnbuff, "pio_out");
-      attach (streamnbuff, cfg_arg[PIOO]);
+      attach (streamnbuff, g_cfg_arg[PIOO]);
     }
 
-  if (strlen (cfg_arg[PIODEV]))
+  if (strlen (g_cfg_arg[PIODEV]))
     {
       strcpy (streamnbuff, "pio_dev");
-      attach (streamnbuff, cfg_arg[PIODEV]);
+      attach (streamnbuff, g_cfg_arg[PIODEV]);
     }
 
 
@@ -458,11 +458,11 @@ void
 set_work_dir (void)
 {
 
-  confname = confnamebuff;
+  g_confname = g_confnamebuff;
   xlog (INFO, "PWD= \"%s\"\n", (getenv ("PWD")));
-  strcpy (confname, (getenv ("HOME")));	// USERNAME /home  directory
-  strcat (confname, "/");
-  strcat (confname, "advantage");	// $HOME/XXXXXXXX
-  strcat (confname, "/");	// $HOME/XXXXXXXX/
-  strcpy (work_dir, confname);	/* save the working directory info */
+  strcpy (g_confname, (getenv ("HOME")));	// USERNAME /home  directory
+  strcat (g_confname, "/");
+  strcat (g_confname, "advantage");	// $HOME/XXXXXXXX
+  strcat (g_confname, "/");	// $HOME/XXXXXXXX/
+  strcpy (g_work_dir, g_confname);	/* save the working directory info */
 }

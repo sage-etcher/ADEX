@@ -2,7 +2,7 @@
 
 FILE *dsk;
 FILE *outf;
-int end, error, ok;
+int end, error, g_ok;
 
 unsigned char sector[16][512];
 

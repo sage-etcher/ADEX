@@ -147,7 +147,7 @@
 #define BLUE_LEVEL	0x3f		//   0xff:0xff:0xff is white on black; 0xff:0x00:0xff is magenta on black
 
 
-#define RGB_PB_SIZE     ((ADV_SCREEN_COLS*x_dots_per_pixel) *(ADV_SCREEN_ROWS*y_dots_per_pixel)*RGB_BYTES_PER_PIXEL)
+#define RGB_PB_SIZE     ((ADV_SCREEN_COLS*g_x_dots_per_pixel) *(ADV_SCREEN_ROWS*g_y_dots_per_pixel)*RGB_BYTES_PER_PIXEL)
 
 #define BANNER_TEXT_1	"`x36`y06`ZA D E`x24`y09`ZN`XORTH `ZS`XTAR `ZA`XDVANTAGE `ZE`Xmulator"\
                         "`x26`y12`XVersion"

@@ -11,101 +11,101 @@ build_slotcard_widgets_from_gresources (void)
 
 /* debug checkbutton menu stuff */
 
-  builder = gtk_builder_new_from_resource ("/au/com/itelsoft/ade/slot.glade");
+  g_builder = gtk_builder_new_from_resource ("/au/com/itelsoft/ade/slot.glade");
 
-  Wslottop = GTK_WIDGET (gtk_builder_get_object (builder, "slot_top"));
+  g_Wslottop = GTK_WIDGET (gtk_builder_get_object (g_builder, "slot_top"));
 
 /*radiobuttons*/
-  Ws1button = GTK_WIDGET (gtk_builder_get_object (builder, "s1button"));
-  s1button = GTK_BUTTON (Ws1button);
+  g_Ws1button = GTK_WIDGET (gtk_builder_get_object (g_builder, "s1button"));
+  g_s1button = GTK_BUTTON (g_Ws1button);
 
 
-  Ws2button = GTK_WIDGET (gtk_builder_get_object (builder, "s2button"));
-  s2button = GTK_BUTTON (Ws2button);
+  g_Ws2button = GTK_WIDGET (gtk_builder_get_object (g_builder, "s2button"));
+  g_s2button = GTK_BUTTON (g_Ws2button);
 
 
-  Ws3button = GTK_WIDGET (gtk_builder_get_object (builder, "s3button"));
-  s3button = GTK_BUTTON (Ws3button);
+  g_Ws3button = GTK_WIDGET (gtk_builder_get_object (g_builder, "s3button"));
+  g_s3button = GTK_BUTTON (g_Ws3button);
 
 
-  Ws4button = GTK_WIDGET (gtk_builder_get_object (builder, "s4button"));
-  s4button = GTK_BUTTON (Ws4button);
+  g_Ws4button = GTK_WIDGET (gtk_builder_get_object (g_builder, "s4button"));
+  g_s4button = GTK_BUTTON (g_Ws4button);
 
 
-  Ws5button = GTK_WIDGET (gtk_builder_get_object (builder, "s5button"));
-  s5button = GTK_BUTTON (Ws5button);
+  g_Ws5button = GTK_WIDGET (gtk_builder_get_object (g_builder, "s5button"));
+  g_s5button = GTK_BUTTON (g_Ws5button);
 
 
-  Ws6button = GTK_WIDGET (gtk_builder_get_object (builder, "s6button"));
-  s6button = GTK_BUTTON (Ws6button);
+  g_Ws6button = GTK_WIDGET (gtk_builder_get_object (g_builder, "s6button"));
+  g_s6button = GTK_BUTTON (g_Ws6button);
 
-  Wsunused = GTK_WIDGET (gtk_builder_get_object (builder, "sunused"));
-  sunused = GTK_BUTTON (Wsunused);
+  g_Wsunused = GTK_WIDGET (gtk_builder_get_object (g_builder, "sunused"));
+  g_sunused = GTK_BUTTON (g_Wsunused);
 
-  Wp1button = GTK_WIDGET (gtk_builder_get_object (builder, "p1button"));
-  p1button = GTK_BUTTON (Wp1button);
-
-
-  Wp2button = GTK_WIDGET (gtk_builder_get_object (builder, "p2button"));
-  p2button = GTK_BUTTON (Wp2button);
+  g_Wp1button = GTK_WIDGET (gtk_builder_get_object (g_builder, "p1button"));
+  g_p1button = GTK_BUTTON (g_Wp1button);
 
 
-  Wp3button = GTK_WIDGET (gtk_builder_get_object (builder, "p3button"));
-  p3button = GTK_BUTTON (Wp3button);
+  g_Wp2button = GTK_WIDGET (gtk_builder_get_object (g_builder, "p2button"));
+  g_p2button = GTK_BUTTON (g_Wp2button);
 
 
-  Wp4button = GTK_WIDGET (gtk_builder_get_object (builder, "p4button"));
-  p4button = GTK_BUTTON (Wp4button);
+  g_Wp3button = GTK_WIDGET (gtk_builder_get_object (g_builder, "p3button"));
+  g_p3button = GTK_BUTTON (g_Wp3button);
 
 
-  Wp5button = GTK_WIDGET (gtk_builder_get_object (builder, "p5button"));
-  p5button = GTK_BUTTON (Wp5button);
+  g_Wp4button = GTK_WIDGET (gtk_builder_get_object (g_builder, "p4button"));
+  g_p4button = GTK_BUTTON (g_Wp4button);
 
 
-  Wp6button = GTK_WIDGET (gtk_builder_get_object (builder, "p6button"));
-  p6button = GTK_BUTTON (Wp6button);
-
-  Wpunused = GTK_WIDGET (gtk_builder_get_object (builder, "punused"));
-  punused = GTK_BUTTON (Wpunused);
+  g_Wp5button = GTK_WIDGET (gtk_builder_get_object (g_builder, "p5button"));
+  g_p5button = GTK_BUTTON (g_Wp5button);
 
 
-  Wh1button = GTK_WIDGET (gtk_builder_get_object (builder, "h1button"));
-  h1button = GTK_BUTTON (Wh1button);
+  g_Wp6button = GTK_WIDGET (gtk_builder_get_object (g_builder, "p6button"));
+  g_p6button = GTK_BUTTON (g_Wp6button);
+
+  g_Wpunused = GTK_WIDGET (gtk_builder_get_object (g_builder, "punused"));
+  g_punused = GTK_BUTTON (g_Wpunused);
 
 
-  Wh2button = GTK_WIDGET (gtk_builder_get_object (builder, "h2button"));
-  h2button = GTK_BUTTON (Wh2button);
+  g_Wh1button = GTK_WIDGET (gtk_builder_get_object (g_builder, "h1button"));
+  g_h1button = GTK_BUTTON (g_Wh1button);
 
 
-  Wh3button = GTK_WIDGET (gtk_builder_get_object (builder, "h3button"));
-  h3button = GTK_BUTTON (Wh3button);
+  g_Wh2button = GTK_WIDGET (gtk_builder_get_object (g_builder, "h2button"));
+  g_h2button = GTK_BUTTON (g_Wh2button);
 
 
-  Wh4button = GTK_WIDGET (gtk_builder_get_object (builder, "h4button"));
-  h4button = GTK_BUTTON (Wh4button);
+  g_Wh3button = GTK_WIDGET (gtk_builder_get_object (g_builder, "h3button"));
+  g_h3button = GTK_BUTTON (g_Wh3button);
 
 
-  Wh5button = GTK_WIDGET (gtk_builder_get_object (builder, "h5button"));
-  h5button = GTK_BUTTON (Wh5button);
+  g_Wh4button = GTK_WIDGET (gtk_builder_get_object (g_builder, "h4button"));
+  g_h4button = GTK_BUTTON (g_Wh4button);
 
 
-  Wh6button = GTK_WIDGET (gtk_builder_get_object (builder, "h6button"));
-  h6button = GTK_BUTTON (Wh6button);
+  g_Wh5button = GTK_WIDGET (gtk_builder_get_object (g_builder, "h5button"));
+  g_h5button = GTK_BUTTON (g_Wh5button);
 
-  Whunused = GTK_WIDGET (gtk_builder_get_object (builder, "hunused"));
-  hunused = GTK_BUTTON (Whunused);
 
-  Wsio_label = GTK_WIDGET (gtk_builder_get_object (builder, "sio_label"));
-  sio_label = GTK_LABEL (Wsio_label);
+  g_Wh6button = GTK_WIDGET (gtk_builder_get_object (g_builder, "h6button"));
+  g_h6button = GTK_BUTTON (g_Wh6button);
 
-  Wpio_label = GTK_WIDGET (gtk_builder_get_object (builder, "pio_label"));
-  pio_label = GTK_LABEL (Wpio_label);
+  g_Whunused = GTK_WIDGET (gtk_builder_get_object (g_builder, "hunused"));
+  g_hunused = GTK_BUTTON (g_Whunused);
 
-  Whdc_label = GTK_WIDGET (gtk_builder_get_object (builder, "hdc_label"));
-  hdc_label = GTK_LABEL (Whdc_label);
+  g_Wsio_label = GTK_WIDGET (gtk_builder_get_object (g_builder, "sio_label"));
+  g_sio_label = GTK_LABEL (g_Wsio_label);
 
-  gtk_builder_connect_signals (builder, NULL);
-  g_object_unref (builder);
+  g_Wpio_label = GTK_WIDGET (gtk_builder_get_object (g_builder, "pio_label"));
+  g_pio_label = GTK_LABEL (g_Wpio_label);
+
+  g_Whdc_label = GTK_WIDGET (gtk_builder_get_object (g_builder, "hdc_label"));
+  g_hdc_label = GTK_LABEL (g_Whdc_label);
+
+  gtk_builder_connect_signals (g_builder, NULL);
+  g_object_unref (g_builder);
 
 
 }
@@ -113,13 +113,13 @@ build_slotcard_widgets_from_gresources (void)
 void
 slot_unhide (void)
 {
-  gtk_widget_show (Wslottop);
+  gtk_widget_show (g_Wslottop);
 }
 
 void
 slot_hide (void)
 {
-  gtk_widget_hide (Wslottop);
+  gtk_widget_hide (g_Wslottop);
 }
 
 void
@@ -128,10 +128,10 @@ initialise_slots_array (void)
   int i;
   for (i = 1; i < 7; i++)
     {
-      slotx = (&slot[i]);
-      strcpy (slotx->slotname, "");
-      slotx->slot_id = 0xFF;
-      slotx->slotval = 0;
+      g_slotx = (&g_slot[i]);
+      strcpy (g_slotx->slotname, "");
+      g_slotx->slot_id = 0xFF;
+      g_slotx->slotval = 0;
     }
 }
 
@@ -147,14 +147,14 @@ set_slots_config (void)
       slots_initialised = 0;
     }
 
-  slot_number = (atoi (cfg_arg[SLOTS]));
+  slot_number = (atoi (g_cfg_arg[SLOTS]));
   if (slot_number)
     {
       sio_add_slot (slot_number);
     }
 
 
-  slot_number = (atoi (cfg_arg[SLOTP]));
+  slot_number = (atoi (g_cfg_arg[SLOTP]));
 
   if (slot_number)
     {
@@ -162,7 +162,7 @@ set_slots_config (void)
     }
 
 
-  slot_number = (atoi (cfg_arg[SLOTH]));
+  slot_number = (atoi (g_cfg_arg[SLOTH]));
   if (slot_number)
     {
       hdc_add_slot (slot_number);
@@ -180,8 +180,8 @@ show_slot_list (void)
   int i;
   for (i = 1; i < 7; i++)
     {
-      slotx = (&slot[i]);
-      if (slotx->slot_id == 0xFF)
+      g_slotx = (&g_slot[i]);
+      if (g_slotx->slot_id == 0xFF)
 	{
 	  xlog (INFO,
 		"   Slot No.%d (Ports %cX H):  No peripheral card inserted.  \n",
@@ -192,7 +192,7 @@ show_slot_list (void)
 	  xlog
 	    (INFO,
 	     "   Slot No.%d (Ports %cX H):  Card is \"%s\", card-id of 0x%02X \n",
-	     i, (6 - i) + '0', slotx->slotname, slotx->slot_id);
+	     i, (6 - i) + '0', g_slotx->slotname, g_slotx->slot_id);
 	}
     }
 }
@@ -214,7 +214,7 @@ add_slot_card (const char *cardname, int slotnum, int verbal)
       cname[i] = toupper (cname[i]);
     }
   cname[9] = '\0';
-  slotx = (&slot[slotnum]);
+  g_slotx = (&g_slot[slotnum]);
   found = 0;
 
 
@@ -223,9 +223,9 @@ add_slot_card (const char *cardname, int slotnum, int verbal)
       if (strcmp ("HDC", cname) == 0)
 	{
 	  found = 1;
-	  strcpy (slotx->slotname, "HDC");
-	  slotx->slot_id = HDC_ID;
-	  hdcslot = slotnum;
+	  strcpy (g_slotx->slotname, "HDC");
+	  g_slotx->slot_id = HDC_ID;
+	  g_hdcslot = slotnum;
 	}
     }
 
@@ -234,9 +234,9 @@ add_slot_card (const char *cardname, int slotnum, int verbal)
       if (strcmp ("SIO", cname) == 0)
 	{
 	  found = 1;
-	  strcpy (slotx->slotname, "SIO");
-	  slotx->slot_id = SIO_ID;
-	  sioslot = slotnum;
+	  strcpy (g_slotx->slotname, "SIO");
+	  g_slotx->slot_id = SIO_ID;
+	  g_sioslot = slotnum;
 	}
     }
 
@@ -246,9 +246,9 @@ add_slot_card (const char *cardname, int slotnum, int verbal)
       if (strcmp ("PIO", cname) == 0)
 	{
 	  found = 1;
-	  strcpy (slotx->slotname, "PIO");
-	  slotx->slot_id = PIO_ID;
-	  pioslot = slotnum;
+	  strcpy (g_slotx->slotname, "PIO");
+	  g_slotx->slot_id = PIO_ID;
+	  g_pioslot = slotnum;
 	}
     }
 
@@ -269,11 +269,11 @@ add_slot_card (const char *cardname, int slotnum, int verbal)
     {
       xlog (MOTHERBOARD,
 	    "add_slot_card:  Card type \"%s\"   inserted in slot %d    ID = %02X\n",
-	    cname, slotnum, slotx->slot_id);
+	    cname, slotnum, g_slotx->slot_id);
       if (verbal)
 	{
 	  printf ("   Card type \"%s\"   inserted in slot %d ID = %02X\n",
-		  cname, slotnum, slotx->slot_id);
+		  cname, slotnum, g_slotx->slot_id);
 	}
     }
 
@@ -285,8 +285,8 @@ void
 remove_slot_card (int s)
 {
 
-  slotx = (&slot[s]);
-  if (slotx->slot_id == 0xFF)
+  g_slotx = (&g_slot[s]);
+  if (g_slotx->slot_id == 0xFF)
     {
       printf
 	("   Slot Number %d:  ERROR. Can't remove card. None inserted.\n", s);
@@ -295,11 +295,11 @@ remove_slot_card (int s)
     {
       xlog (MOTHERBOARD,
 	    "   Slot card \"%s\", ID=%2X   removed from slot %d\n",
-	    slotx->slotname, slotx->slot_id, s);
+	    g_slotx->slotname, g_slotx->slot_id, s);
       printf ("   Slot card \"%s\",  ID = 0x%2X   removed from slot %d\n",
-	      slotx->slotname, slotx->slot_id, s);
-      slotx->slot_id = 0xFF;
-      strcpy (slotx->slotname, "");
+	      g_slotx->slotname, g_slotx->slot_id, s);
+      g_slotx->slot_id = 0xFF;
+      strcpy (g_slotx->slotname, "");
     }
 }
 
@@ -310,21 +310,21 @@ hdc_add_slot (int newslot)
 
   gchar newinfo[80];
 
-  if (hdcslot != newslot)
+  if (g_hdcslot != newslot)
     {
-      if (hdcslot)
+      if (g_hdcslot)
 	{
-	  remove_slot_card (hdcslot);
+	  remove_slot_card (g_hdcslot);
 	}
       add_slot_card ("HDC", newslot, 0);
-      hdcslot = newslot;
-      sprintf (cfg_arg[SLOTH], "%d", newslot);
+      g_hdcslot = newslot;
+      sprintf (g_cfg_arg[SLOTH], "%d", newslot);
       save_configuration ();
     }
   sprintf (newinfo, "HDC Hard Drive Controller Card Inserted in Slot %d",
 	   newslot);
 
-  gtk_label_set_text (hdc_label, (const gchar *) newinfo);
+  gtk_label_set_text (g_hdc_label, (const gchar *) newinfo);
 }
 
 void
@@ -333,20 +333,20 @@ sio_add_slot (int newslot)
 
   gchar newinfo[80];
 
-  if (sioslot != newslot)
+  if (g_sioslot != newslot)
     {
-      if (sioslot)
+      if (g_sioslot)
 	{
-	  remove_slot_card (sioslot);
+	  remove_slot_card (g_sioslot);
 	}
       add_slot_card ("SIO", newslot, 0);
-      sioslot = newslot;
-      sprintf (cfg_arg[SLOTS], "%d", newslot);
+      g_sioslot = newslot;
+      sprintf (g_cfg_arg[SLOTS], "%d", newslot);
       save_configuration ();
     }
   sprintf (newinfo, "SIO Serial Port I/O Card Inserted in Slot %d", newslot);
 
-  gtk_label_set_text (sio_label, (const gchar *) newinfo);
+  gtk_label_set_text (g_sio_label, (const gchar *) newinfo);
 }
 
 void
@@ -355,21 +355,21 @@ pio_add_slot (int newslot)
 
   char newinfo[80];
 
-  if (pioslot != newslot)
+  if (g_pioslot != newslot)
     {
-      if (pioslot)
+      if (g_pioslot)
 	{
-	  remove_slot_card (pioslot);
+	  remove_slot_card (g_pioslot);
 	}
       add_slot_card ("PIO", newslot, 0);
-      pioslot = newslot;
-      sprintf (cfg_arg[SLOTP], "%d", newslot);
+      g_pioslot = newslot;
+      sprintf (g_cfg_arg[SLOTP], "%d", newslot);
       save_configuration ();
     }
   sprintf (newinfo, "PIO Parallel Port I/O Card Inserted in Slot %d",
 	   newslot);
 
-  gtk_label_set_text (pio_label, (const gchar *) newinfo);
+  gtk_label_set_text (g_pio_label, (const gchar *) newinfo);
 }
 
 
@@ -377,14 +377,14 @@ pio_add_slot (int newslot)
 void
 slot_0_hx (void)
 {
-  if (hdcslot)
+  if (g_hdcslot)
     {
-      remove_slot_card (hdcslot);
-      hdcslot = 0;
-      gtk_label_set_text (hdc_label,
+      remove_slot_card (g_hdcslot);
+      g_hdcslot = 0;
+      gtk_label_set_text (g_hdc_label,
 			  (const gchar *)
 			  "HDC Hard Drive Controller Card Not Installed");
-      sprintf (cfg_arg[SLOTH], "0");
+      sprintf (g_cfg_arg[SLOTH], "0");
       save_configuration ();
     }
 }
@@ -394,7 +394,7 @@ slot_0_hx (void)
 void
 slot_1_hx (void)
 {
-  if ((pioslot == 1) || (sioslot == 1))
+  if ((g_pioslot == 1) || (g_sioslot == 1))
     {
       status_print ("\nSlot 1 Already in Use", TRUE);
     }
@@ -407,7 +407,7 @@ slot_1_hx (void)
 void
 slot_2_hx (void)
 {
-  if ((pioslot == 2) || (sioslot == 2))
+  if ((g_pioslot == 2) || (g_sioslot == 2))
     {
       status_print ("\nSlot 2 Already in Use", TRUE);
     }
@@ -420,7 +420,7 @@ slot_2_hx (void)
 void
 slot_3_hx (void)
 {
-  if ((pioslot == 3) || (sioslot == 3))
+  if ((g_pioslot == 3) || (g_sioslot == 3))
     {
       status_print ("\nSlot 3 Already in Use", TRUE);
     }
@@ -433,7 +433,7 @@ slot_3_hx (void)
 void
 slot_4_hx (void)
 {
-  if ((pioslot == 4) || (sioslot == 4))
+  if ((g_pioslot == 4) || (g_sioslot == 4))
     {
       status_print ("\nSlot 4 Already in Use", TRUE);
     }
@@ -446,7 +446,7 @@ slot_4_hx (void)
 void
 slot_5_hx (void)
 {
-  if ((pioslot == 5) || (sioslot == 5))
+  if ((g_pioslot == 5) || (g_sioslot == 5))
     {
       status_print ("\nSlot 5 Already in Use", TRUE);
     }
@@ -459,7 +459,7 @@ slot_5_hx (void)
 void
 slot_6_hx (void)
 {
-  if ((pioslot == 6) || (sioslot == 6))
+  if ((g_pioslot == 6) || (g_sioslot == 6))
     {
       status_print ("\nSlot 6 Already in Use", TRUE);
     }
@@ -473,14 +473,14 @@ slot_6_hx (void)
 void
 slot_0_sx (void)
 {
-  if (sioslot)
+  if (g_sioslot)
     {
-      remove_slot_card (sioslot);
-      sioslot = 0;
-      gtk_label_set_text (sio_label,
+      remove_slot_card (g_sioslot);
+      g_sioslot = 0;
+      gtk_label_set_text (g_sio_label,
 			  (const gchar *)
 			  "SIO Serial Port I/O Card Not Installed");
-      sprintf (cfg_arg[SLOTS], "0");
+      sprintf (g_cfg_arg[SLOTS], "0");
       save_configuration ();
     }
 }
@@ -488,7 +488,7 @@ slot_0_sx (void)
 void
 slot_1_sx (void)
 {
-  if ((pioslot == 1) || (hdcslot == 1))
+  if ((g_pioslot == 1) || (g_hdcslot == 1))
     {
       status_print ("\nSlot 1 Already in Use", TRUE);
     }
@@ -501,7 +501,7 @@ slot_1_sx (void)
 void
 slot_2_sx (void)
 {
-  if ((pioslot == 2) || (hdcslot == 2))
+  if ((g_pioslot == 2) || (g_hdcslot == 2))
     {
       status_print ("\nSlot 2 Already in Use", TRUE);
     }
@@ -514,7 +514,7 @@ slot_2_sx (void)
 void
 slot_3_sx (void)
 {
-  if ((pioslot == 3) || (hdcslot == 3))
+  if ((g_pioslot == 3) || (g_hdcslot == 3))
     {
       status_print ("\nSlot 3 Already in Use", TRUE);
     }
@@ -527,7 +527,7 @@ slot_3_sx (void)
 void
 slot_4_sx (void)
 {
-  if ((pioslot == 4) || (hdcslot == 4))
+  if ((g_pioslot == 4) || (g_hdcslot == 4))
     {
       status_print ("\nSlot 4 Already in Use", TRUE);
     }
@@ -540,7 +540,7 @@ slot_4_sx (void)
 void
 slot_5_sx (void)
 {
-  if ((pioslot == 5) || (hdcslot == 5))
+  if ((g_pioslot == 5) || (g_hdcslot == 5))
     {
       status_print ("\nSlot 5 Already in Use", TRUE);
     }
@@ -553,7 +553,7 @@ slot_5_sx (void)
 void
 slot_6_sx (void)
 {
-  if ((pioslot == 6) || (hdcslot == 6))
+  if ((g_pioslot == 6) || (g_hdcslot == 6))
     {
       status_print ("\nSlot 6 Already in Use", TRUE);
     }
@@ -568,14 +568,14 @@ void
 slot_0_px (void)
 {
   printf ("slot_0_px\n");
-  if (pioslot)
+  if (g_pioslot)
     {
-      remove_slot_card (pioslot);
-      pioslot = 0;
-      gtk_label_set_text (pio_label,
+      remove_slot_card (g_pioslot);
+      g_pioslot = 0;
+      gtk_label_set_text (g_pio_label,
 			  (const gchar *)
 			  "PIO Parallel Port I/O Card Not Installed");
-      sprintf (cfg_arg[SLOTP], "0");
+      sprintf (g_cfg_arg[SLOTP], "0");
       save_configuration ();
     }
 
@@ -584,7 +584,7 @@ slot_0_px (void)
 void
 slot_1_px (void)
 {
-  if ((sioslot == 1) || (hdcslot == 1))
+  if ((g_sioslot == 1) || (g_hdcslot == 1))
     {
       status_print ("\nSlot 1 Already in Use", TRUE);
     }
@@ -597,7 +597,7 @@ slot_1_px (void)
 void
 slot_2_px (void)
 {
-  if ((sioslot == 2) || (hdcslot == 2))
+  if ((g_sioslot == 2) || (g_hdcslot == 2))
     {
       status_print ("\nSlot 2 Already in Use", TRUE);
     }
@@ -610,7 +610,7 @@ slot_2_px (void)
 void
 slot_3_px (void)
 {
-  if ((sioslot == 3) || (hdcslot == 3))
+  if ((g_sioslot == 3) || (g_hdcslot == 3))
     {
       status_print ("\nSlot 3 Already in Use", TRUE);
     }
@@ -623,7 +623,7 @@ slot_3_px (void)
 void
 slot_4_px (void)
 {
-  if ((sioslot == 4) || (hdcslot == 4))
+  if ((g_sioslot == 4) || (g_hdcslot == 4))
     {
       status_print ("\nSlot 4 Already in Use", TRUE);
     }
@@ -636,7 +636,7 @@ slot_4_px (void)
 void
 slot_5_px (void)
 {
-  if ((sioslot == 5) || (hdcslot == 5))
+  if ((g_sioslot == 5) || (g_hdcslot == 5))
     {
       status_print ("\nSlot 5 Already in Use", TRUE);
     }
@@ -649,7 +649,7 @@ slot_5_px (void)
 void
 slot_6_px (void)
 {
-  if ((sioslot == 6) || (hdcslot == 6))
+  if ((g_sioslot == 6) || (g_hdcslot == 6))
     {
       status_print ("\nSlot 6 Already in Use", TRUE);
     }

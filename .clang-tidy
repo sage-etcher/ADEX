@@ -1,0 +1,2 @@
+
+Checks: "-*,bugprone-*,cert-*,clang-analyzer-core.*,clang-analyzer-nullability.*,clang-analyzer-optin.*,clang-analyzer-unix.*,clang-analyzer-deadcode.*,modernize-*,performance-*,portability-*,cppcoreguidelines-avoid-goto,cppcoreguidelines-avoid-non-const-global-variables,-misc-include-cleaner,-misc-unused-parameters,-readability-redundant-control-flow"

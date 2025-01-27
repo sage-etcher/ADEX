@@ -19,7 +19,7 @@
 #include "nsd.h"
 
 unsigned char directory[DIRSIZ];
-unsigned char tmpbuff[D_BLOCKSIZ];
+unsigned char g_tmpbuff[D_BLOCKSIZ];
 
 FILE *ufile, *nsfile;
 
@@ -40,7 +40,7 @@ int dir_max;
 int SDflag;
 
 /* DEBUGGING VARIABLE: SET TO FALSE NORMALLY */
-int debug = 0;
+int g_ade_debug = 0;
 
 
 int
@@ -257,7 +257,7 @@ dlook (void)
 
     }
 
-  if (debug)
+  if (g_ade_debug)
     printf
       ("\n next directory slot is %d, next available disk address is %d \n",
        nxtempty, nxtadd);
@@ -313,15 +313,15 @@ appendfile (void)
   for (j = 0; j < nflen; j++)
     {
       cleanbuff ();
-      fread (tmpbuff, disk_blocksize, 1, ufile);
-      fwrite (tmpbuff, disk_blocksize, 1, nsfile);
+      fread (g_tmpbuff, disk_blocksize, 1, ufile);
+      fwrite (g_tmpbuff, disk_blocksize, 1, nsfile);
     }
   fseek (nsfile, (long) DIRSIZ * nxtempty, SEEK_SET);
   fwrite (directory, DIRSIZ, 1, nsfile);
   fclose (nsfile);
   fclose (ufile);
 
-  if (debug)
+  if (g_ade_debug)
     printf ("\n%c%s%c is in %c%s%c image file.\n\n", 34, nambuff, 34, 34,
 	    dnambuff, 34);
 }
@@ -334,7 +334,7 @@ cleanbuff (void)
   int i;
   for (i = 0; i < D_BLOCKSIZ; i++)
     {
-      tmpbuff[i] = 1;		/* 01 is N/S end-of-file marker */
+      g_tmpbuff[i] = 1;		/* 01 is N/S end-of-file marker */
     }
 }
 

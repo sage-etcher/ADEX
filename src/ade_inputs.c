@@ -24,7 +24,7 @@
 /*  and store any chars input on to two large ring-buffers. There they stay   */
 /*  until applications look for them.                                         */
 
-#define BC  cpux->regs[cpux->regs_sel].bc
+#define BC  g_cpux->regs[g_cpux->regs_sel].bc
 
 
 /*****************************************/
@@ -38,24 +38,24 @@ sio_buffstat (void)
   BYTE c;
 
 
-  if (sio_character_buff_ptr == NULL)
+  if (g_sio_character_buff_ptr == NULL)
     {
-      calloc_buffer_pointer ("sio_i", &sio_character_buff_ptr);
+      calloc_buffer_pointer ("sio_i", &g_sio_character_buff_ptr);
     }
 
 
 
 /* save ocptr value from change, copy into next_one */
-  next_one = sio_ocptr;
+  next_one = g_sio_ocptr;
 
-  if (sio_ocptr != sio_icptr)
+  if (g_sio_ocptr != g_sio_icptr)
     {
       /* return value of char in buffer in C register as signal that buffer */
       /* has char waiting; this can be used as part of a read-ahead function */
       next_one++;
       next_one &= PORT_IN_BUFF_MASK;
 
-      c = *(sio_character_buff_ptr + next_one);
+      c = *(g_sio_character_buff_ptr + next_one);
       Setlreg (BC, c);
       c_ready = TRUE;
 
@@ -72,21 +72,21 @@ pio_in_buffstat (void)
   int c_ready = 0;
   BYTE c;
 
-  if (pio_character_buff_ptr == NULL)
+  if (g_pio_character_buff_ptr == NULL)
     {
-      calloc_buffer_pointer ("pio_i", &pio_character_buff_ptr);
+      calloc_buffer_pointer ("pio_i", &g_pio_character_buff_ptr);
     }
 
 
-  if (pio_ocptr != pio_icptr)
+  if (g_pio_ocptr != g_pio_icptr)
     {
-      next_one = pio_ocptr;
+      next_one = g_pio_ocptr;
 
       /* return value of char in buffer as signal that buffer has char waiting */
       /* this can be used as part of a read-ahead function */
       next_one++;
       next_one &= PORT_IN_BUFF_MASK;
-      c = *(pio_character_buff_ptr + next_one);
+      c = *(g_pio_character_buff_ptr + next_one);
       Setlreg (BC, c);
       c_ready = TRUE;
     }
@@ -106,9 +106,9 @@ sio_buff_in (void)
     { /* do nuthin' */ ;
     }				/*wait for char available */
 
-  sio_ocptr++;
-  sio_ocptr &= PORT_IN_BUFF_MASK;
-  c = *(sio_character_buff_ptr + sio_ocptr);
+  g_sio_ocptr++;
+  g_sio_ocptr &= PORT_IN_BUFF_MASK;
+  c = *(g_sio_character_buff_ptr + g_sio_ocptr);
   return (c);
 }
 
@@ -123,9 +123,9 @@ pio_buff_in (void)
     { /* do nuthin' */ ;
     }				/*wait for char available */
 
-  pio_ocptr++;
-  pio_ocptr &= PORT_IN_BUFF_MASK;
-  c = *(pio_character_buff_ptr + pio_ocptr);
+  g_pio_ocptr++;
+  g_pio_ocptr &= PORT_IN_BUFF_MASK;
+  c = *(g_pio_character_buff_ptr + g_pio_ocptr);
   return (c);
 }
 
@@ -142,18 +142,18 @@ pio_input_thread (void)
   int count;
   int fd;
 
-  if (pio_character_buff_ptr == NULL)
+  if (g_pio_character_buff_ptr == NULL)
     {
-      calloc_buffer_pointer ("pio_in", &pio_character_buff_ptr);
+      calloc_buffer_pointer ("pio_in", &g_pio_character_buff_ptr);
     }
 
-  if (pio_ocptr > pio_icptr)
+  if (g_pio_ocptr > g_pio_icptr)
     {
-      diff = (pio_icptr + PORT_IN_BUFF_SIZE) - pio_ocptr;
+      diff = (g_pio_icptr + PORT_IN_BUFF_SIZE) - g_pio_ocptr;
     }
   else
     {
-      diff = pio_icptr - pio_ocptr;
+      diff = g_pio_icptr - g_pio_ocptr;
     }
 
 
@@ -161,7 +161,7 @@ pio_input_thread (void)
     {
       xlog (ALL,
 	    "STALLING TILL CATCH-UP:   icptr = %4d    ocptr = %4d \n",
-	    pio_icptr, pio_ocptr);
+	    g_pio_icptr, g_pio_ocptr);
     }
   else
     {
@@ -177,10 +177,10 @@ pio_input_thread (void)
 	  count = read (fd, &cc, 1);
 	  if (count > 0)
 	    {
-	      pio_icptr++;
-	      pio_icptr &= PORT_IN_BUFF_MASK;
+	      g_pio_icptr++;
+	      g_pio_icptr &= PORT_IN_BUFF_MASK;
 
-	      *(pio_character_buff_ptr + pio_icptr) = cc;
+	      *(g_pio_character_buff_ptr + g_pio_icptr) = cc;
 
 	      Setlreg (BC, cc);
 	    }
@@ -204,18 +204,18 @@ sio_input_thread (void)
 
 
 
-  if (sio_character_buff_ptr == NULL)
+  if (g_sio_character_buff_ptr == NULL)
     {
-      calloc_buffer_pointer ("sio_in", &sio_character_buff_ptr);
+      calloc_buffer_pointer ("sio_in", &g_sio_character_buff_ptr);
     }
 
-  if (sio_ocptr > sio_icptr)
+  if (g_sio_ocptr > g_sio_icptr)
     {
-      diff = (sio_icptr + PORT_IN_BUFF_SIZE) - sio_ocptr;
+      diff = (g_sio_icptr + PORT_IN_BUFF_SIZE) - g_sio_ocptr;
     }
   else
     {
-      diff = sio_icptr - sio_ocptr;
+      diff = g_sio_icptr - g_sio_ocptr;
     }
 //   xlog (ALL, "sio_input_thread: diff = %d\n");
 
@@ -225,7 +225,7 @@ sio_input_thread (void)
     {
       xlog (ALL,
 	    "STALLING TILL CATCH-UP:   icptr = %4d    ocptr = %4d \n",
-	    sio_icptr, sio_ocptr);
+	    g_sio_icptr, g_sio_ocptr);
     }
   else
     {
@@ -242,15 +242,15 @@ sio_input_thread (void)
 
 	  if (count > 0)	// IE NO ERROR, AND MORE THAN ZERO
 	    {
-	      sio_icptr++;
-	      sio_icptr &= PORT_IN_BUFF_MASK;
+	      g_sio_icptr++;
+	      g_sio_icptr &= PORT_IN_BUFF_MASK;
 
-	      *(sio_character_buff_ptr + sio_icptr) = cc;
+	      *(g_sio_character_buff_ptr + g_sio_icptr) = cc;
 
 
 	      xlog (ALL,
 		    "Char on SIO Hardware Input:  %02X  <%c>   icptr = %4d    ocptr = %4d \n",
-		    cc, prn (cc), sio_icptr, sio_ocptr);
+		    cc, prn (cc), g_sio_icptr, g_sio_ocptr);
 //            Setlreg (BC, cc);
 	    }
 	}

@@ -6,7 +6,7 @@ FILE *hdf, *hdo;
 
 char accounts[20][20];
 char files[64][20];
-char fnbuff[20];
+char g_fnbuff[20];
 char typestring[64];
 long diroffset;
 unsigned int dibno;
@@ -282,11 +282,11 @@ fill_dirent (void)
   i = 0;
   while ((i < 14) && (directory[i + 3]))
     {
-      fnbuff[i] = directory[i + 3];
-      fnbuff[i + 1] = '\0';
+      g_fnbuff[i] = directory[i + 3];
+      g_fnbuff[i + 1] = '\0';
       i++;
     }
-  strcpy (xdir.fname_nshdd, fnbuff);
+  strcpy (xdir.fname_nshdd, g_fnbuff);
   strcat (xdir.fname_nshdd, "              ");
   xdir.fname_nshdd[14] = '\0';
 /*

@@ -106,17 +106,17 @@ void
 screen_log (BYTE c)
 {
   char sfname[128];
-  if (slog == NULL)
+  if (g_slog == NULL)
     {
-      slog = fopen (slogfilename, "w");
-      if (slog == NULL)
+      g_slog = fopen (g_slogfilename, "w");
+      if (g_slog == NULL)
 	{
 
-	  sprintf (sfname, "%s/%s", work_dir, SCREENLOGFILENAME);
-	  slog = fopen (sfname, "w");
+	  sprintf (sfname, "%s/%s", g_work_dir, SCREENLOGFILENAME);
+	  g_slog = fopen (sfname, "w");
 	}
     }
-  fprintf (slog, "%c", c);
+  fprintf (g_slog, "%c", c);
 }
 
 
@@ -131,7 +131,7 @@ xlog (unsigned int type, const char *msg, ...)
   int i;
   unsigned int log_debug = 0;
 
-  log_debug = debug;
+  log_debug = g_ade_debug;
 
   log_debug |= ALL;		/* so debug will always match ALL */
 
@@ -148,9 +148,9 @@ xlog (unsigned int type, const char *msg, ...)
     }
 
 /* noprefix flag is carry-over from last call to xlog */
-  if (noprefix_flag)
+  if (g_noprefix_flag)
     {
-      noprefix_flag = FALSE;
+      g_noprefix_flag = FALSE;
       /*cancel the flag. see if further required lower in this code */
     }
   else
@@ -219,11 +219,11 @@ xlog (unsigned int type, const char *msg, ...)
   xend = strchr ((mplusptr + i), '\n');
   if (xend == NULL)
     {
-      noprefix_flag = TRUE;
+      g_noprefix_flag = TRUE;
     }
   else
     {
-      noprefix_flag = FALSE;
+      g_noprefix_flag = FALSE;
     }
 
   if (!DEBUG_TERM)
@@ -236,24 +236,24 @@ xlog (unsigned int type, const char *msg, ...)
       va_start (argp, msg);
 /* oops. is there a logfile open??? */
       /* first try for logfile in current directory */
-      if (logfile == NULL)
+      if (g_logfile == NULL)
 	{
-	  sprintf (logfilename, "%s/%s", work_dir, LOGFILENAME);
-	  logfile = fopen (logfilename, "w");
+	  sprintf (g_logfilename, "%s/%s", g_work_dir, LOGFILENAME);
+	  g_logfile = fopen (g_logfilename, "w");
 	}
       /* can't do that, so try for /tmp directory */
-      if (logfile == NULL)
+      if (g_logfile == NULL)
 	{
-	  sprintf (logfilename, "%s/%s", work_dir, LOGFILENAME);
-	  logfile = fopen (logfilename, "w");
+	  sprintf (g_logfilename, "%s/%s", g_work_dir, LOGFILENAME);
+	  g_logfile = fopen (g_logfilename, "w");
 	}
 
 
 /* OK, we're sure of a logfile now */
 
-      vfprintf (logfile, mplusptr, argp);
+      vfprintf (g_logfile, mplusptr, argp);
 /*      vfprintf (logfile, msg, argp);*/
-      fflush (logfile);
+      fflush (g_logfile);
       va_end (argp);
     }
 }
@@ -366,7 +366,7 @@ time_now (void)
 
   printf ("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1,
 	  tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-  sprintf (datestring, "%02d%02d%02d", tm.tm_year - 100, tm.tm_mon + 1,
+  sprintf (g_datestring, "%02d%02d%02d", tm.tm_year - 100, tm.tm_mon + 1,
 	   tm.tm_mday);
   // printf ("date: %s\n", datestring);
 

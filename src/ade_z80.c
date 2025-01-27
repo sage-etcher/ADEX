@@ -113,30 +113,30 @@ GetWORD (unsigned int addr)
 
 /* load Z80 registers into (we hope) host registers */
 #define LOAD_STATE()							\
-    PC = cpux->pc;								\
-    AF = cpux->af[cpux->af_sel];							\
-    BC = cpux->regs[cpux->regs_sel].bc;						\
-    DE = cpux->regs[cpux->regs_sel].de;						\
-    HL = cpux->regs[cpux->regs_sel].hl;						\
-    SP = cpux->sp
+    PC = g_cpux->pc;								\
+    AF = g_cpux->af[g_cpux->af_sel];							\
+    BC = g_cpux->regs[g_cpux->regs_sel].bc;						\
+    DE = g_cpux->regs[g_cpux->regs_sel].de;						\
+    HL = g_cpux->regs[g_cpux->regs_sel].hl;						\
+    SP = g_cpux->sp
 
 /* load Z80 registers into (we hope) host registers */
 #define DECLARE_STATE()							\
-    WORD PC = cpux->pc;							\
-    WORD AF = cpux->af[cpux->af_sel];						\
-    WORD BC = cpux->regs[cpux->regs_sel].bc;					\
-    WORD DE = cpux->regs[cpux->regs_sel].de;					\
-    WORD HL = cpux->regs[cpux->regs_sel].hl;					\
-    WORD SP = cpux->sp
+    WORD PC = g_cpux->pc;							\
+    WORD AF = g_cpux->af[g_cpux->af_sel];						\
+    WORD BC = g_cpux->regs[g_cpux->regs_sel].bc;					\
+    WORD DE = g_cpux->regs[g_cpux->regs_sel].de;					\
+    WORD HL = g_cpux->regs[g_cpux->regs_sel].hl;					\
+    WORD SP = g_cpux->sp
 
 /* save Z80 registers back into memory */
 #define SAVE_STATE()							\
-    cpux->pc = PC;								\
-    cpux->af[cpux->af_sel] = AF;							\
-    cpux->regs[cpux->regs_sel].bc = BC;						\
-    cpux->regs[cpux->regs_sel].de = DE;						\
-    cpux->regs[cpux->regs_sel].hl = HL;						\
-    cpux->sp = SP
+    g_cpux->pc = PC;								\
+    g_cpux->af[g_cpux->af_sel] = AF;							\
+    g_cpux->regs[g_cpux->regs_sel].bc = BC;						\
+    g_cpux->regs[g_cpux->regs_sel].de = DE;						\
+    g_cpux->regs[g_cpux->regs_sel].hl = HL;						\
+    g_cpux->sp = SP
 
 
 static void
@@ -760,8 +760,8 @@ loop_z80 (U_INT PC)
   /* (both?? depends on number of CPUs) */
   /* execute Z80 processor(s) - one instruction */
 
-  cpux = (&cpu);
-  PC = simz80 (cpux->pc);
+  g_cpux = (&g_cpu);
+  PC = simz80 (g_cpux->pc);
   return (PC & 0xffff) | 0x10000;	/* flag non-bios stop */
 }
 
@@ -782,40 +782,40 @@ simz80 (U_INT PC)
   U_INT op;
 
 
-  AF = cpux->af[cpux->af_sel];
-  BC = cpux->regs[cpux->regs_sel].bc;
-  DE = cpux->regs[cpux->regs_sel].de;
-  HL = cpux->regs[cpux->regs_sel].hl;
-  SP = cpux->sp;
-  PC = cpux->pc;
+  AF = g_cpux->af[g_cpux->af_sel];
+  BC = g_cpux->regs[g_cpux->regs_sel].bc;
+  DE = g_cpux->regs[g_cpux->regs_sel].de;
+  HL = g_cpux->regs[g_cpux->regs_sel].hl;
+  SP = g_cpux->sp;
+  PC = g_cpux->pc;
 
 
 
 /* ********* Debugging: Log PC, Instruction Codes, Register Values and Disassembly **********/
 
-  if (debug & DISASS)
+  if (g_ade_debug & DISASS)
     {
 /*construct registers display*/
 
-      strcpy (flags, "      ");
+      strcpy (g_flags, "      ");
       kf = (lreg (AF));
       if (kf & 0x080)
-	flags[0] = 'S';
+	g_flags[0] = 'S';
       if (kf & 0x040)
-	flags[1] = 'Z';
+	g_flags[1] = 'Z';
       if (kf & 0x010)
-	flags[2] = 'H';
+	g_flags[2] = 'H';
       if (kf & 0x004)
-	flags[3] = 'P';
+	g_flags[3] = 'P';
       if (kf & 0x001)
-	flags[4] = 'C';
+	g_flags[4] = 'C';
 
 
       sprintf (registers,
 	       "  a=%02X %s  bc=%02X%02X  de=%02X%02X  hl=%02X%02X  ix=%04X iy=%04X m=%02X sp=%04X  ",
-	       hreg (AF), flags,
+	       hreg (AF), g_flags,
 	       hreg (BC), lreg (BC), hreg (DE), lreg (DE), hreg (HL),
-	       lreg (HL), cpux->ix, cpux->iy, RAM (HL), SP);
+	       lreg (HL), g_cpux->ix, g_cpux->iy, RAM (HL), SP);
 
 
       construct_z80_line (z80_machine_line, registers, GetBYTE (PC),
@@ -865,9 +865,9 @@ simz80 (U_INT PC)
 	((AF >> 15) & 1);
       break;
     case 0x08:			/* EX AF,AF' */
-      cpux->af[cpux->af_sel] = AF;
-      cpux->af_sel = 1 - cpux->af_sel;
-      AF = cpux->af[cpux->af_sel];
+      g_cpux->af[g_cpux->af_sel] = AF;
+      g_cpux->af_sel = 1 - g_cpux->af_sel;
+      AF = g_cpux->af[g_cpux->af_sel];
       break;
     case 0x09:			/* ADD HL,BC */
       HL &= 0xffff;
@@ -1334,16 +1334,16 @@ simz80 (U_INT PC)
       PutBYTE (HL, lreg (HL));
       break;
     case 0x76:			/* HALT */
-      if (cpux->interrupt_req_flag)
+      if (g_cpux->interrupt_req_flag)
 	{
-	  if (cpux->waits)
+	  if (g_cpux->waits)
 	    {
-	      cpux->waits--;
+	      g_cpux->waits--;
 	      PC--;
 	    }
 	  else
 	    {
-	      cpux->waits = 0;
+	      g_cpux->waits = 0;
 	    }
 	}
       else
@@ -1985,7 +1985,7 @@ simz80 (U_INT PC)
       data = hreg (AF);
       if ((port == 0x0aa) && (data == 0x0aa))
 	{
-	  z80_os_interface (&AF, &BC, &DE, &HL, &cpux->ix, &cpux->iy, &PC,
+	  z80_os_interface (&AF, &BC, &DE, &HL, &g_cpux->ix, &g_cpux->iy, &PC,
 			    &SP);
 	}
       else
@@ -2021,13 +2021,13 @@ simz80 (U_INT PC)
 	}
       break;
     case 0xD9:			/* EXX */
-      cpux->regs[cpux->regs_sel].bc = BC;
-      cpux->regs[cpux->regs_sel].de = DE;
-      cpux->regs[cpux->regs_sel].hl = HL;
-      cpux->regs_sel = 1 - cpux->regs_sel;
-      BC = cpux->regs[cpux->regs_sel].bc;
-      DE = cpux->regs[cpux->regs_sel].de;
-      HL = cpux->regs[cpux->regs_sel].hl;
+      g_cpux->regs[g_cpux->regs_sel].bc = BC;
+      g_cpux->regs[g_cpux->regs_sel].de = DE;
+      g_cpux->regs[g_cpux->regs_sel].hl = HL;
+      g_cpux->regs_sel = 1 - g_cpux->regs_sel;
+      BC = g_cpux->regs[g_cpux->regs_sel].bc;
+      DE = g_cpux->regs[g_cpux->regs_sel].de;
+      HL = g_cpux->regs[g_cpux->regs_sel].hl;
       break;
     case 0xDA:			/* JP C,nnnn */
       JPC (TSTFLAG (C));
@@ -2040,7 +2040,7 @@ simz80 (U_INT PC)
       break;
     case 0xDD:			/* DD prefix */
       SAVE_STATE ();
-      cpux->ix = dfd_prefix (cpux->ix);
+      g_cpux->ix = dfd_prefix (g_cpux->ix);
       LOAD_STATE ();
       break;
     case 0xDE:			/* SBC A,nn */
@@ -2152,18 +2152,18 @@ simz80 (U_INT PC)
 								       0);
 	  break;
 	case 0x45:		/* RETN */
-	  IFF |= IFF >> 1;
+	  g_IFF |= g_IFF >> 1;
 	  PC = POP (SP);
 	  SP += 2;
 	  break;
 	case 0x46:		/* IM 0 */
 	  /* interrupt mode 0 */
 	  xlog (DEV, "@@@@@@@ INTERRUPT MODE 0\n");
-	  interrupt_mode = 0;
+	  g_interrupt_mode = 0;
 	  break;
 	case 0x47:		/* LD I,A */
-	  cpux->ir = (cpux->ir & 255) | (AF & ~255);
-	  xlog (DEV, "ACC -> INTERRUPT REG: = %04X\n", cpux->ir);
+	  g_cpux->ir = (g_cpux->ir & 255) | (AF & ~255);
+	  xlog (DEV, "ACC -> INTERRUPT REG: = %04X\n", g_cpux->ir);
 	  break;
 	case 0x48:		/* IN C,(C) */
 	  temp = mobo_in (lreg (BC));
@@ -2194,12 +2194,12 @@ simz80 (U_INT PC)
 	  PC = ((PC + 2) & 0x0ffff);
 	  break;
 	case 0x4D:		/* RETI */
-	  IFF |= IFF >> 1;
+	  g_IFF |= g_IFF >> 1;
 	  PC = POP (SP);
 	  SP += 2;
 	  break;
 	case 0x4F:		/* LD R,A */
-	  cpux->ir = (cpux->ir & ~255) | ((AF >> 8) & 255);
+	  g_cpux->ir = (g_cpux->ir & ~255) | ((AF >> 8) & 255);
 	  break;
 	case 0x50:		/* IN D,(C) */
 	  temp = mobo_in (lreg (BC));
@@ -2232,10 +2232,10 @@ simz80 (U_INT PC)
 	case 0x56:		/* IM 1 */
 	  /* interrupt mode 1 */
 	  xlog (DEV, "@@@@@@@@@ INTERRUPT MODE 1\n");
-	  interrupt_mode = 1;
+	  g_interrupt_mode = 1;
 	  break;
 	case 0x57:		/* LD A,I */
-	  AF = (AF & 255) | (cpux->ir & ~255);
+	  AF = (AF & 255) | (g_cpux->ir & ~255);
 	  xlog (DEV, "INTERRUPT REG -> ACC  %04X\n", AF);
 	  break;
 	case 0x58:		/* IN E,(C) */
@@ -2268,11 +2268,11 @@ simz80 (U_INT PC)
 	  break;
 	case 0x5E:		/* IM 2 */
 	  /* interrupt mode 2 */
-	  interrupt_mode = 2;
+	  g_interrupt_mode = 2;
 	  xlog (DEV, "@@@@@@@@@ INTERRUPT MODE 2\n");
 	  break;
 	case 0x5F:		/* LD A,R */
-	  AF = (AF & 255) | ((cpux->ir & 255) << 8);
+	  AF = (AF & 255) | ((g_cpux->ir & 255) << 8);
 	  break;
 	case 0x60:		/* IN H,(C) */
 	  temp = mobo_in (lreg (BC));
@@ -2602,7 +2602,7 @@ simz80 (U_INT PC)
       break;
     case 0xF3:			/* DI */
       xlog (DEV, " Disable INTERRUPTS\n");
-      IFF = 0;
+      g_IFF = 0;
       break;
     case 0xF4:			/* CALL P,nnnn */
       CALLC (!TSTFLAG (S));
@@ -2633,14 +2633,14 @@ simz80 (U_INT PC)
       break;
     case 0xFB:			/* EI */
       xlog (DEV, " Enable INTERRUPTS\n");
-      IFF = 3;
+      g_IFF = 3;
       break;
     case 0xFC:			/* CALL M,nnnn */
       CALLC (TSTFLAG (S));
       break;
     case 0xFD:			/* FD prefix */
       SAVE_STATE ();
-      cpux->iy = dfd_prefix (cpux->iy);
+      g_cpux->iy = dfd_prefix (g_cpux->iy);
       LOAD_STATE ();
       break;
     case 0xFE:			/* CP nn */
@@ -2666,9 +2666,9 @@ simz80 (U_INT PC)
   /***********************************************************************************************************/
 
   /* if enough instructions have occurred, send out a RealTimeClock tick */
-  if (timer_interrupt_active)
+  if (g_timer_interrupt_active)
     {
-      if ((microtick++ % rtc_interval) == 0)
+      if ((g_microtick++ % g_rtc_interval) == 0)
 	{
 /*	      PUSH (PC); */
 	  xlog (DEV, "clock interrupt: PC = %04X\n", PC);
@@ -2681,10 +2681,10 @@ simz80 (U_INT PC)
 
   /* Z80 INTERRUPT stuff */
 
-  if ((cpux->interrupt_req_flag) && (!cpux->waits))
+  if ((g_cpux->interrupt_req_flag) && (!g_cpux->waits))
     {
       SP = PUSH (SP, PC);
-      switch (interrupt_mode)
+      switch (g_interrupt_mode)
 	{
 	case 0:
 	  PC = HWINT1;
@@ -2693,14 +2693,14 @@ simz80 (U_INT PC)
 	  PC = 0x0038;
 	  break;
 	case 2:
-	  PC = cpux->interrupt_newpc;
+	  PC = g_cpux->interrupt_newpc;
 	  break;
 	default:
-	  xlog (DEV, "BAD INTERRUPT MODE: %d\n", cpux->interrupt_mode);
+	  xlog (DEV, "BAD INTERRUPT MODE: %d\n", g_cpux->interrupt_mode);
 	  break;
 	}
 
-      cpux->interrupt_req_flag = 0;
+      g_cpux->interrupt_req_flag = 0;
       xlog (DEV, "Mode 0: HW Interrupt 1: PC NOW INTERRUPT VECTOR = %06X\n",
 	    PC);
     }
@@ -2708,24 +2708,24 @@ simz80 (U_INT PC)
 		/*=========================================*/
 
 /* BREAK ADDRESS STUFF. Stops execution of Z80. Start up monitor CLI. cancels break-point. */
-  if (break_active)
+  if (g_break_active)
     {
-      if (((PC & 0xffff) == break_address) && (!break_wait))
+      if (((PC & 0xffff) == g_break_address) && (!g_break_wait))
 	{
 	  xlog (ALL, " break - address = %06X \n", PC);
-	  sprintf (vstring,
+	  sprintf (g_vstring,
 		   "BREAKPOINT: Execution PAUSED. PC = %04X. Hit 'go' to continue\n",
 		   PC);
-	  status_print (vstring, TRUE);
-	  stopsim = 1;
-	  z80_active = 0;
-	  break_wait = 1;
+	  status_print (g_vstring, TRUE);
+	  g_stopsim = 1;
+	  g_z80_active = 0;
+	  g_break_wait = 1;
 	  /*break_address = 0x01ffff; *//*reset break-point to beyond top of memory = inactive */
-	  debug = break_dbg;	/* set auto debugging level if not on before */
+	  g_ade_debug = g_break_dbg;	/* set auto debugging level if not on before */
 	}
-      if (break_wait)
+      if (g_break_wait)
 	{
-	  break_wait--;
+	  g_break_wait--;
 	}
     }
 		      /*======================================*/
@@ -2735,17 +2735,17 @@ simz80 (U_INT PC)
 /* prints out the trap address, and the value of the Z80 registers, and then the    */
 /* Z80 instructions continue one normally.                                          */
 
-  if (((PC & 0x0ffff) == trap_address) && (trap_active))
+  if (((PC & 0x0ffff) == g_trap_address) && (g_trap_active))
     {
       trap_func (&AF, &BC, &DE, &HL, &SP, &PC);
     }
 
-  cpux->af[cpux->af_sel] = AF;
-  cpux->regs[cpux->regs_sel].bc = BC;
-  cpux->regs[cpux->regs_sel].de = DE;
-  cpux->regs[cpux->regs_sel].hl = HL;
-  cpux->sp = SP;
-  cpux->pc = PC;
+  g_cpux->af[g_cpux->af_sel] = AF;
+  g_cpux->regs[g_cpux->regs_sel].bc = BC;
+  g_cpux->regs[g_cpux->regs_sel].de = DE;
+  g_cpux->regs[g_cpux->regs_sel].hl = HL;
+  g_cpux->sp = SP;
+  g_cpux->pc = PC;
 
 
 /*******************  once_per_cycle_###_MACHINE_SPECIFIC_###_stuff  **********************/
@@ -2763,12 +2763,12 @@ set_z80_interrupt (int hwint)	/* hi-byte: mode 2 offset; lo-byte VI number */
   WORD interrupt_vector = 0;
   int offset = 0;
   int vector_num;
-  cpux = (&cpu);
-  cpux->interrupt_req_flag = TRUE;
-  cpux->waits = 4;
+  g_cpux = (&g_cpu);
+  g_cpux->interrupt_req_flag = TRUE;
+  g_cpux->waits = 4;
   vector_num = hwint & 0x07;	/*vi number lo-byte - limit to 8 vectors */
   offset = (hwint / 256);	/* mode 2 offset  is hi-byte */
-  switch (interrupt_mode)
+  switch (g_interrupt_mode)
     {
 
     case 0:
@@ -2779,20 +2779,20 @@ set_z80_interrupt (int hwint)	/* hi-byte: mode 2 offset; lo-byte VI number */
       break;
     case 2:
       xlog (DEV, "New Interrupt PC - MODE 2 - table_offset %02X\n", offset);
-      interrupt_vector = cpux->ir & 0x0ff00;
+      interrupt_vector = g_cpux->ir & 0x0ff00;
       interrupt_vector = (interrupt_vector + offset) & 0x0ffff;
       xlog (DEV,
 	    "mode_2_interrupt: vector %d: address of new PC storage = %04X\n",
 	    vector_num, interrupt_vector);
-      cpux->interrupt_newpc =
-	(ram[interrupt_vector + 1] * 256) + ram[interrupt_vector];
+      g_cpux->interrupt_newpc =
+	(g_ram[interrupt_vector + 1] * 256) + g_ram[interrupt_vector];
       xlog (DEV,
 	    "mode_2_register_interrupt:  offset = %04x ir= %04X vector = %04X  new PC address= %04X\n",
-	    offset, cpux->ir, interrupt_vector, cpux->interrupt_newpc);
+	    offset, g_cpux->ir, interrupt_vector, g_cpux->interrupt_newpc);
       break;
     default:
       xlog (DEV, "New Interrupt PC - MODE %d -  ERROR!!!!! \n",
-	    interrupt_mode);
+	    g_interrupt_mode);
     }
 }
 
@@ -2810,14 +2810,14 @@ mode_2_register_interrupt (BYTE mode_2_offset)
   WORD interrupt_vector = 0;
   UNUSED (mode_2_offset);	/// Needs to be fixed
 
-  cpux = (&cpu);
-  cpux->waits = 4;
-  interrupt_vector = cpux->ir & 0x0ff00;
-  interrupt_vector = (interrupt_vector + cpux->mode_2_offset) & 0x0ffff;
-  cpux->interrupt_newpc =
-    (ram[interrupt_vector + 1] * 256) + ram[interrupt_vector];
+  g_cpux = (&g_cpu);
+  g_cpux->waits = 4;
+  interrupt_vector = g_cpux->ir & 0x0ff00;
+  interrupt_vector = (interrupt_vector + g_cpux->mode_2_offset) & 0x0ffff;
+  g_cpux->interrupt_newpc =
+    (g_ram[interrupt_vector + 1] * 256) + g_ram[interrupt_vector];
   xlog (DEV,
 	"mode_2_register_interrupt:  offset = %04x ir= %04X vector = %04X  new PC address= %04X\n",
-	cpux->mode_2_offset, cpux->ir, interrupt_vector,
-	cpux->interrupt_newpc);
+	g_cpux->mode_2_offset, g_cpux->ir, interrupt_vector,
+	g_cpux->interrupt_newpc);
 }

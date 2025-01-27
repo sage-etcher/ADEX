@@ -39,15 +39,15 @@ kbd_buff_stat ()
 {
   int i;
 
-  if (keyboard_active)
+  if (g_keyboard_active)
     {				//still working on last input char, so wait
       return (BYTE) 0;
     }
 
 
-  if (!kq_query (advq))
+  if (!kq_query (g_advq))
     {
-      if (ascii)
+      if (g_ascii)
 	{
 	  load_aread_line ();
 	  return (BYTE) (0xFF);
@@ -75,15 +75,15 @@ kbd_buff_in ()
 {
   BYTE c;
 
-  if (!kq_query (advq))
+  if (!kq_query (g_advq))
     {
       c = 0xFF;
     }
   else
     {
-      c = kqout (advq);
+      c = kqout (g_advq);
       xlog (KEYB, "kbd_buff_in: char = %02X [%c]\n", c, prn (c));
-      keyboard_active = TRUE;
+      g_keyboard_active = TRUE;
     }
   return c;
 }
@@ -97,15 +97,15 @@ load_aread_line ()
   unsigned int i;
 
 
-  if ((fgets (aread_buffer, 511, ascii_in)) == NULL)
+  if ((fgets (aread_buffer, 511, g_ascii_in)) == NULL)
     {
-      ascii = FALSE;
+      g_ascii = FALSE;
     }
   else
     {
       for (i = 0; i < strlen (aread_buffer); i++)
 	{
-	  jqin (0, (WORD) aread_buffer[i], advq);
+	  jqin (0, (WORD) aread_buffer[i], g_advq);
 	}
     }
 }
@@ -113,7 +113,7 @@ load_aread_line ()
 BYTE
 lststat (void)
 {
-  struct timeval t = immediate;
+  struct timeval t = g_immediate;
   fd_set rdy;
   struct sio *s = &siotab[PIO_CARD_OUT];
   int fd;
@@ -123,7 +123,7 @@ lststat (void)
   if (s->tty == 0)		/* disk files are always ready */
     return 1;
 
-  nanosleep (&pulse, &rem);
+  nanosleep (&g_pulse, &g_rem);
 
   fd = fileno (s->fp);
   FD_ZERO (&rdy);
@@ -142,7 +142,7 @@ in_port_slotcard (BYTE slotnum, BYTE pi_lo)
   BYTE data;
 
 
-  switch (slot[slotnum].slot_id)
+  switch (g_slot[slotnum].slot_id)
     {
     case HDC_ID:
       data = HDC_in (pi_lo);
@@ -165,7 +165,7 @@ in_port_slotcard (BYTE slotnum, BYTE pi_lo)
 void
 out_port_slotcard (BYTE slotnum, BYTE po_lo, BYTE data)
 {
-  switch (slot[slotnum].slot_id)
+  switch (g_slot[slotnum].slot_id)
     {
     case HDC_ID:
       HDC_out (po_lo, data);
@@ -233,7 +233,7 @@ parallel_in ()
       else
 	return c;
     }
-  pio_input_flag = TRUE;
+  g_pio_input_flag = TRUE;
 
   if ((int) (ch = (BYTE) getc (s->fp)) == (BYTE) EOF)
     return 0x1a;
@@ -250,7 +250,7 @@ get_pio_status ()
 
   status = 0;
 
-  if (!pio_out_ack)
+  if (!g_pio_out_ack)
     {
       status |= 1;
       xlog (DEV, "get_pio_status: [01] Output Strobe LOW\n");
@@ -260,7 +260,7 @@ get_pio_status ()
       xlog (DEV, "get_pio_status: [01] Output Strobe high\n");
     }
 
-  if (!pio_in_ack)
+  if (!g_pio_in_ack)
     {
       status |= 2;
       xlog (DEV, "get_pio_status: [02] Input Strobe LOW\n");
@@ -270,7 +270,7 @@ get_pio_status ()
       xlog (DEV, "get_pio_status: [02] Input Strobe high\n");
     }
 
-  if (pio_output_flag)
+  if (g_pio_output_flag)
     {
       status |= 4;
       xlog (DEV, "get_pio_status: [04] Output Flag SET\n");
@@ -280,7 +280,7 @@ get_pio_status ()
       xlog (DEV, "get_pio_status: [04] Output Flag low\n");
     }
 
-  if (pio_input_flag)
+  if (g_pio_input_flag)
     {
       status |= 8;
       xlog (DEV, "get_pio_status: [08] Input Flag SET\n");
@@ -317,23 +317,23 @@ PIO_out (BYTE port_lo, BYTE data)
       break;
     case 2:
       xlog (MOTHERBOARD, "parallel_out SET INTERRUPT MASK\n");
-      pio_interrupt_mask = data;
+      g_pio_interrupt_mask = data;
       break;
     case 4:
       xlog (MOTHERBOARD, "parallel_out RESET OUTPUT FLAG\n");
-      pio_output_flag = FALSE;
+      g_pio_output_flag = FALSE;
       break;
     case 5:
       xlog (MOTHERBOARD, "parallel_out SET OUTPUT FLAG\n");
-      pio_output_flag = TRUE;
+      g_pio_output_flag = TRUE;
       break;
     case 6:
       xlog (MOTHERBOARD, "parallel_out RESET INPUT FLAG\n");
-      pio_input_flag = FALSE;
+      g_pio_input_flag = FALSE;
       break;
     case 7:
       xlog (MOTHERBOARD, "parallel_out SET INPUT FLAG\n");
-      pio_input_flag = TRUE;
+      g_pio_input_flag = TRUE;
       break;
     }
 }
@@ -346,7 +346,7 @@ parallel_out (BYTE c)
   xlog (DEV, "parallel_out: OUTPUT to parallel port char %02X (%c)\n", c,
 	prn (c));
 
-  pio_output_flag = TRUE;
+  g_pio_output_flag = TRUE;
 
   if (s->fp == NULL)
     return;
@@ -367,7 +367,7 @@ p_printer_out (BYTE c)
   if ((old_c & 0x80) && (c == (old_c & 0x7f)))
     {
       parallel_out (c);
-      motherboard_status |= P_OUT_FLAG;
+      g_motherboard_status |= P_OUT_FLAG;
     }
   old_c = c;
 }
@@ -388,7 +388,7 @@ SIO_in (BYTE port_lo)
   BYTE status = 0;
 
   xlog (MOTHERBOARD, "mb_in: [Input] Access SIO board in slot %d (SIO)\n",
-	(6 - p_hi));
+	(6 - g_p_hi));
   switch (port_lo)
     {
     case 0:
@@ -444,22 +444,22 @@ SIO_out (BYTE po_lo, BYTE data)
 {
   xlog (MOTHERBOARD,
 	"mb_out: Access I/O board in slot %d [po_lo=%02X   %02x]\n",
-	(6 - p_hi), po_lo, data);
+	(6 - g_p_hi), po_lo, data);
   switch (po_lo)
     {
     case 0:
       sio_card_out (data);
 
 // Only if testing the SIO I/O with the DEMODIAG disk options
-      if (sio_test)
+      if (g_sio_test)
 	{
-	  sio_icptr++;
-	  sio_icptr &= PORT_IN_BUFF_MASK;
+	  g_sio_icptr++;
+	  g_sio_icptr &= PORT_IN_BUFF_MASK;
 
-	  *(sio_character_buff_ptr + sio_icptr) = data;
+	  *(g_sio_character_buff_ptr + g_sio_icptr) = data;
 	  xlog (QUEUE,
 		"SIO_TEST:Char added to sio_character_buff:  %02X  <%c>   icptr = %4d    ocptr = %4d \n",
-		data, prn (data), sio_icptr, sio_ocptr);
+		data, prn (data), g_sio_icptr, g_sio_ocptr);
 	}
 /////////////////////////////////////////////////////////////
       break;
@@ -482,7 +482,7 @@ SIO_out (BYTE po_lo, BYTE data)
 BYTE
 sio_card_stat (void)
 {
-  struct timeval t = immediate;
+  struct timeval t = g_immediate;
   fd_set rdy;
   struct sio *s = &siotab[SIO_CARD_IN];
   int fd;
@@ -498,7 +498,7 @@ sio_card_stat (void)
       xlog (ALL, "sio_card_stat: disk file 'always' ready\n");
     }
 
-  nanosleep (&pulse, &rem);
+  nanosleep (&g_pulse, &g_rem);
   xlog (ALL, "sio_card_stat: see a byte\n");
   fd = fileno (s->fp);
   FD_ZERO (&rdy);
@@ -660,27 +660,27 @@ get_io_board_id (BYTE pi_lo)
     {
     case 0:
       xlog (MOTHERBOARD, " for Slot 6\n");
-      data = slot[6].slot_id;
+      data = g_slot[6].slot_id;
       break;
     case 1:
       xlog (MOTHERBOARD, " for Slot 5\n");
-      data = slot[5].slot_id;
+      data = g_slot[5].slot_id;
       break;
     case 2:
       xlog (MOTHERBOARD, " for Slot 4\n");
-      data = slot[4].slot_id;
+      data = g_slot[4].slot_id;
       break;
     case 3:
       xlog (MOTHERBOARD, " for Slot 3\n");
-      data = slot[3].slot_id;
+      data = g_slot[3].slot_id;
       break;
     case 4:
       xlog (MOTHERBOARD, " for Slot 2\n");
-      data = slot[2].slot_id;
+      data = g_slot[2].slot_id;
       break;
     case 5:
       xlog (MOTHERBOARD, " for Slot 1\n");
-      data = slot[1].slot_id;
+      data = g_slot[1].slot_id;
       break;
     case 6:
     case 7:
@@ -697,14 +697,14 @@ void
 set_up_aread_input ()
 {
 
-  if ((ascii_in = fopen (aread_name, "r")) != NULL)
+  if ((g_ascii_in = fopen (g_aread_name, "r")) != NULL)
     {
-      ascii = TRUE;
+      g_ascii = TRUE;
     }
   else
     {
-      sprintf (vstring, "\naread file \"%s\" can't be read", aread_name);
-      status_print (vstring, TRUE);
+      sprintf (g_vstring, "\naread file \"%s\" can't be read", g_aread_name);
+      status_print (g_vstring, TRUE);
     }
 }
 
@@ -807,7 +807,7 @@ jqin (int active, WORD key, struct kbdq *xq)
 
 /* if CAPSLOCK adjust key value */
 
-  if ((capslock) && (key > 0x060) && (key < 0x07b))
+  if ((g_capslock) && (key > 0x060) && (key < 0x07b))
     {
       key &= 0x0df;		/* clear bit 5 */
     }
@@ -955,7 +955,7 @@ main_key_release (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
       xlog (KEYB, " \n");
       xlog (KEYB, "----------------- NEW KEY RELEASE -----------\n");
       xlog (KEYB, " Hardware Keycode: %02X\n\n", pckeycode);
-      ade_control_flag = FALSE;
+      g_ade_control_flag = FALSE;
       xlog (KEYB, "Control Key Off\n");
     }
 
@@ -963,7 +963,7 @@ main_key_release (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
     {
       xlog (KEYB, "----------------- NEW KEY RELEASE -----------\n");
       xlog (KEYB, " Hardware Keycode: %02X\n\n", pckeycode);
-      ade_shift_flag = FALSE;
+      g_ade_shift_flag = FALSE;
       xlog (KEYB, "Shift Key Off\n");
     }
 
@@ -971,7 +971,7 @@ main_key_release (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
     {
       xlog (KEYB, "----------------- NEW KEY RELEASE -----------\n");
       xlog (KEYB, " Hardware Keycode: %02X\n\n", pckeycode);
-      ade_cmd_flag = FALSE;
+      g_ade_cmd_flag = FALSE;
       xlog (KEYB, "CMD Key Off\n");
     }
 
@@ -979,7 +979,7 @@ main_key_release (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
     {
       xlog (KEYB, "----------------- NEW KEY RELEASE -----------\n");
       xlog (KEYB, " Hardware Keycode: %02X\n\n", pckeycode);
-      ade_meta_flag = FALSE;
+      g_ade_meta_flag = FALSE;
       xlog (KEYB, "ADE Meta-1 Key OFF\n");
     }
 
@@ -1016,38 +1016,38 @@ main_key_q (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
 
   if ((pckeycode == ADVANTAGE_CTRL1) || (pckeycode == ADVANTAGE_CTRL2))
     {
-      ade_control_flag = TRUE;
+      g_ade_control_flag = TRUE;
       xlog (KEYB, "Control Key ON\n");
     }
 
   if ((pckeycode == ADVANTAGE_SHIFT1) || (pckeycode == ADVANTAGE_SHIFT2))
     {
-      ade_shift_flag = TRUE;
+      g_ade_shift_flag = TRUE;
       xlog (KEYB, "Shift Key ON\n");
     }
 
   if ((pckeycode == ADVANTAGE_CMD1) || (pckeycode == ADVANTAGE_CMD2))
     {
-      ade_cmd_flag = TRUE;
+      g_ade_cmd_flag = TRUE;
       xlog (KEYB, "CMD Key ON\n");
     }
 
   if ((pckeycode == ADE_META1) || (pckeycode == ADE_META2))
     {
-      ade_meta_flag = TRUE;
+      g_ade_meta_flag = TRUE;
       xlog (KEYB, "ADE Meta-1 Key ON\n");
     }
 
   if (pckeycode == ADVANTAGE_CAPS_LOCK)
     {				//CAPSLOCK TOGGLE
       toggle_capslock ();
-      xlog (KEYB, "CAPS LOCK  toggled %d\n", capslock);
+      xlog (KEYB, "CAPS LOCK  toggled %d\n", g_capslock);
     }
 
   if (pckeycode == ADVANTAGE_CURSOR_LOCK)
     {
       toggle_cursor_lock ();
-      xlog (KEYB, "CURSOR LOCK toggled %d\n", cursor_lock);
+      xlog (KEYB, "CURSOR LOCK toggled %d\n", g_cursor_lock);
     }
 
   kchar = kxlate_keycode (event->hardware_keycode);
@@ -1059,7 +1059,7 @@ main_key_q (GtkWidget * widget, GdkEventKey * event, gpointer user_data)
 
   if (kchar != 0xFF)		// throw away any NULL keys
     {
-      kqin (kchar, advq);
+      kqin (kchar, g_advq);
     }
 
 
@@ -1073,17 +1073,17 @@ void
 sio_test_toggle (void)
 {
 
-  sio_test ^= TRUE;
-  if (sio_test)
+  g_sio_test ^= TRUE;
+  if (g_sio_test)
     {
       status_print ("\nSIO Test Jumper is now ON", 0);
       status_print ("\nSIO queue cleared.\n", 0);
-      if (sio_character_buff_ptr == NULL)
+      if (g_sio_character_buff_ptr == NULL)
 	{
-	  calloc_buffer_pointer ("sio_i", &sio_character_buff_ptr);
+	  calloc_buffer_pointer ("sio_i", &g_sio_character_buff_ptr);
 	}
-      sio_icptr = 0;
-      sio_ocptr = 0;
+      g_sio_icptr = 0;
+      g_sio_ocptr = 0;
     }
   else
     {
@@ -1106,14 +1106,14 @@ kxlate_keycode (int hkeycode)
 
 
 
-  if (ade_meta_flag)
+  if (g_ade_meta_flag)
     {
       hkeycode = kxlate_win_function (hkeycode);
     }
 
 
 
-  if ((ade_cmd_flag) && (adv_kbd_scancodes[hkeycode][5] != 0xFF))
+  if ((g_ade_cmd_flag) && (g_adv_kbd_scancodes[hkeycode][5] != 0xFF))
     {
       offset = 5;		// COMMAND KEY VALUE THERE
     }
@@ -1121,32 +1121,32 @@ kxlate_keycode (int hkeycode)
     {				// look at shift and control key attributes
       xlog (KEYB,
 	    "kxlate_keycode: capslock=%d   cursor_lock=%d ade_shift_flag=%d ade_control_flag=%d\n",
-	    capslock, cursor_lock, ade_shift_flag, ade_control_flag);
+	    g_capslock, g_cursor_lock, g_ade_shift_flag, g_ade_control_flag);
 
-      if (((adv_kbd_scancodes[hkeycode][0] == 1) && (capslock))
-	  || (ade_shift_flag))
+      if (((g_adv_kbd_scancodes[hkeycode][0] == 1) && (g_capslock))
+	  || (g_ade_shift_flag))
 	{
 	  kxshift_flag = TRUE;
 	}
 
-      if ((adv_kbd_scancodes[hkeycode][0] == 2) && (cursor_lock))
+      if ((g_adv_kbd_scancodes[hkeycode][0] == 2) && (g_cursor_lock))
 	{
 	  kxshift_flag = FALSE;
 	  hkeycode = kxlate_cursor_lock (hkeycode);
 	}
 
 
-      if ((ade_control_flag) && (kxshift_flag))
+      if ((g_ade_control_flag) && (kxshift_flag))
 	{
 	  offset = 4;
 	}
 
-      if ((!ade_control_flag) && (kxshift_flag))
+      if ((!g_ade_control_flag) && (kxshift_flag))
 	{
 	  offset = 2;
 	}
 
-      if ((ade_control_flag) && (!kxshift_flag))
+      if ((g_ade_control_flag) && (!kxshift_flag))
 	{
 	  offset = 3;
 	}
@@ -1154,10 +1154,10 @@ kxlate_keycode (int hkeycode)
     }
 
 
-  achar = adv_kbd_scancodes[hkeycode][index + offset];
+  achar = g_adv_kbd_scancodes[hkeycode][index + offset];
   xlog (KEYB,
 	"kxlate_keycode: ade_shift_flag=%d   ade_control_flag=%d   alt_key=%d ade_meta_flag=%d\n",
-	ade_shift_flag, ade_control_flag, ade_cmd_flag, ade_meta_flag);
+	g_ade_shift_flag, g_ade_control_flag, g_ade_cmd_flag, g_ade_meta_flag);
   xlog (KEYB,
 	"kxlate_keycode: hardware_keycode == %02X   offset=%d char = %02X   [%c]\n",
 	hkeycode, offset, achar, prn (achar));
@@ -1291,21 +1291,21 @@ get_k_locks_start (void)
 //  printf ("CapsLock Start    is %s\n", (kbd_state.led_mask & 1) ? "On" : "Off");
   if (kbd_state.led_mask & 1)
     {
-      capslock_start = TRUE;
+      g_capslock_start = TRUE;
     }
   else
     {
-      capslock_start = FALSE;
+      g_capslock_start = FALSE;
     }
 
 //  printf ("NumLock Start    is %s\n", (kbd_state.led_mask & 2) ? "On" : "Off");
   if (kbd_state.led_mask & 2)
     {
-      numlock_start = TRUE;
+      g_numlock_start = TRUE;
     }
   else
     {
-      numlock_start = FALSE;
+      g_numlock_start = FALSE;
     }
 }
 
@@ -1323,21 +1323,21 @@ get_k_locks_end (void)
 //  printf ("CapsLock end is %s\n", (kbd_state.led_mask & 1) ? "On" : "Off");
   if (kbd_state.led_mask & 1)
     {
-      capslock_end = TRUE;
+      g_capslock_end = TRUE;
     }
   else
     {
-      capslock_end = FALSE;
+      g_capslock_end = FALSE;
     }
 
 //  printf ("NumLock end  is %s\n", (kbd_state.led_mask & 2) ? "On" : "Off");
   if (kbd_state.led_mask & 2)
     {
-      numlock_end = TRUE;
+      g_numlock_end = TRUE;
     }
   else
     {
-      numlock_end = FALSE;
+      g_numlock_end = FALSE;
     }
 
 //   printf( "ScrollLock  is %s\n", (kbd_state.led_mask & 4) ? "On" : "Off");
@@ -1346,12 +1346,12 @@ get_k_locks_end (void)
 void
 reset_capslock (void)
 {
-  if ((!capslock_start) && (capslock_end))
+  if ((!g_capslock_start) && (g_capslock_end))
     {
 //      printf ("reset_capslock: turn capslock OFF\n");
       turn_capslock (OFF);
     }
-  if ((capslock_start) && (!capslock_end))
+  if ((g_capslock_start) && (!g_capslock_end))
     {
 //      printf ("reset_capslock: turn capslock ON\n");
       turn_capslock (ON);
@@ -1362,14 +1362,14 @@ reset_capslock (void)
 void
 reset_numlock (void)
 {
-  if ((!numlock_start) && (numlock_end))
+  if ((!g_numlock_start) && (g_numlock_end))
     {
 //      printf ("reset_numlock: turn numlock OFF\n");
       turn_numlock (OFF);
     }
 
 
-  if ((numlock_start) && (!numlock_end))
+  if ((g_numlock_start) && (!g_numlock_end))
     {
 //          printf ("reset_numlock: turn numlock ON\n");
       turn_numlock (ON);
@@ -1381,11 +1381,11 @@ void
 set_k_locks_end (void)
 {
   get_k_locks_end ();
-  if (capslock_start != capslock_end)
+  if (g_capslock_start != g_capslock_end)
     {
       reset_capslock ();
     }
-  if (numlock_start != numlock_end)
+  if (g_numlock_start != g_numlock_end)
     {
       reset_numlock ();
     }

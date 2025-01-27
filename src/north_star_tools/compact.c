@@ -12,10 +12,10 @@
 #ifdef DEBUG
 int debug = 1;
 #else
-int debug = 0;
+int g_ade_debug = 0;
 #endif
 
-unsigned char tmpbuff[D_BLOCKSIZ];	/* 512-byte sector buff also hold 256-byte sector */
+unsigned char g_tmpbuff[D_BLOCKSIZ];	/* 512-byte sector buff also hold 256-byte sector */
 unsigned char in_directory_entry[DIRSIZ];
 unsigned char out_directory_entry[DIRSIZ];
 
@@ -25,7 +25,7 @@ int in_fcb_num, out_fcb_num;
 int disk_blocksize, disk_maxblocks;
 int dir_max;
 int next_disk_address, infadd, flen, ftype, fgoadd;
-char cmd[80];
+char g_cmd[80];
 
 
 int
@@ -90,7 +90,7 @@ main (int argc, char **argv)
 		}
 	      fname_debug[NAMEMAX] = '\0';
 
-	      if (debug)
+	      if (g_ade_debug)
 		{
 		  printf ("\n directory_number (in): %2d ", in_fcb_num);
 		  printf (" filename(in) = >%s<.", fname_debug);
@@ -133,10 +133,10 @@ main (int argc, char **argv)
 	}
     }
   fclose (outf);
-  sprintf (cmd, "mv %s %s.bak", argv[1], argv[1]);
-  system (cmd);
-  sprintf (cmd, "mv temp %s", argv[1]);
-  system (cmd);
+  sprintf (g_cmd, "mv %s %s.bak", argv[1], argv[1]);
+  system (g_cmd);
+  sprintf (g_cmd, "mv temp %s", argv[1]);
+  system (g_cmd);
   return (0);
 
 }
@@ -171,9 +171,9 @@ maketemp ()
 {
   int i, j;
   for (i = 0; i < disk_blocksize; i++)
-    tmpbuff[i] = ' ';
+    g_tmpbuff[i] = ' ';
   for (j = 0; j < disk_maxblocks; j++)
-    fwrite (tmpbuff, disk_blocksize, 1, outf);
+    fwrite (g_tmpbuff, disk_blocksize, 1, outf);
   fseek (outf, 0L, SEEK_SET);
 }
 
@@ -219,7 +219,7 @@ copyfile (unsigned int old_disk_address, unsigned int new_disk_address,
   fseek (outf, (long) (new_disk_address * disk_blocksize), SEEK_SET);
   for (i = 0; i < file_len; i++)
     {
-      fread (tmpbuff, disk_blocksize, 1, inf);
-      fwrite (tmpbuff, disk_blocksize, 1, outf);
+      fread (g_tmpbuff, disk_blocksize, 1, inf);
+      fwrite (g_tmpbuff, disk_blocksize, 1, outf);
     }
 }

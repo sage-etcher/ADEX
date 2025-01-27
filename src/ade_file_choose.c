@@ -14,8 +14,8 @@ select_a_file (gint filemode, const char *foldername, const char *title,
   modestring = mstring;
   strcpy (modestring, "SELECT");
 
-  file_choice_name = NULL;	//clear buffer which will be used for possible new filename
-  file_choice_val = 0;		//zero choice selection number for file chooser
+  g_file_choice_name = NULL;	//clear buffer which will be used for possible new filename
+  g_file_choice_val = 0;		//zero choice selection number for file chooser
 
 
   filechooser = gtk_file_chooser_dialog_new (title,
@@ -24,12 +24,12 @@ select_a_file (gint filemode, const char *foldername, const char *title,
 					     modestring, filemode, "CANCEL",
 					     GTK_RESPONSE_CANCEL, NULL);
   gtk_window_set_transient_for (GTK_WINDOW (filechooser),
-				GTK_WINDOW (window));
+				GTK_WINDOW (g_window));
 
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (filechooser),
 				       foldername);
-  file_choice_val = gtk_dialog_run (GTK_DIALOG (filechooser));
-  file_choice_name =
+  g_file_choice_val = gtk_dialog_run (GTK_DIALOG (filechooser));
+  g_file_choice_name =
     gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
 
   gtk_widget_destroy (filechooser);
@@ -48,35 +48,35 @@ pick_aread_file (GtkMenuItem * item, GtkWindow * pwindow)
 
   UNUSED (item);
 
-  if (!started)
+  if (!g_started)
     {
-      sprintf (vstring,
+      sprintf (g_vstring,
 	       "\n'aread' option not valid. ADE not started yet. Hit 'GO' button to start");
-      status_print (vstring, TRUE);
+      status_print (g_vstring, TRUE);
     }
   else
     {
 
-      choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;	// aread file must exist
+      g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;	// aread file must exist
 
 
-      select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+      select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		     "",	// current folder to look in at start - unspecified
 		     "Select ASCII INPUT ('aread') File ... ",	// title for the file-chooser dialog
 		     pwindow	// chooser dialog parent window
 	);
 
-      if (file_choice_name != NULL)
+      if (g_file_choice_name != NULL)
 	{
-	  strcpy (aread_name, file_choice_name);
-	  sprintf (vstring, "\nSelected aread file:  \"%s\"", aread_name);
-	  status_print (vstring, 0);
+	  strcpy (g_aread_name, g_file_choice_name);
+	  sprintf (g_vstring, "\nSelected aread file:  \"%s\"", g_aread_name);
+	  status_print (g_vstring, 0);
 	  set_up_aread_input ();
 	}
       else
 	{
-	  sprintf (vstring, "\n'aread' File Selection Cancelled ...");
-	  status_print (vstring, 0);
+	  sprintf (g_vstring, "\n'aread' File Selection Cancelled ...");
+	  status_print (g_vstring, 0);
 	}
     }
 }
@@ -108,10 +108,10 @@ select_io (GtkMenuItem * item, GtkWindow * iwindow, gchar * chooser_title)
 
 /*  gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (io_chooser), NSI_DISK_DIR);*/
 
-  io_result = gtk_dialog_run (GTK_DIALOG (io_chooser));
+  g_io_result = gtk_dialog_run (GTK_DIALOG (io_chooser));
 
 
-  switch (io_result)
+  switch (g_io_result)
     {
     case 200:
     case 201:
@@ -121,13 +121,13 @@ select_io (GtkMenuItem * item, GtkWindow * iwindow, gchar * chooser_title)
 	gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (io_chooser));
       if (filename == NULL)
 	{
-	  io_result = GTK_RESPONSE_CANCEL;
+	  g_io_result = GTK_RESPONSE_CANCEL;
 	}
       break;
     default:
-      io_result = GTK_RESPONSE_CANCEL;
+      g_io_result = GTK_RESPONSE_CANCEL;
       filename = NULL;
-      g_print ("\n!!!!! io_port_result = %d", io_result);
+      g_print ("\n!!!!! io_port_result = %d", g_io_result);
     }
 
   gtk_widget_destroy (io_chooser);

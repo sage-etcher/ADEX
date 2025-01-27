@@ -11,52 +11,52 @@ build_disks_widgets_from_gresources (void)
 
 /* debug checkbutton menu stuff */
 
-  builder =
+  g_builder =
     gtk_builder_new_from_resource ("/au/com/itelsoft/ade/disks.glade");
 
-  Wdisks_top = GTK_WIDGET (gtk_builder_get_object (builder, "disks_top"));
-  disks_top = GTK_WINDOW (Wdisks_top);
+  g_Wdisks_top = GTK_WIDGET (gtk_builder_get_object (g_builder, "disks_top"));
+  g_disks_top = GTK_WINDOW (g_Wdisks_top);
 /*radiobuttons*/
-  Wfd1_change = GTK_WIDGET (gtk_builder_get_object (builder, "fd1_change"));
-  fd1_change = GTK_BUTTON (Wfd1_change);
+  g_Wfd1_change = GTK_WIDGET (gtk_builder_get_object (g_builder, "fd1_change"));
+  g_fd1_change = GTK_BUTTON (g_Wfd1_change);
 
 
-  Wfd1_eject = GTK_WIDGET (gtk_builder_get_object (builder, "fd1_eject"));
-  fd1_eject = GTK_BUTTON (Wfd1_eject);
+  g_Wfd1_eject = GTK_WIDGET (gtk_builder_get_object (g_builder, "fd1_eject"));
+  g_fd1_eject = GTK_BUTTON (g_Wfd1_eject);
 
 
-  Wfd2_change = GTK_WIDGET (gtk_builder_get_object (builder, "fd2_change"));
-  fd2_change = GTK_BUTTON (Wfd2_change);
+  g_Wfd2_change = GTK_WIDGET (gtk_builder_get_object (g_builder, "fd2_change"));
+  g_fd2_change = GTK_BUTTON (g_Wfd2_change);
 
 
-  Wfd2_eject = GTK_WIDGET (gtk_builder_get_object (builder, "fd2_eject"));
-  fd2_eject = GTK_BUTTON (Wfd2_eject);
+  g_Wfd2_eject = GTK_WIDGET (gtk_builder_get_object (g_builder, "fd2_eject"));
+  g_fd2_eject = GTK_BUTTON (g_Wfd2_eject);
 
-  Wnew_floppy_text =
-    GTK_WIDGET (gtk_builder_get_object (builder, "new_floppy_text"));
-  new_floppy_text = GTK_ENTRY (Wnew_floppy_text);
-  gtk_widget_override_font (Wnew_floppy_text, mono_font);
+  g_Wnew_floppy_text =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "new_floppy_text"));
+  g_new_floppy_text = GTK_ENTRY (g_Wnew_floppy_text);
+  gtk_widget_override_font (g_Wnew_floppy_text, g_mono_font);
 
-  Wnew_floppy_button =
-    GTK_WIDGET (gtk_builder_get_object (builder, "new_floppy_button"));
-  new_floppy_button = GTK_BUTTON (Wnew_floppy_button);
+  g_Wnew_floppy_button =
+    GTK_WIDGET (gtk_builder_get_object (g_builder, "new_floppy_button"));
+  g_new_floppy_button = GTK_BUTTON (g_Wnew_floppy_button);
 
-  Whdd_change = GTK_WIDGET (gtk_builder_get_object (builder, "hdd_change"));
-  hdd_change = GTK_BUTTON (Whdd_change);
+  g_Whdd_change = GTK_WIDGET (gtk_builder_get_object (g_builder, "hdd_change"));
+  g_hdd_change = GTK_BUTTON (g_Whdd_change);
 
-  Whdd_eject = GTK_WIDGET (gtk_builder_get_object (builder, "hdd_eject"));
-  hdd_eject = GTK_BUTTON (Whdd_eject);
+  g_Whdd_eject = GTK_WIDGET (gtk_builder_get_object (g_builder, "hdd_eject"));
+  g_hdd_eject = GTK_BUTTON (g_Whdd_eject);
 
-  Whdfn = GTK_WIDGET (gtk_builder_get_object (builder, "hdfn"));
-  hdfn = GTK_LABEL (Whdfn);
-  Wfd1fn = GTK_WIDGET (gtk_builder_get_object (builder, "fd1fn"));
-  fd1fn = GTK_LABEL (Wfd1fn);
-  Wfd2fn = GTK_WIDGET (gtk_builder_get_object (builder, "fd2fn"));
-  fd2fn = GTK_LABEL (Wfd2fn);
+  g_Whdfn = GTK_WIDGET (gtk_builder_get_object (g_builder, "hdfn"));
+  g_hdfn = GTK_LABEL (g_Whdfn);
+  g_Wfd1fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "fd1fn"));
+  g_fd1fn = GTK_LABEL (g_Wfd1fn);
+  g_Wfd2fn = GTK_WIDGET (gtk_builder_get_object (g_builder, "fd2fn"));
+  g_fd2fn = GTK_LABEL (g_Wfd2fn);
 
 
-  gtk_builder_connect_signals (builder, NULL);
-  g_object_unref (builder);
+  gtk_builder_connect_signals (g_builder, NULL);
+  g_object_unref (g_builder);
 
 
 }
@@ -68,9 +68,9 @@ disks_unhide (void)
     {
       mdisks_setup ();
     }
-  gtk_widget_show (Wdisks_top);
-  gtk_window_move (disks_top, 20, 200);
-  gtk_window_set_keep_above (disks_top, TRUE);
+  gtk_widget_show (g_Wdisks_top);
+  gtk_window_move (g_disks_top, 20, 200);
+  gtk_window_set_keep_above (g_disks_top, TRUE);
 }
 
 
@@ -79,56 +79,56 @@ void
 mdisks_setup (void)
 {
   /* initialise disks to what's mounted */
-  if (nsd[0].fdd != NULL)
+  if (g_nsd[0].fdd != NULL)
     {
       show_fd1_current ();
     }
 
-  if (nsd[1].fdd != NULL)
+  if (g_nsd[1].fdd != NULL)
     {
       show_fd2_current ();
     }
 
-  if (nshd.hdd != NULL)
+  if (g_nshd.hdd != NULL)
     {
       show_hdd_current ();
     }
   mdisks_initialised = 1;
-  gtk_widget_show (Wdisks_top);
+  gtk_widget_show (g_Wdisks_top);
 }
 
 
 void
 disks_hide (void)
 {
-  gtk_window_set_keep_above (disks_top, FALSE);
-  gtk_widget_hide (Wdisks_top);
+  gtk_window_set_keep_above (g_disks_top, FALSE);
+  gtk_widget_hide (g_Wdisks_top);
 }
 
 
 void
 show_fd1_current (void)
 {
-  if (nsd[0].fdd != NULL)
+  if (g_nsd[0].fdd != NULL)
     {
-      gtk_label_set_text (fd1fn, (const gchar *) nsd[0].fdfn);
+      gtk_label_set_text (g_fd1fn, (const gchar *) g_nsd[0].fdfn);
     }
   else
     {
-      gtk_label_set_text (fd1fn, (const gchar *) " EMPTY ");
+      gtk_label_set_text (g_fd1fn, (const gchar *) " EMPTY ");
     }
 }
 
 void
 show_fd2_current (void)
 {
-  if (nsd[1].fdd != NULL)
+  if (g_nsd[1].fdd != NULL)
     {
-      gtk_label_set_text (fd2fn, (const gchar *) nsd[1].fdfn);
+      gtk_label_set_text (g_fd2fn, (const gchar *) g_nsd[1].fdfn);
     }
   else
     {
-      gtk_label_set_text (fd2fn, (const gchar *) " EMPTY ");
+      gtk_label_set_text (g_fd2fn, (const gchar *) " EMPTY ");
     }
 
 }
@@ -136,13 +136,13 @@ show_fd2_current (void)
 void
 show_hdd_current (void)
 {
-  if (nshd.hdd != NULL)
+  if (g_nshd.hdd != NULL)
     {
-      gtk_label_set_text (hdfn, (const gchar *) nshd.hdfn);
+      gtk_label_set_text (g_hdfn, (const gchar *) g_nshd.hdfn);
     }
   else
     {
-      gtk_label_set_text (hdfn, (const gchar *) " EMPTY ");
+      gtk_label_set_text (g_hdfn, (const gchar *) " EMPTY ");
     }
 }
 
@@ -150,31 +150,31 @@ void
 mount_new_fd1 (void)
 {
   char cfoldername[128];
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
 
-  if (strlen (cfg_arg[DISKD]))
+  if (strlen (g_cfg_arg[DISKD]))
     {
-      strcpy (cfoldername, cfg_arg[DISKD]);
+      strcpy (cfoldername, g_cfg_arg[DISKD]);
     }
 
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 cfoldername,	// current folder to look in at start
 		 "Looking for a disk image for FD1",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
 
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in Floppy Drive 1");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in Floppy Drive 1");
+      status_print (g_vstring, 0);
     }
   else
     {
       umount (1);
-      floppy_mount (1, file_choice_name, 0);
+      floppy_mount (1, g_file_choice_name, 0);
       show_fd1_current ();
-      strcpy (cfg_arg[FD1], file_choice_name);
-      strcpy (cfg_arg[DISKD], dirname (file_choice_name));
+      strcpy (g_cfg_arg[FD1], g_file_choice_name);
+      strcpy (g_cfg_arg[DISKD], dirname (g_file_choice_name));
       save_configuration ();
     }
 }
@@ -183,34 +183,34 @@ void
 mount_new_fd2 (void)
 {
   char cfoldername[128];
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
 
-  if (strlen (cfg_arg[DISKD]))
+  if (strlen (g_cfg_arg[DISKD]))
     {
-      strcpy (cfoldername, cfg_arg[DISKD]);
+      strcpy (cfoldername, g_cfg_arg[DISKD]);
     }
 
 
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
 
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 cfoldername,	// current folder to look in at start
 		 "Looking for a disk image for FD2",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
 
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in Floppy Drive 2");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in Floppy Drive 2");
+      status_print (g_vstring, 0);
     }
   else
     {
       umount (2);
-      floppy_mount (2, file_choice_name, 0);
+      floppy_mount (2, g_file_choice_name, 0);
       show_fd2_current ();
-      strcpy (cfg_arg[FD2], file_choice_name);
-      strcpy (cfg_arg[DISKD], dirname (file_choice_name));
+      strcpy (g_cfg_arg[FD2], g_file_choice_name);
+      strcpy (g_cfg_arg[DISKD], dirname (g_file_choice_name));
       save_configuration ();
     }
 }
@@ -220,33 +220,33 @@ mount_new_hdd (void)
 {
 
   char cfoldername[128];
-  choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_OPEN;
 
-  if (strlen (cfg_arg[DISKD]))
+  if (strlen (g_cfg_arg[DISKD]))
     {
-      strcpy (cfoldername, cfg_arg[DISKD]);
+      strcpy (cfoldername, g_cfg_arg[DISKD]);
     }
 
-  choose_mode = GTK_FILE_CHOOSER_ACTION_SAVE;
+  g_choose_mode = GTK_FILE_CHOOSER_ACTION_SAVE;
 
-  select_a_file (choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
+  select_a_file (g_choose_mode,	// allow creation of new file  or not? set 'save' or 'open'
 		 cfoldername,	// current folder to look in at start
 		 "Looking for a disk image for Hard Disk",	// title for the file-chooser dialog
-		 window		// chooser dialog parent window
+		 g_window		// chooser dialog parent window
     );
 
-  if ((file_choice_val < 0) || (file_choice_name == NULL))
+  if ((g_file_choice_val < 0) || (g_file_choice_name == NULL))
     {
-      sprintf (vstring, "\nNo Change in Hard Disk Drive");
-      status_print (vstring, 0);
+      sprintf (g_vstring, "\nNo Change in Hard Disk Drive");
+      status_print (g_vstring, 0);
     }
   else
     {
       hdumount ();
-      hdmount (file_choice_name);
+      hdmount (g_file_choice_name);
       show_hdd_current ();
-      strcpy (cfg_arg[HDD], file_choice_name);
-      strcpy (cfg_arg[DISKD], dirname (file_choice_name));
+      strcpy (g_cfg_arg[HDD], g_file_choice_name);
+      strcpy (g_cfg_arg[DISKD], dirname (g_file_choice_name));
       save_configuration ();
     }
 }
@@ -254,40 +254,40 @@ mount_new_hdd (void)
 void
 umount_fd1 (void)
 {
-  if (nsd[0].fdd != NULL)
+  if (g_nsd[0].fdd != NULL)
     {
-      sprintf (vstring, "\nFLOPPY 1  Ejected");
-      status_print (vstring, FALSE);
+      sprintf (g_vstring, "\nFLOPPY 1  Ejected");
+      status_print (g_vstring, FALSE);
     }
   else
     {
-      sprintf (vstring, "\nCan't  Eject. No Floppy 1.");
-      status_print (vstring, TRUE);
+      sprintf (g_vstring, "\nCan't  Eject. No Floppy 1.");
+      status_print (g_vstring, TRUE);
     }
 
   umount (1);
   show_fd1_current ();
-  strcpy (cfg_arg[FD1], "");
+  strcpy (g_cfg_arg[FD1], "");
   save_configuration ();
 }
 
 void
 umount_fd2 (void)
 {
-  if (nsd[1].fdd != NULL)
+  if (g_nsd[1].fdd != NULL)
     {
-      sprintf (vstring, "\nFLOPPY 2  Ejected");
-      status_print (vstring, FALSE);
+      sprintf (g_vstring, "\nFLOPPY 2  Ejected");
+      status_print (g_vstring, FALSE);
     }
   else
     {
-      sprintf (vstring, "\nCan't  Eject. No Floppy 2.");
-      status_print (vstring, TRUE);
+      sprintf (g_vstring, "\nCan't  Eject. No Floppy 2.");
+      status_print (g_vstring, TRUE);
     }
 
   umount (2);
   show_fd2_current ();
-  strcpy (cfg_arg[FD2], "");
+  strcpy (g_cfg_arg[FD2], "");
   save_configuration ();
 }
 
@@ -295,12 +295,12 @@ void
 umount_hdd (void)
 {
   hdumount ();
-  nshd.hdd = NULL;
-  strcpy (cfg_arg[HDD], "");
+  g_nshd.hdd = NULL;
+  strcpy (g_cfg_arg[HDD], "");
   save_configuration ();
   show_hdd_current ();
-  sprintf (vstring, "\nHARD DRIVE  now OFF");
-  status_print (vstring, TRUE);
+  sprintf (g_vstring, "\nHARD DRIVE  now OFF");
+  status_print (g_vstring, TRUE);
 }
 
 
@@ -312,10 +312,10 @@ get_new_floppy_name (void)
 {
   gboolean name_ok;
 
-  new_floppy_name = gtk_entry_get_text (new_floppy_text);
+  new_floppy_name = gtk_entry_get_text (g_new_floppy_text);
   if (*new_floppy_name != '/')
     {				//NOT ABSOLUTE Filename, = RELATIVE, ADD PWD
-      strcpy (absolute_floppy_name, cfg_arg[DISKD]);
+      strcpy (absolute_floppy_name, g_cfg_arg[DISKD]);
       strcat (absolute_floppy_name, new_floppy_name);
     }
   else
@@ -325,8 +325,8 @@ get_new_floppy_name (void)
   name_ok = check_new_floppy_name ();
   if (!name_ok)
     {
-      sprintf (vstring, "\nFloppy Name Not Permitted");
-      status_print (vstring, TRUE);
+      sprintf (g_vstring, "\nFloppy Name Not Permitted");
+      status_print (g_vstring, TRUE);
     }
 }
 
@@ -353,9 +353,9 @@ create_new_floppy (void)
   get_new_floppy_name ();
   if ((nfile = fopen (absolute_floppy_name, "wb")) == NULL)
     {
-      sprintf (vstring, "\nSorry. Can't open <%s>. Aborting\n",
+      sprintf (g_vstring, "\nSorry. Can't open <%s>. Aborting\n",
 	       absolute_floppy_name);
-      status_print (vstring, TRUE);
+      status_print (g_vstring, TRUE);
     }
   else
     {
@@ -414,16 +414,16 @@ create_new_floppy (void)
     }
   if (!bad)
     {
-      sprintf (vstring, "\nNew Floppy \"%s\" Created",
+      sprintf (g_vstring, "\nNew Floppy \"%s\" Created",
 	       (char *) absolute_floppy_name);
-      status_print (vstring, 0);
+      status_print (g_vstring, 0);
     }
   else
     {
-      sprintf (vstring, "\nNew Floppy \"%s\" NOT Created!!!",
+      sprintf (g_vstring, "\nNew Floppy \"%s\" NOT Created!!!",
 	       absolute_floppy_name);
-      status_print (vstring, 1);
+      status_print (g_vstring, 1);
     }
-  gtk_entry_set_text (new_floppy_text, "");
+  gtk_entry_set_text (g_new_floppy_text, "");
 
 }
