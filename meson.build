@@ -88,8 +88,8 @@ if get_option('desktop')
   
   desktop_conf = configuration_data({
     'VERSION' : meson.project_version(),
-    'EXEC'    : get_option('bindir') / 'ade',
-    'ICON'    : get_option('datadir') / 'icons/hicolor/64x64/ade-logo.png',
+    'EXEC'    : get_option('prefix') / get_option('bindir') / 'ade',
+    'ICON'    : get_option('prefix') / get_option('datadir') / 'icons/hicolor/64x64/ade-logo.png',
   })
   ade_desktop = configure_file(
     input  : 'advantage.desktop.in',
@@ -105,10 +105,10 @@ endif
 # install example ade.conf
 if get_option('examples')
   rc_conf = configuration_data({
-    'HDD_DISK' : get_option('datadir') / 'ade/disks/ADV_SG5A.NHD',
-    'FD1_DISK' : get_option('datadir') / 'ade/disks/CPMBASIC_120A1.NSI',
+    'HDD_DISK' : get_option('prefix') / get_option('datadir') / 'ade/disks/ADV_SG5A.NHD',
+    'FD1_DISK' : get_option('prefix') / get_option('datadir') / 'ade/disks/CPMBASIC_120A1.NSI',
     'FD2_DISK' : '',
-    'DISK_DIR' : get_option('datadir') / 'ade/disks',
+    'DISK_DIR' : get_option('prefix') / get_option('datadir') / 'ade/disks',
   })
   ade_conf_example = configure_file(
     input  : 'ade.conf.example.in',
