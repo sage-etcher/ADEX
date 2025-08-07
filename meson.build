@@ -10,7 +10,7 @@ project('ADE', 'c',
 )
 
 if get_option('northstartools')
-  north_star_tools = subproject('north_star_tools')
+  subproject('north_star_tools')
 endif
 
 add_project_arguments([ 
@@ -71,12 +71,11 @@ ade_bin = executable(
 
 # install data
 if get_option('disks')
-  install_subdir('disks', install_dir : get_option('datadir') / 'ade')
+  subproject('ade-disks')
 endif
 
 if get_option('documentation')
-  install_subdir('documentation', install_dir : get_option('datadir') / 'doc/ade')
-  install_subdir('info', install_dir : get_option('datadir') / 'doc/ade')
+  subproject('ade-documentation')
 endif
 
 # install desktop file

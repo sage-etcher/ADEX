@@ -1,0 +1,4 @@
+[wrap-git]
+url = https://github.com/sage-etcher/north_star_tools.git
+revision = HEAD
+depth = 1
