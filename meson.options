@@ -1,0 +1,33 @@
+option(
+  'disks',
+  type : 'boolean',
+  value : true,
+  description : 'Install hard/floppy disk images into $datadir/ade/disks',
+)
+option(
+  'documentation', 
+  type : 'boolean', 
+  value : false, 
+  description : 'Install official northstar+emulator documentation into $datadir/doc/ade/{info,documentation}',
+)
+option(
+  'examples', 
+  type : 'boolean', 
+  value : true, 
+  description : 'Install example files (config example)',
+)
+option(
+  'desktop', 
+  type : 'boolean', 
+  value : true, 
+  description : 'Install the advantage.desktop entry',
+)
+option(
+  'northstartools',
+  type : 'boolean',
+  value : true,
+  description : 'Build+Install NorthStar Unix Tools',
+)
+
+# vim: ts=2 sts=2 sw=2 et
+# end of file

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=@VERSION@
+Type=Application
+Terminal=false
+Exec=@EXEC@
+Icon=@ICON@
+Name=North Star Advantage Emulator
+Comment=North Star Advantage Emulator
