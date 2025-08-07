@@ -11,18 +11,24 @@ If you have the GTK+ development package installed, that's even better.
 
 In that case, issue the command
 
-       make
+       meson setup build
+       ninja -C build
+
 
 If all compiles properly, isuue the commands
 
-
-       make install
- and
+       meson install -C build
+       mkdir ~/advantage
+       cp -R /usr/local/share/ade/disks ~/advantage/
+       cp /usr/local/share/doc/ade/examples/ade.conf.example ~/advantage/ade.conf
+       sed -i  "s,/usr/local/share/ade,$HOME/advantage," ~/advantage/ade.conf
+and
        ade
 
 
 Otherwise:
 
+head to <https://github.com/sage-etcher/ADE-Documentation.git>, 
 cd to the 'documentation' and read Section 2 of the 'North Star Advantage (ADE) User's Guide'.
 
 Better still, read the whole guide first.
