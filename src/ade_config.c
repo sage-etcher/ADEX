@@ -495,6 +495,7 @@ set_work_dir (void)
   char *legacy_conf = expand_str ("$HOME/"ADE_CONF_DIR"/");
   char *etc_conf    = expand_str ("/etc/"ADE_CONF_DIR"/");
   char *match = NULL;
+  struct stat sb;
 
   /* select xdg location */
   if (getenv ("XDG_CONFIG_HOME") == NULL)
@@ -507,19 +508,19 @@ set_work_dir (void)
     }
 
   /* find first match */
-  if (is_dir (xdg_conf))
+  if (stat (xdg_conf, &sb) == 0 && S_ISDIR (sb.st_mode))
     {
       match = xdg_conf;
     }
-  else if (is_dir (home_conf))
+  else if (stat (home_conf, &sb) == 0 && S_ISDIR (sb.st_mode))
     {
       match = home_conf;
     }
-  else if (is_dir (legacy_conf))
+  else if (stat (legacy_conf, &sb) == 0 && S_ISDIR (sb.st_mode))
     {
       match = legacy_conf;
     }
-  else if (is_dir (etc_conf))
+  else if (stat (etc_conf, &sb) == 0 && S_ISDIR (sb.st_mode))
     {
       match = etc_conf;
     }
