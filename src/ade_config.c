@@ -3,6 +3,39 @@
 
 #include <wordexp.h>
 
+char *
+expand_str (char *src)
+{
+  wordexp_t p = { 0 };
+  char **w = NULL;
+  char *dst = NULL;
+  size_t n = 0;
+  size_t i = 0;
+
+  wordexp (src, &p, 0);
+  w = p.we_wordv;
+  for (i = 0; i < p.we_wordc; i++)
+    {
+      n += strlen (w[i]);
+    }
+  dst = malloc (n+1);
+  if (dst == NULL)
+    {
+      return NULL;
+    }
+
+  *dst = '\0';
+  for (i = 0; i < p.we_wordc; i++)
+    {
+      strcat (dst, w[i]);
+    }
+
+  dst[n] = '\0';
+
+  wordfree (&p);
+
+  return dst;
+}
 
 void
 open_conf_file (void)
@@ -92,6 +125,7 @@ load_configuration (void)
   int i;
   char *tkey;
   char *targ;
+  char *targ_exp;
   int tkeynum;
   load_keywords ();
   while ((fgets (cfgbuff, 127, conf)) != NULL)
@@ -124,7 +158,10 @@ load_configuration (void)
 	    {			/*found a keyword */
 	      if (targ != NULL)
 		{
-		  strcpy (cfg_arg[tkeynum], targ);
+          targ_exp = expand_str (targ);
+		  strncpy (cfg_arg[tkeynum], targ_exp, sizeof (*cfg_arg)-1);
+          cfg_arg[tkeynum][sizeof (*cfg_arg)-1] = '\0';
+          free (targ_exp);
 		}
 	      else
 		{
@@ -449,39 +486,6 @@ load_config_parameters (void)
   save_configuration ();
 }
 
-
-char *
-expand_str(char *src)
-{
-  wordexp_t p = { 0 };
-  char **w = NULL;
-  char *dst = NULL;
-  size_t n = 0;
-
-  wordexp (src, &p, 0);
-  w = p.we_wordv;
-  for (size_t i = 0; i < p.we_wordc; i++)
-    {
-      n += strlen (w[i]);
-    }
-  dst = malloc (n+1);
-  if (dst == NULL)
-    {
-      return NULL;
-    }
-
-  *dst = '\0';
-  for (size_t i = 0; i < p.we_wordc; i++)
-    {
-      strcat (dst, w[i]);
-    }
-
-  dst[n] = '\0';
-
-  wordfree (&p);
-
-  return dst;
-}
 
 void
 set_work_dir (void)
