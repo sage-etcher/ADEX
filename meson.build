@@ -13,17 +13,19 @@ if get_option('northstartools')
   subproject('north_star_tools')
 endif
 
+if get_option('prefix') == '/usr'
+  etcdir = get_option('sysconfdir')
+else 
+  etcdir = get_option('prefix') / get_option('sysconfdir')
+endif
 add_project_arguments([ 
-    '-D_POSIX_SOURCE' 
+    '-D_POSIX_SOURCE',
+    '-DETCDIR="' + etcdir + '"'
   ], 
   language : 'c',
 )
 
-add_project_link_arguments([ 
-    '-rdynamic' 
-  ], 
-  language : 'c',
-)
+add_project_link_arguments([ '-rdynamic' ], language : 'c')
 
 gnome = import('gnome')
 
