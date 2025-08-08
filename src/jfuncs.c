@@ -234,19 +234,24 @@ xlog (unsigned int type, const char *msg, ...)
   if (log_debug & type)
     {
       va_start (argp, msg);
-/* oops. is there a logfile open??? */
+      /* oops. is there a logfile open??? */
       /* first try for logfile in current directory */
       if (logfile == NULL)
-	{
-	  sprintf (logfilename, "%s/%s", work_dir, LOGFILENAME);
-	  logfile = fopen (logfilename, "w");
-	}
+        {
+          sprintf (logfilename, "%s/%s", work_dir, LOGFILENAME);
+          logfile = fopen (logfilename, "w");
+        }
       /* can't do that, so try for /tmp directory */
       if (logfile == NULL)
-	{
-	  sprintf (logfilename, "%s/%s", work_dir, LOGFILENAME);
-	  logfile = fopen (logfilename, "w");
-	}
+        {
+          sprintf (logfilename, "/tmp/%s", LOGFILENAME);
+          logfile = fopen (logfilename, "w");
+        }
+      if (logfile == NULL)
+        {
+          logfile = stderr;
+        }
+
 
 
 /* OK, we're sure of a logfile now */

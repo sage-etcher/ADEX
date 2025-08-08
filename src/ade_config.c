@@ -493,7 +493,7 @@ set_work_dir (void)
   char *xdg_conf = NULL;
   char *home_conf   = expand_str ("$HOME/."ADE_CONF_DIR"/");
   char *legacy_conf = expand_str ("$HOME/"ADE_CONF_DIR"/");
-  char *etc_conf    = expand_str ("/etc/"ADE_CONF_DIR"/");
+  char *etc_conf    = expand_str (ETCDIR"/"ADE_CONF_DIR"/");
   char *match = NULL;
   struct stat sb;
 

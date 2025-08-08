@@ -27,6 +27,9 @@
 #define MAJOR	"0.67"
 // Started 210308
 
+#ifndef ETCDIR
+#   define ETCDIR "/etc"
+#endif
 #define NOBEEP FALSE		// mutes annoying beeps during development
 
 #define APP_NAME	"ade"
