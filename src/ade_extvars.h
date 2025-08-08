@@ -71,7 +71,7 @@ extern BYTE sio_test;
 extern BYTE tmpbuff[0x10000];
 extern BYTE *videoram;
 extern BYTE vr_byte;
-extern char work_dir[30];
+extern char work_dir[128];
 extern char aread_name[70];
 extern char *bdata;
 extern char bline[1024];

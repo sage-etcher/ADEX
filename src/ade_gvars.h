@@ -204,7 +204,7 @@ BYTE sio_test=0;
 BYTE tmpbuff[0x10000];
 BYTE *videoram;
 BYTE vr_byte;
-char work_dir[30];
+char work_dir[128];
 char aread_name[70];
 char *bdata;
 char bline[1024];
