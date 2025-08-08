@@ -103,23 +103,21 @@ if get_option('desktop')
 endif
 
 # install example ade.conf
-if get_option('examples')
-  rc_conf = configuration_data({
-    'HDD_DISK' : get_option('prefix') / get_option('datadir') / 'ade/disks/ADV_SG5A.NHD',
-    'FD1_DISK' : get_option('prefix') / get_option('datadir') / 'ade/disks/CPMBASIC_120A1.NSI',
-    'FD2_DISK' : '',
-    'DISK_DIR' : get_option('prefix') / get_option('datadir') / 'ade/disks',
-  })
-  ade_conf_example = configure_file(
-    input  : 'ade.conf.example.in',
-    output : 'ade.conf.example',
-    configuration : rc_conf,
-  )
-  install_data(
-    ade_conf_example,
-    install_dir : get_option('datadir') / 'doc/ade/examples',
-  )
-endif
+rc_conf = configuration_data({
+  'HDD_DISK' : get_option('prefix') / get_option('datadir') / 'advantage/disks/ADV_SG5A.NHD',
+  'FD1_DISK' : get_option('prefix') / get_option('datadir') / 'advantage/disks/CPMBASIC_120A1.NSI',
+  'FD2_DISK' : '',
+  'DISK_DIR' : get_option('prefix') / get_option('datadir') / 'advantage/disks',
+})
+ade_conf = configure_file(
+  input  : 'ade.conf.in',
+  output : 'ade.conf',
+  configuration : rc_conf,
+)
+install_data(
+  ade_conf,
+  install_dir : get_option('sysconfdir') / 'advantage',
+)
 
 # vim: ts=2 sts=2 sw=2 et
 # end of file

@@ -11,12 +11,6 @@ option(
   description : 'Install official northstar+emulator documentation into $datadir/doc/ade/{info,documentation}',
 )
 option(
-  'examples', 
-  type : 'boolean', 
-  value : true, 
-  description : 'Install example files (config example)',
-)
-option(
   'desktop', 
   type : 'boolean', 
   value : true, 
