@@ -1,6 +1,8 @@
 #include "ade.h"
 #include "ade_extvars.h"
 
+#include <wordexp.h>
+
 
 void
 open_conf_file (void)
@@ -26,8 +28,7 @@ open_conf_file (void)
   if (!configfileflag)
     {
 /* generate default config file name */
-      strcpy (conf_fn, "ade");
-      strcat (conf_fn, ".conf");
+      strcpy (conf_fn, ADE_CONF_NAME);
       strcat (confname, conf_fn);	// now got $HOME/XXXXXXXX/ade.conf
     }
   else
@@ -185,7 +186,7 @@ new_config_file (void)
       error = 1;		// nor directory, therefor no conf file
     }
   strcpy (newbuff, confname);
-  strcat (newbuff, "ade.conf");
+  strcat (newbuff, ADE_CONF_NAME);
 
 
   if ((conf = fopen (newbuff, "w")) == NULL)
@@ -217,7 +218,7 @@ save_configuration (void)
   if (!configfileflag)
     {
 /* generate default config file name */
-      strcat (confname, "ade.conf");
+      strcat (confname, ADE_CONF_NAME);
     }
   else
     {
@@ -299,11 +300,8 @@ load_config_parameters (void)
   char streamnbuff[12];
 
   /* PARAMETERS LOADED FROM CONFIG FILE                    */
+  set_work_dir ();
 
-
-  strcpy (work_dir, (getenv ("HOME")));	// /home directory
-  strcat (work_dir, "/");	// $HOME/
-  strcat (work_dir, ADE_CONF_DIR);	// $HOME/advantage
   /* hardware slots */
   set_slots_config ();		//need HDC to be installed before loading disks
 /* disk storage */
@@ -452,17 +450,102 @@ load_config_parameters (void)
 }
 
 
+char *
+expand_str(char *src)
+{
+  wordexp_t p = { 0 };
+  char **w = NULL;
+  char *dst = NULL;
+  size_t n = 0;
 
+  wordexp (src, &p, 0);
+  w = p.we_wordv;
+  for (size_t i = 0; i < p.we_wordc; i++)
+    {
+      n += strlen (w[i]);
+    }
+  dst = malloc (n+1);
+  if (dst == NULL)
+    {
+      return NULL;
+    }
+
+  *dst = '\0';
+  for (size_t i = 0; i < p.we_wordc; i++)
+    {
+      strcat (dst, w[i]);
+    }
+
+  dst[n] = '\0';
+
+  wordfree (&p);
+
+  return dst;
+}
 
 void
 set_work_dir (void)
 {
+  char *xdg_conf = NULL;
+  char *home_conf   = expand_str ("$HOME/."ADE_CONF_DIR"/");
+  char *legacy_conf = expand_str ("$HOME/"ADE_CONF_DIR"/");
+  char *etc_conf    = expand_str ("/etc/"ADE_CONF_DIR"/");
+  char *match = NULL;
 
-  confname = confnamebuff;
+  /* select xdg location */
+  if (getenv ("XDG_CONFIG_HOME") == NULL)
+    {
+      xdg_conf = expand_str ("$HOME/.config/"ADE_CONF_DIR"/");
+    }
+  else
+    {
+      xdg_conf = expand_str ("$XDG_CONFIG_HOME/"ADE_CONF_DIR"/");
+    }
+
+  /* find first match */
+  if (is_dir (xdg_conf))
+    {
+      match = xdg_conf;
+    }
+  else if (is_dir (home_conf))
+    {
+      match = home_conf;
+    }
+  else if (is_dir (legacy_conf))
+    {
+      match = legacy_conf;
+    }
+  else if (is_dir (etc_conf))
+    {
+      match = etc_conf;
+    }
+  else
+    {
+      match = xdg_conf;
+    }
+
   xlog (INFO, "PWD= \"%s\"\n", (getenv ("PWD")));
-  strcpy (confname, (getenv ("HOME")));	// USERNAME /home  directory
-  strcat (confname, "/");
-  strcat (confname, "advantage");	// $HOME/XXXXXXXX
-  strcat (confname, "/");	// $HOME/XXXXXXXX/
-  strcpy (work_dir, confname);	/* save the working directory info */
+
+  if (strlen (match) >= sizeof (confnamebuff)-1)
+  {
+    xlog (INFO, "config path too long for confnamebuff: \"%s\"\n", match);
+  }
+  confname = confnamebuff;
+  strncpy (confname, match, sizeof (confnamebuff)-1);
+  confname[sizeof (confnamebuff)-1] = '\0';
+
+  if (strlen (match) >= sizeof (work_dir)-1)
+  {
+    xlog (INFO, "config path too long for work_dir: \"%s\"\n", match);
+  }
+  strncpy (work_dir, match, sizeof (work_dir)-1);	/* save the working directory info */
+  work_dir[sizeof (work_dir)-1] = '\0';
+
+  xlog (INFO, "confname= \"%s\"\n", confname);
+  xlog (INFO, "work_dir= \"%s\"\n", work_dir);
+
+  free (xdg_conf);
+  free (home_conf);
+  free (legacy_conf);
+  free (etc_conf);
 }
